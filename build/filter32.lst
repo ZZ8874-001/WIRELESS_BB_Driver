@@ -1,0 +1,711 @@
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"filter32.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Commponents/filter32.c"
+  20              		.section	.text.First_Order_Filter_Init,"ax",%progbits
+  21              		.align	1
+  22              		.global	First_Order_Filter_Init
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	First_Order_Filter_Init:
+  28              	.LVL0:
+  29              	.LFB123:
+   1:Commponents/filter32.c **** /**
+   2:Commponents/filter32.c ****  ******************************************************************************
+   3:Commponents/filter32.c ****  * @file    filter32.c
+   4:Commponents/filter32.c ****  * @author  Wang Hongxi
+   5:Commponents/filter32.c ****  * @version V1.0.1
+   6:Commponents/filter32.c ****  * @date    2020/7/7
+   7:Commponents/filter32.c ****  * @brief
+   8:Commponents/filter32.c ****  ******************************************************************************
+   9:Commponents/filter32.c ****  * @attention
+  10:Commponents/filter32.c ****  *
+  11:Commponents/filter32.c ****  ******************************************************************************
+  12:Commponents/filter32.c ****  */
+  13:Commponents/filter32.c **** #include "filter32.h"
+  14:Commponents/filter32.c **** #include "user_lib.h"
+  15:Commponents/filter32.c **** 
+  16:Commponents/filter32.c **** #if (__CORTEX_M == (4U))
+  17:Commponents/filter32.c **** /**
+  18:Commponents/filter32.c ****  * @brief
+  19:Commponents/filter32.c ****  *
+  20:Commponents/filter32.c ****  * @param first_order_filter 一阶低通滤波器
+  21:Commponents/filter32.c ****  * @param dt 采样周期，单位s
+  22:Commponents/filter32.c ****  * @param cutoff_freq 截止频率
+  23:Commponents/filter32.c ****  */
+  24:Commponents/filter32.c **** 
+  25:Commponents/filter32.c **** void First_Order_Filter_Init(First_Order_Filter_t *first_order_filter, float dt, float cutoff_freq)
+  26:Commponents/filter32.c **** {
+  30              		.loc 1 26 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 0
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 2
+
+
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+  34              		.loc 1 26 1 is_stmt 0 view .LVU1
+  35 0000 10B5     		push	{r4, lr}
+  36              	.LCFI0:
+  37              		.cfi_def_cfa_offset 8
+  38              		.cfi_offset 4, -8
+  39              		.cfi_offset 14, -4
+  40 0002 2DED028B 		vpush.64	{d8}
+  41              	.LCFI1:
+  42              		.cfi_def_cfa_offset 16
+  43              		.cfi_offset 80, -16
+  44              		.cfi_offset 81, -12
+  45 0006 0446     		mov	r4, r0
+  27:Commponents/filter32.c ****     first_order_filter->dt = dt;
+  46              		.loc 1 27 5 is_stmt 1 view .LVU2
+  47              		.loc 1 27 28 is_stmt 0 view .LVU3
+  48 0008 80ED030A 		vstr.32	s0, [r0, #12]
+  28:Commponents/filter32.c ****     first_order_filter->RC = 1.0f / (2 * 3.14159f * cutoff_freq);
+  49              		.loc 1 28 5 is_stmt 1 view .LVU4
+  50              		.loc 1 28 51 is_stmt 0 view .LVU5
+  51 000c DFED0E7A 		vldr.32	s15, .L3
+  52 0010 60EEA70A 		vmul.f32	s1, s1, s15
+  53              	.LVL1:
+  54              		.loc 1 28 35 view .LVU6
+  55 0014 B7EE001A 		vmov.f32	s2, #1.0e+0
+  56 0018 C1EE207A 		vdiv.f32	s15, s2, s1
+  57              		.loc 1 28 28 view .LVU7
+  58 001c C0ED027A 		vstr.32	s15, [r0, #8]
+  29:Commponents/filter32.c ****     first_order_filter->aphha = float_constrain(dt / (dt + first_order_filter->RC), 0.0f, 1.0f);
+  59              		.loc 1 29 5 is_stmt 1 view .LVU8
+  60              		.loc 1 29 58 is_stmt 0 view .LVU9
+  61 0020 77EE807A 		vadd.f32	s15, s15, s0
+  62              		.loc 1 29 33 view .LVU10
+  63 0024 9FED098A 		vldr.32	s16, .L3+4
+  64 0028 F0EE480A 		vmov.f32	s1, s16
+  65 002c 80EE270A 		vdiv.f32	s0, s0, s15
+  66              	.LVL2:
+  67              		.loc 1 29 33 view .LVU11
+  68 0030 FFF7FEFF 		bl	float_constrain
+  69              	.LVL3:
+  70              		.loc 1 29 31 view .LVU12
+  71 0034 84ED040A 		vstr.32	s0, [r4, #16]
+  30:Commponents/filter32.c ****     first_order_filter->Input = 0.0f;
+  72              		.loc 1 30 5 is_stmt 1 view .LVU13
+  73              		.loc 1 30 31 is_stmt 0 view .LVU14
+  74 0038 84ED008A 		vstr.32	s16, [r4]
+  31:Commponents/filter32.c ****     first_order_filter->Output = 0.0f;
+  75              		.loc 1 31 5 is_stmt 1 view .LVU15
+  76              		.loc 1 31 32 is_stmt 0 view .LVU16
+  77 003c 84ED018A 		vstr.32	s16, [r4, #4]
+  32:Commponents/filter32.c **** }
+  78              		.loc 1 32 1 view .LVU17
+  79 0040 BDEC028B 		vldm	sp!, {d8}
+  80              	.LCFI2:
+  81              		.cfi_restore 80
+  82              		.cfi_restore 81
+  83              		.cfi_def_cfa_offset 8
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 3
+
+
+  84 0044 10BD     		pop	{r4, pc}
+  85              	.LVL4:
+  86              	.L4:
+  87              		.loc 1 32 1 view .LVU18
+  88 0046 00BF     		.align	2
+  89              	.L3:
+  90 0048 D00FC940 		.word	1086918608
+  91 004c 00000000 		.word	0
+  92              		.cfi_endproc
+  93              	.LFE123:
+  95              		.section	.text.First_Order_Filter_Calculate,"ax",%progbits
+  96              		.align	1
+  97              		.global	First_Order_Filter_Calculate
+  98              		.syntax unified
+  99              		.thumb
+ 100              		.thumb_func
+ 102              	First_Order_Filter_Calculate:
+ 103              	.LVL5:
+ 104              	.LFB124:
+  33:Commponents/filter32.c **** 
+  34:Commponents/filter32.c **** /**
+  35:Commponents/filter32.c ****  * @brief
+  36:Commponents/filter32.c ****  *
+  37:Commponents/filter32.c ****  * @param first_order_filter 一阶低通滤波器结构体
+  38:Commponents/filter32.c ****  * @param input 输入
+  39:Commponents/filter32.c ****  * @return float 输出
+  40:Commponents/filter32.c ****  */
+  41:Commponents/filter32.c **** float First_Order_Filter_Calculate(First_Order_Filter_t *first_order_filter, float input)
+  42:Commponents/filter32.c **** {
+ 105              		.loc 1 42 1 is_stmt 1 view -0
+ 106              		.cfi_startproc
+ 107              		@ args = 0, pretend = 0, frame = 0
+ 108              		@ frame_needed = 0, uses_anonymous_args = 0
+ 109              		@ link register save eliminated.
+  43:Commponents/filter32.c ****     first_order_filter->Input = input;
+ 110              		.loc 1 43 5 view .LVU20
+ 111              		.loc 1 43 31 is_stmt 0 view .LVU21
+ 112 0000 80ED000A 		vstr.32	s0, [r0]
+  44:Commponents/filter32.c **** 
+  45:Commponents/filter32.c ****     first_order_filter->Output +=
+ 113              		.loc 1 45 5 is_stmt 1 view .LVU22
+ 114              		.loc 1 45 23 is_stmt 0 view .LVU23
+ 115 0004 D0ED017A 		vldr.32	s15, [r0, #4]
+  46:Commponents/filter32.c ****         (first_order_filter->Input - first_order_filter->Output) * first_order_filter->aphha;
+ 116              		.loc 1 46 36 view .LVU24
+ 117 0008 30EE670A 		vsub.f32	s0, s0, s15
+ 118              	.LVL6:
+ 119              		.loc 1 46 86 view .LVU25
+ 120 000c 90ED047A 		vldr.32	s14, [r0, #16]
+ 121              		.loc 1 46 66 view .LVU26
+ 122 0010 20EE070A 		vmul.f32	s0, s0, s14
+  45:Commponents/filter32.c ****         (first_order_filter->Input - first_order_filter->Output) * first_order_filter->aphha;
+ 123              		.loc 1 45 32 view .LVU27
+ 124 0014 37EE800A 		vadd.f32	s0, s15, s0
+ 125 0018 80ED010A 		vstr.32	s0, [r0, #4]
+  47:Commponents/filter32.c **** 
+  48:Commponents/filter32.c ****     return first_order_filter->Output;
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 4
+
+
+ 126              		.loc 1 48 5 is_stmt 1 view .LVU28
+  49:Commponents/filter32.c **** }
+ 127              		.loc 1 49 1 is_stmt 0 view .LVU29
+ 128 001c 7047     		bx	lr
+ 129              		.cfi_endproc
+ 130              	.LFE124:
+ 132              		.section	.text.Window_Filter_Init,"ax",%progbits
+ 133              		.align	1
+ 134              		.global	Window_Filter_Init
+ 135              		.syntax unified
+ 136              		.thumb
+ 137              		.thumb_func
+ 139              	Window_Filter_Init:
+ 140              	.LVL7:
+ 141              	.LFB125:
+  50:Commponents/filter32.c **** 
+  51:Commponents/filter32.c **** /**
+  52:Commponents/filter32.c ****  * @brief          窗口滤波初始化
+  53:Commponents/filter32.c ****  * @param[in]      窗口滤波结构体
+  54:Commponents/filter32.c ****  * @param[in]      窗口大小
+  55:Commponents/filter32.c ****  * @retval         返回空
+  56:Commponents/filter32.c ****  */
+  57:Commponents/filter32.c **** void Window_Filter_Init(Window_Filter_t *window_filter, uint8_t windowSize)
+  58:Commponents/filter32.c **** {
+ 142              		.loc 1 58 1 is_stmt 1 view -0
+ 143              		.cfi_startproc
+ 144              		@ args = 0, pretend = 0, frame = 0
+ 145              		@ frame_needed = 0, uses_anonymous_args = 0
+ 146              		.loc 1 58 1 is_stmt 0 view .LVU31
+ 147 0000 70B5     		push	{r4, r5, r6, lr}
+ 148              	.LCFI3:
+ 149              		.cfi_def_cfa_offset 16
+ 150              		.cfi_offset 4, -16
+ 151              		.cfi_offset 5, -12
+ 152              		.cfi_offset 6, -8
+ 153              		.cfi_offset 14, -4
+ 154 0002 0546     		mov	r5, r0
+ 155 0004 0C46     		mov	r4, r1
+  59:Commponents/filter32.c ****     window_filter->WindowNum = 0;
+ 156              		.loc 1 59 5 is_stmt 1 view .LVU32
+ 157              		.loc 1 59 30 is_stmt 0 view .LVU33
+ 158 0006 0026     		movs	r6, #0
+ 159 0008 4672     		strb	r6, [r0, #9]
+  60:Commponents/filter32.c ****     window_filter->WindowSize = windowSize;
+ 160              		.loc 1 60 5 is_stmt 1 view .LVU34
+ 161              		.loc 1 60 31 is_stmt 0 view .LVU35
+ 162 000a 0172     		strb	r1, [r0, #8]
+  61:Commponents/filter32.c ****     window_filter->WindowBuffer = (float *)user_malloc(sizeof(float) * windowSize);
+ 163              		.loc 1 61 5 is_stmt 1 view .LVU36
+ 164              		.loc 1 61 44 is_stmt 0 view .LVU37
+ 165 000c 8800     		lsls	r0, r1, #2
+ 166              	.LVL8:
+ 167              		.loc 1 61 44 view .LVU38
+ 168 000e FFF7FEFF 		bl	malloc
+ 169              	.LVL9:
+ 170              		.loc 1 61 33 view .LVU39
+ 171 0012 E860     		str	r0, [r5, #12]
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 5
+
+
+  62:Commponents/filter32.c ****     memset(window_filter->WindowBuffer, 0, windowSize);
+ 172              		.loc 1 62 5 is_stmt 1 view .LVU40
+ 173 0014 2246     		mov	r2, r4
+ 174 0016 3146     		mov	r1, r6
+ 175 0018 FFF7FEFF 		bl	memset
+ 176              	.LVL10:
+  63:Commponents/filter32.c **** }
+ 177              		.loc 1 63 1 is_stmt 0 view .LVU41
+ 178 001c 70BD     		pop	{r4, r5, r6, pc}
+ 179              		.loc 1 63 1 view .LVU42
+ 180              		.cfi_endproc
+ 181              	.LFE125:
+ 183              		.section	.text.Window_Filter_Calculate,"ax",%progbits
+ 184              		.align	1
+ 185              		.global	Window_Filter_Calculate
+ 186              		.syntax unified
+ 187              		.thumb
+ 188              		.thumb_func
+ 190              	Window_Filter_Calculate:
+ 191              	.LVL11:
+ 192              	.LFB126:
+  64:Commponents/filter32.c **** 
+  65:Commponents/filter32.c **** /**
+  66:Commponents/filter32.c ****  * @brief          窗口滤波计算
+  67:Commponents/filter32.c ****  * @param[in]      窗口滤波结构体
+  68:Commponents/filter32.c ****  * @param[in]      测量值
+  69:Commponents/filter32.c ****  * @retval         返回滤波输出
+  70:Commponents/filter32.c ****  */
+  71:Commponents/filter32.c **** float Window_Filter_Calculate(Window_Filter_t *window_filter, float input)
+  72:Commponents/filter32.c **** {
+ 193              		.loc 1 72 1 is_stmt 1 view -0
+ 194              		.cfi_startproc
+ 195              		@ args = 0, pretend = 0, frame = 0
+ 196              		@ frame_needed = 0, uses_anonymous_args = 0
+ 197              		@ link register save eliminated.
+  73:Commponents/filter32.c ****     window_filter->Input = input;
+ 198              		.loc 1 73 5 view .LVU44
+ 199              		.loc 1 73 26 is_stmt 0 view .LVU45
+ 200 0000 80ED000A 		vstr.32	s0, [r0]
+  74:Commponents/filter32.c ****     window_filter->Output = 0;
+ 201              		.loc 1 74 5 is_stmt 1 view .LVU46
+ 202              		.loc 1 74 27 is_stmt 0 view .LVU47
+ 203 0004 0023     		movs	r3, #0
+ 204 0006 4360     		str	r3, [r0, #4]	@ float
+  75:Commponents/filter32.c **** 
+  76:Commponents/filter32.c ****     window_filter->WindowBuffer[window_filter->WindowNum++] = input;
+ 205              		.loc 1 76 5 is_stmt 1 view .LVU48
+ 206              		.loc 1 76 18 is_stmt 0 view .LVU49
+ 207 0008 C368     		ldr	r3, [r0, #12]
+ 208              		.loc 1 76 46 view .LVU50
+ 209 000a 427A     		ldrb	r2, [r0, #9]	@ zero_extendqisi2
+ 210              		.loc 1 76 57 view .LVU51
+ 211 000c 511C     		adds	r1, r2, #1
+ 212 000e 4172     		strb	r1, [r0, #9]
+ 213              		.loc 1 76 32 view .LVU52
+ 214 0010 03EB8203 		add	r3, r3, r2, lsl #2
+ 215              		.loc 1 76 61 view .LVU53
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 6
+
+
+ 216 0014 83ED000A 		vstr.32	s0, [r3]
+  77:Commponents/filter32.c ****     if (window_filter->WindowNum >= window_filter->WindowSize)
+ 217              		.loc 1 77 5 is_stmt 1 view .LVU54
+ 218              		.loc 1 77 22 is_stmt 0 view .LVU55
+ 219 0018 437A     		ldrb	r3, [r0, #9]	@ zero_extendqisi2
+ 220              		.loc 1 77 50 view .LVU56
+ 221 001a 017A     		ldrb	r1, [r0, #8]	@ zero_extendqisi2
+ 222              		.loc 1 77 8 view .LVU57
+ 223 001c 8B42     		cmp	r3, r1
+ 224 001e 01D3     		bcc	.L9
+  78:Commponents/filter32.c ****         window_filter->WindowNum = 0;
+ 225              		.loc 1 78 9 is_stmt 1 view .LVU58
+ 226              		.loc 1 78 34 is_stmt 0 view .LVU59
+ 227 0020 0023     		movs	r3, #0
+ 228 0022 4372     		strb	r3, [r0, #9]
+ 229              	.L9:
+  72:Commponents/filter32.c ****     window_filter->Input = input;
+ 230              		.loc 1 72 1 discriminator 1 view .LVU60
+ 231 0024 0023     		movs	r3, #0
+ 232 0026 0CE0     		b	.L10
+ 233              	.LVL12:
+ 234              	.L11:
+ 235              	.LBB2:
+  79:Commponents/filter32.c **** 
+  80:Commponents/filter32.c ****     for (uint8_t i = 0; i < window_filter->WindowSize; i++)
+  81:Commponents/filter32.c ****         window_filter->Output += window_filter->WindowBuffer[i];
+ 236              		.loc 1 81 9 is_stmt 1 discriminator 3 view .LVU61
+ 237              		.loc 1 81 22 is_stmt 0 discriminator 3 view .LVU62
+ 238 0028 D0ED017A 		vldr.32	s15, [r0, #4]
+ 239              		.loc 1 81 47 discriminator 3 view .LVU63
+ 240 002c C268     		ldr	r2, [r0, #12]
+ 241              		.loc 1 81 61 discriminator 3 view .LVU64
+ 242 002e 02EB8302 		add	r2, r2, r3, lsl #2
+ 243 0032 92ED007A 		vldr.32	s14, [r2]
+ 244              		.loc 1 81 31 discriminator 3 view .LVU65
+ 245 0036 77EE877A 		vadd.f32	s15, s15, s14
+ 246 003a C0ED017A 		vstr.32	s15, [r0, #4]
+  80:Commponents/filter32.c ****         window_filter->Output += window_filter->WindowBuffer[i];
+ 247              		.loc 1 80 57 is_stmt 1 discriminator 3 view .LVU66
+ 248 003e 0133     		adds	r3, r3, #1
+ 249              	.LVL13:
+  80:Commponents/filter32.c ****         window_filter->Output += window_filter->WindowBuffer[i];
+ 250              		.loc 1 80 57 is_stmt 0 discriminator 3 view .LVU67
+ 251 0040 DBB2     		uxtb	r3, r3
+ 252              	.LVL14:
+ 253              	.L10:
+  80:Commponents/filter32.c ****         window_filter->Output += window_filter->WindowBuffer[i];
+ 254              		.loc 1 80 27 is_stmt 1 discriminator 1 view .LVU68
+ 255 0042 9942     		cmp	r1, r3
+ 256 0044 F0D8     		bhi	.L11
+ 257              	.LBE2:
+  82:Commponents/filter32.c **** 
+  83:Commponents/filter32.c ****     window_filter->Output /= window_filter->WindowSize;
+ 258              		.loc 1 83 5 view .LVU69
+ 259              		.loc 1 83 18 is_stmt 0 view .LVU70
+ 260 0046 90ED017A 		vldr.32	s14, [r0, #4]
+ 261              		.loc 1 83 27 view .LVU71
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 7
+
+
+ 262 004a 07EE901A 		vmov	s15, r1	@ int
+ 263 004e F8EEE77A 		vcvt.f32.s32	s15, s15
+ 264 0052 87EE270A 		vdiv.f32	s0, s14, s15
+ 265              	.LVL15:
+ 266              		.loc 1 83 27 view .LVU72
+ 267 0056 80ED010A 		vstr.32	s0, [r0, #4]
+  84:Commponents/filter32.c **** 
+  85:Commponents/filter32.c ****     return window_filter->Output;
+ 268              		.loc 1 85 5 is_stmt 1 view .LVU73
+  86:Commponents/filter32.c **** }
+ 269              		.loc 1 86 1 is_stmt 0 view .LVU74
+ 270 005a 7047     		bx	lr
+ 271              		.cfi_endproc
+ 272              	.LFE126:
+ 274              		.section	.text.IIR_Filter_Init,"ax",%progbits
+ 275              		.align	1
+ 276              		.global	IIR_Filter_Init
+ 277              		.syntax unified
+ 278              		.thumb
+ 279              		.thumb_func
+ 281              	IIR_Filter_Init:
+ 282              	.LVL16:
+ 283              	.LFB127:
+  87:Commponents/filter32.c **** 
+  88:Commponents/filter32.c **** /**
+  89:Commponents/filter32.c ****  * @brief          IIR滤波初始化
+  90:Commponents/filter32.c ****  * @param[in]      IIR滤波结构体
+  91:Commponents/filter32.c ****  * @param[in]      间隔的时间，单位 s
+  92:Commponents/filter32.c ****  * @param[in]      滤波系数
+  93:Commponents/filter32.c ****  * @retval         返回空
+  94:Commponents/filter32.c ****  */
+  95:Commponents/filter32.c **** void IIR_Filter_Init(IIR_Filter_t *iir_filter, float *num, float *den, uint8_t order)
+  96:Commponents/filter32.c **** {
+ 284              		.loc 1 96 1 is_stmt 1 view -0
+ 285              		.cfi_startproc
+ 286              		@ args = 0, pretend = 0, frame = 0
+ 287              		@ frame_needed = 0, uses_anonymous_args = 0
+ 288              		.loc 1 96 1 is_stmt 0 view .LVU76
+ 289 0000 2DE9F041 		push	{r4, r5, r6, r7, r8, lr}
+ 290              	.LCFI4:
+ 291              		.cfi_def_cfa_offset 24
+ 292              		.cfi_offset 4, -24
+ 293              		.cfi_offset 5, -20
+ 294              		.cfi_offset 6, -16
+ 295              		.cfi_offset 7, -12
+ 296              		.cfi_offset 8, -8
+ 297              		.cfi_offset 14, -4
+ 298 0004 0646     		mov	r6, r0
+ 299 0006 8846     		mov	r8, r1
+ 300 0008 1746     		mov	r7, r2
+  97:Commponents/filter32.c ****     iir_filter->Order = order;
+ 301              		.loc 1 97 5 is_stmt 1 view .LVU77
+ 302              		.loc 1 97 23 is_stmt 0 view .LVU78
+ 303 000a 0372     		strb	r3, [r0, #8]
+  98:Commponents/filter32.c ****     iir_filter->Num = (float *)user_malloc(sizeof(float) * order);
+ 304              		.loc 1 98 5 is_stmt 1 view .LVU79
+ 305              		.loc 1 98 32 is_stmt 0 view .LVU80
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 8
+
+
+ 306 000c 9C00     		lsls	r4, r3, #2
+ 307 000e 2046     		mov	r0, r4
+ 308              	.LVL17:
+ 309              		.loc 1 98 32 view .LVU81
+ 310 0010 FFF7FEFF 		bl	malloc
+ 311              	.LVL18:
+ 312              		.loc 1 98 32 view .LVU82
+ 313 0014 0546     		mov	r5, r0
+ 314              		.loc 1 98 21 view .LVU83
+ 315 0016 F060     		str	r0, [r6, #12]
+  99:Commponents/filter32.c ****     iir_filter->Den = (float *)user_malloc(sizeof(float) * order);
+ 316              		.loc 1 99 5 is_stmt 1 view .LVU84
+ 317              		.loc 1 99 32 is_stmt 0 view .LVU85
+ 318 0018 2046     		mov	r0, r4
+ 319 001a FFF7FEFF 		bl	malloc
+ 320              	.LVL19:
+ 321              		.loc 1 99 21 view .LVU86
+ 322 001e 3061     		str	r0, [r6, #16]
+ 100:Commponents/filter32.c ****     iir_filter->xbuf = (float *)user_malloc(sizeof(float) * order);
+ 323              		.loc 1 100 5 is_stmt 1 view .LVU87
+ 324              		.loc 1 100 33 is_stmt 0 view .LVU88
+ 325 0020 2046     		mov	r0, r4
+ 326 0022 FFF7FEFF 		bl	malloc
+ 327              	.LVL20:
+ 328              		.loc 1 100 22 view .LVU89
+ 329 0026 7061     		str	r0, [r6, #20]
+ 101:Commponents/filter32.c ****     iir_filter->ybuf = (float *)user_malloc(sizeof(float) * order);
+ 330              		.loc 1 101 5 is_stmt 1 view .LVU90
+ 331              		.loc 1 101 33 is_stmt 0 view .LVU91
+ 332 0028 2046     		mov	r0, r4
+ 333 002a FFF7FEFF 		bl	malloc
+ 334              	.LVL21:
+ 335              		.loc 1 101 22 view .LVU92
+ 336 002e B061     		str	r0, [r6, #24]
+ 102:Commponents/filter32.c ****     memcpy(iir_filter->Num, num, sizeof(float) * order);
+ 337              		.loc 1 102 5 is_stmt 1 view .LVU93
+ 338 0030 2246     		mov	r2, r4
+ 339 0032 4146     		mov	r1, r8
+ 340 0034 2846     		mov	r0, r5
+ 341 0036 FFF7FEFF 		bl	memcpy
+ 342              	.LVL22:
+ 103:Commponents/filter32.c ****     memcpy(iir_filter->Den, den, sizeof(float) * order);
+ 343              		.loc 1 103 5 view .LVU94
+ 344 003a 2246     		mov	r2, r4
+ 345 003c 3946     		mov	r1, r7
+ 346 003e 3069     		ldr	r0, [r6, #16]
+ 347 0040 FFF7FEFF 		bl	memcpy
+ 348              	.LVL23:
+ 104:Commponents/filter32.c **** }
+ 349              		.loc 1 104 1 is_stmt 0 view .LVU95
+ 350 0044 BDE8F081 		pop	{r4, r5, r6, r7, r8, pc}
+ 351              		.loc 1 104 1 view .LVU96
+ 352              		.cfi_endproc
+ 353              	.LFE127:
+ 355              		.section	.text.IIR_Filter_Calculate,"ax",%progbits
+ 356              		.align	1
+ 357              		.global	IIR_Filter_Calculate
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 9
+
+
+ 358              		.syntax unified
+ 359              		.thumb
+ 360              		.thumb_func
+ 362              	IIR_Filter_Calculate:
+ 363              	.LVL24:
+ 364              	.LFB128:
+ 105:Commponents/filter32.c **** 
+ 106:Commponents/filter32.c **** /**
+ 107:Commponents/filter32.c ****  * @brief          IIR滤波计算
+ 108:Commponents/filter32.c ****  * @param[in]      IIR滤波结构体
+ 109:Commponents/filter32.c ****  * @param[in]      测量值
+ 110:Commponents/filter32.c ****  * @retval         返回滤波输出
+ 111:Commponents/filter32.c ****  */
+ 112:Commponents/filter32.c **** float IIR_Filter_Calculate(IIR_Filter_t *iir_filter, float input)
+ 113:Commponents/filter32.c **** {
+ 365              		.loc 1 113 1 is_stmt 1 view -0
+ 366              		.cfi_startproc
+ 367              		@ args = 0, pretend = 0, frame = 0
+ 368              		@ frame_needed = 0, uses_anonymous_args = 0
+ 369              		@ link register save eliminated.
+ 114:Commponents/filter32.c ****     iir_filter->Input = input;
+ 370              		.loc 1 114 5 view .LVU98
+ 371              		.loc 1 114 23 is_stmt 0 view .LVU99
+ 372 0000 80ED000A 		vstr.32	s0, [r0]
+ 115:Commponents/filter32.c ****     for (uint8_t i = iir_filter->Order - 1; i > 0; i--)
+ 373              		.loc 1 115 5 is_stmt 1 view .LVU100
+ 374              	.LBB3:
+ 375              		.loc 1 115 10 view .LVU101
+ 376              		.loc 1 115 32 is_stmt 0 view .LVU102
+ 377 0004 037A     		ldrb	r3, [r0, #8]	@ zero_extendqisi2
+ 378              		.loc 1 115 18 view .LVU103
+ 379 0006 013B     		subs	r3, r3, #1
+ 380 0008 DBB2     		uxtb	r3, r3
+ 381              	.LVL25:
+ 382              		.loc 1 115 5 view .LVU104
+ 383 000a 14E0     		b	.L15
+ 384              	.L16:
+ 116:Commponents/filter32.c ****     {
+ 117:Commponents/filter32.c ****         iir_filter->xbuf[i] = iir_filter->xbuf[i - 1];
+ 385              		.loc 1 117 9 is_stmt 1 discriminator 3 view .LVU105
+ 386              		.loc 1 117 41 is_stmt 0 discriminator 3 view .LVU106
+ 387 000c 4269     		ldr	r2, [r0, #20]
+ 388              		.loc 1 117 47 discriminator 3 view .LVU107
+ 389 000e 03F18041 		add	r1, r3, #1073741824
+ 390 0012 0139     		subs	r1, r1, #1
+ 391              		.loc 1 117 25 discriminator 3 view .LVU108
+ 392 0014 02EB830C 		add	ip, r2, r3, lsl #2
+ 393              		.loc 1 117 47 discriminator 3 view .LVU109
+ 394 0018 02EB8102 		add	r2, r2, r1, lsl #2
+ 395 001c 1268     		ldr	r2, [r2]	@ float
+ 396              		.loc 1 117 29 discriminator 3 view .LVU110
+ 397 001e CCF80020 		str	r2, [ip]	@ float
+ 118:Commponents/filter32.c ****         iir_filter->ybuf[i] = iir_filter->ybuf[i - 1];
+ 398              		.loc 1 118 9 is_stmt 1 discriminator 3 view .LVU111
+ 399              		.loc 1 118 41 is_stmt 0 discriminator 3 view .LVU112
+ 400 0022 8269     		ldr	r2, [r0, #24]
+ 401              		.loc 1 118 25 discriminator 3 view .LVU113
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 10
+
+
+ 402 0024 02EB830C 		add	ip, r2, r3, lsl #2
+ 403              		.loc 1 118 47 discriminator 3 view .LVU114
+ 404 0028 02EB8102 		add	r2, r2, r1, lsl #2
+ 405 002c 1268     		ldr	r2, [r2]	@ float
+ 406              		.loc 1 118 29 discriminator 3 view .LVU115
+ 407 002e CCF80020 		str	r2, [ip]	@ float
+ 115:Commponents/filter32.c ****     for (uint8_t i = iir_filter->Order - 1; i > 0; i--)
+ 408              		.loc 1 115 53 is_stmt 1 discriminator 3 view .LVU116
+ 409 0032 013B     		subs	r3, r3, #1
+ 410              	.LVL26:
+ 115:Commponents/filter32.c ****     for (uint8_t i = iir_filter->Order - 1; i > 0; i--)
+ 411              		.loc 1 115 53 is_stmt 0 discriminator 3 view .LVU117
+ 412 0034 DBB2     		uxtb	r3, r3
+ 413              	.LVL27:
+ 414              	.L15:
+ 115:Commponents/filter32.c ****     for (uint8_t i = iir_filter->Order - 1; i > 0; i--)
+ 415              		.loc 1 115 47 is_stmt 1 discriminator 1 view .LVU118
+ 416 0036 002B     		cmp	r3, #0
+ 417 0038 E8D1     		bne	.L16
+ 115:Commponents/filter32.c ****     for (uint8_t i = iir_filter->Order - 1; i > 0; i--)
+ 418              		.loc 1 115 47 is_stmt 0 discriminator 1 view .LVU119
+ 419              	.LBE3:
+ 119:Commponents/filter32.c ****     }
+ 120:Commponents/filter32.c ****     iir_filter->xbuf[0] = input;
+ 420              		.loc 1 120 5 is_stmt 1 view .LVU120
+ 421              		.loc 1 120 15 is_stmt 0 view .LVU121
+ 422 003a 4369     		ldr	r3, [r0, #20]
+ 423              	.LVL28:
+ 424              		.loc 1 120 25 view .LVU122
+ 425 003c 83ED000A 		vstr.32	s0, [r3]
+ 121:Commponents/filter32.c ****     iir_filter->ybuf[0] = iir_filter->Num[0] * iir_filter->xbuf[0];
+ 426              		.loc 1 121 5 is_stmt 1 view .LVU123
+ 427              		.loc 1 121 37 is_stmt 0 view .LVU124
+ 428 0040 C368     		ldr	r3, [r0, #12]
+ 429              		.loc 1 121 42 view .LVU125
+ 430 0042 D3ED007A 		vldr.32	s15, [r3]
+ 431              		.loc 1 121 58 view .LVU126
+ 432 0046 4369     		ldr	r3, [r0, #20]
+ 433              		.loc 1 121 64 view .LVU127
+ 434 0048 93ED007A 		vldr.32	s14, [r3]
+ 435              		.loc 1 121 15 view .LVU128
+ 436 004c 8369     		ldr	r3, [r0, #24]
+ 437              		.loc 1 121 46 view .LVU129
+ 438 004e 67EE877A 		vmul.f32	s15, s15, s14
+ 439              		.loc 1 121 25 view .LVU130
+ 440 0052 C3ED007A 		vstr.32	s15, [r3]
+ 122:Commponents/filter32.c ****     for (uint8_t i = 1; i < iir_filter->Order; i++)
+ 441              		.loc 1 122 5 is_stmt 1 view .LVU131
+ 442              	.LBB4:
+ 443              		.loc 1 122 10 view .LVU132
+ 444              	.LVL29:
+ 445              		.loc 1 122 18 is_stmt 0 view .LVU133
+ 446 0056 0123     		movs	r3, #1
+ 447              		.loc 1 122 5 view .LVU134
+ 448 0058 21E0     		b	.L17
+ 449              	.LVL30:
+ 450              	.L18:
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 11
+
+
+ 123:Commponents/filter32.c ****     {
+ 124:Commponents/filter32.c ****         iir_filter->ybuf[0] += iir_filter->Num[i] * iir_filter->xbuf[i] - iir_filter->Den[i] * iir_
+ 451              		.loc 1 124 9 is_stmt 1 discriminator 3 view .LVU135
+ 452              		.loc 1 124 19 is_stmt 0 discriminator 3 view .LVU136
+ 453 005a 8269     		ldr	r2, [r0, #24]
+ 454              		.loc 1 124 25 discriminator 3 view .LVU137
+ 455 005c 92ED007A 		vldr.32	s14, [r2]
+ 456              		.loc 1 124 42 discriminator 3 view .LVU138
+ 457 0060 C168     		ldr	r1, [r0, #12]
+ 458              		.loc 1 124 47 discriminator 3 view .LVU139
+ 459 0062 01EB8301 		add	r1, r1, r3, lsl #2
+ 460 0066 D1ED007A 		vldr.32	s15, [r1]
+ 461              		.loc 1 124 63 discriminator 3 view .LVU140
+ 462 006a 4169     		ldr	r1, [r0, #20]
+ 463              		.loc 1 124 69 discriminator 3 view .LVU141
+ 464 006c 01EB8301 		add	r1, r1, r3, lsl #2
+ 465 0070 D1ED006A 		vldr.32	s13, [r1]
+ 466              		.loc 1 124 51 discriminator 3 view .LVU142
+ 467 0074 67EEA67A 		vmul.f32	s15, s15, s13
+ 468              		.loc 1 124 85 discriminator 3 view .LVU143
+ 469 0078 0169     		ldr	r1, [r0, #16]
+ 470              		.loc 1 124 90 discriminator 3 view .LVU144
+ 471 007a 01EB8301 		add	r1, r1, r3, lsl #2
+ 472 007e D1ED006A 		vldr.32	s13, [r1]
+ 473              		.loc 1 124 112 discriminator 3 view .LVU145
+ 474 0082 02EB8301 		add	r1, r2, r3, lsl #2
+ 475 0086 91ED006A 		vldr.32	s12, [r1]
+ 476              		.loc 1 124 94 discriminator 3 view .LVU146
+ 477 008a 66EE866A 		vmul.f32	s13, s13, s12
+ 478              		.loc 1 124 73 discriminator 3 view .LVU147
+ 479 008e 77EEE67A 		vsub.f32	s15, s15, s13
+ 480              		.loc 1 124 29 discriminator 3 view .LVU148
+ 481 0092 77EE277A 		vadd.f32	s15, s14, s15
+ 482 0096 C2ED007A 		vstr.32	s15, [r2]
+ 122:Commponents/filter32.c ****     for (uint8_t i = 1; i < iir_filter->Order; i++)
+ 483              		.loc 1 122 49 is_stmt 1 discriminator 3 view .LVU149
+ 484 009a 0133     		adds	r3, r3, #1
+ 485              	.LVL31:
+ 122:Commponents/filter32.c ****     for (uint8_t i = 1; i < iir_filter->Order; i++)
+ 486              		.loc 1 122 49 is_stmt 0 discriminator 3 view .LVU150
+ 487 009c DBB2     		uxtb	r3, r3
+ 488              	.LVL32:
+ 489              	.L17:
+ 122:Commponents/filter32.c ****     for (uint8_t i = 1; i < iir_filter->Order; i++)
+ 490              		.loc 1 122 27 is_stmt 1 discriminator 1 view .LVU151
+ 122:Commponents/filter32.c ****     for (uint8_t i = 1; i < iir_filter->Order; i++)
+ 491              		.loc 1 122 39 is_stmt 0 discriminator 1 view .LVU152
+ 492 009e 027A     		ldrb	r2, [r0, #8]	@ zero_extendqisi2
+ 122:Commponents/filter32.c ****     for (uint8_t i = 1; i < iir_filter->Order; i++)
+ 493              		.loc 1 122 27 discriminator 1 view .LVU153
+ 494 00a0 9A42     		cmp	r2, r3
+ 495 00a2 DAD8     		bhi	.L18
+ 496              	.LBE4:
+ 125:Commponents/filter32.c ****     }
+ 126:Commponents/filter32.c ****     iir_filter->Output = iir_filter->ybuf[0];
+ 497              		.loc 1 126 5 is_stmt 1 view .LVU154
+ 498              		.loc 1 126 36 is_stmt 0 view .LVU155
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 12
+
+
+ 499 00a4 8369     		ldr	r3, [r0, #24]
+ 500              	.LVL33:
+ 501              		.loc 1 126 42 view .LVU156
+ 502 00a6 93ED000A 		vldr.32	s0, [r3]
+ 503              	.LVL34:
+ 504              		.loc 1 126 24 view .LVU157
+ 505 00aa 80ED010A 		vstr.32	s0, [r0, #4]
+ 127:Commponents/filter32.c ****     return iir_filter->Output;
+ 506              		.loc 1 127 5 is_stmt 1 view .LVU158
+ 128:Commponents/filter32.c **** }
+ 507              		.loc 1 128 1 is_stmt 0 view .LVU159
+ 508 00ae 7047     		bx	lr
+ 509              		.cfi_endproc
+ 510              	.LFE128:
+ 512              		.text
+ 513              	.Letext0:
+ 514              		.file 2 "e:\\programfile\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 515              		.file 3 "e:\\programfile\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 516              		.file 4 "e:\\programfile\\msys2\\mingw64\\lib\\gcc\\arm-none-eabi\\12.2.0\\include\\stddef.h"
+ 517              		.file 5 "Commponents/filter32.h"
+ 518              		.file 6 "e:\\programfile\\msys2\\mingw64\\arm-none-eabi\\include\\string.h"
+ 519              		.file 7 "e:\\programfile\\msys2\\mingw64\\arm-none-eabi\\include\\stdlib.h"
+ 520              		.file 8 "Commponents/user_lib.h"
+ 521              		.file 9 "<built-in>"
+ARM GAS  C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s 			page 13
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 filter32.c
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:21     .text.First_Order_Filter_Init:00000000 $t
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:27     .text.First_Order_Filter_Init:00000000 First_Order_Filter_Init
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:90     .text.First_Order_Filter_Init:00000048 $d
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:96     .text.First_Order_Filter_Calculate:00000000 $t
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:102    .text.First_Order_Filter_Calculate:00000000 First_Order_Filter_Calculate
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:133    .text.Window_Filter_Init:00000000 $t
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:139    .text.Window_Filter_Init:00000000 Window_Filter_Init
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:184    .text.Window_Filter_Calculate:00000000 $t
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:190    .text.Window_Filter_Calculate:00000000 Window_Filter_Calculate
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:275    .text.IIR_Filter_Init:00000000 $t
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:281    .text.IIR_Filter_Init:00000000 IIR_Filter_Init
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:356    .text.IIR_Filter_Calculate:00000000 $t
+C:\Users\SHUCHE~1\AppData\Local\Temp\cc8Yw1Hg.s:362    .text.IIR_Filter_Calculate:00000000 IIR_Filter_Calculate
+
+UNDEFINED SYMBOLS
+float_constrain
+malloc
+memset
+memcpy

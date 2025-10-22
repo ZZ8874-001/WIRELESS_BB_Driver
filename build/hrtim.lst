@@ -1,0 +1,1439 @@
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 1
+
+
+   1              		.cpu cortex-m4
+   2              		.arch armv7e-m
+   3              		.fpu fpv4-sp-d16
+   4              		.eabi_attribute 27, 1
+   5              		.eabi_attribute 28, 1
+   6              		.eabi_attribute 20, 1
+   7              		.eabi_attribute 21, 1
+   8              		.eabi_attribute 23, 3
+   9              		.eabi_attribute 24, 1
+  10              		.eabi_attribute 25, 1
+  11              		.eabi_attribute 26, 1
+  12              		.eabi_attribute 30, 1
+  13              		.eabi_attribute 34, 1
+  14              		.eabi_attribute 18, 4
+  15              		.file	"hrtim.c"
+  16              		.text
+  17              	.Ltext0:
+  18              		.cfi_sections	.debug_frame
+  19              		.file 1 "Core/Src/hrtim.c"
+  20              		.section	.text.HAL_HRTIM_MspInit,"ax",%progbits
+  21              		.align	1
+  22              		.global	HAL_HRTIM_MspInit
+  23              		.syntax unified
+  24              		.thumb
+  25              		.thumb_func
+  27              	HAL_HRTIM_MspInit:
+  28              	.LVL0:
+  29              	.LFB124:
+   1:Core/Src/hrtim.c **** /* USER CODE BEGIN Header */
+   2:Core/Src/hrtim.c **** /**
+   3:Core/Src/hrtim.c ****   ******************************************************************************
+   4:Core/Src/hrtim.c ****   * @file    hrtim.c
+   5:Core/Src/hrtim.c ****   * @brief   This file provides code for the configuration
+   6:Core/Src/hrtim.c ****   *          of the HRTIM instances.
+   7:Core/Src/hrtim.c ****   ******************************************************************************
+   8:Core/Src/hrtim.c ****   * @attention
+   9:Core/Src/hrtim.c ****   *
+  10:Core/Src/hrtim.c ****   * Copyright (c) 2025 STMicroelectronics.
+  11:Core/Src/hrtim.c ****   * All rights reserved.
+  12:Core/Src/hrtim.c ****   *
+  13:Core/Src/hrtim.c ****   * This software is licensed under terms that can be found in the LICENSE file
+  14:Core/Src/hrtim.c ****   * in the root directory of this software component.
+  15:Core/Src/hrtim.c ****   * If no LICENSE file comes with this software, it is provided AS-IS.
+  16:Core/Src/hrtim.c ****   *
+  17:Core/Src/hrtim.c ****   ******************************************************************************
+  18:Core/Src/hrtim.c ****   */
+  19:Core/Src/hrtim.c **** /* USER CODE END Header */
+  20:Core/Src/hrtim.c **** /* Includes ------------------------------------------------------------------*/
+  21:Core/Src/hrtim.c **** #include "hrtim.h"
+  22:Core/Src/hrtim.c **** 
+  23:Core/Src/hrtim.c **** /* USER CODE BEGIN 0 */
+  24:Core/Src/hrtim.c **** 
+  25:Core/Src/hrtim.c **** /* USER CODE END 0 */
+  26:Core/Src/hrtim.c **** 
+  27:Core/Src/hrtim.c **** HRTIM_HandleTypeDef hhrtim1;
+  28:Core/Src/hrtim.c **** 
+  29:Core/Src/hrtim.c **** /* HRTIM1 init function */
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 2
+
+
+  30:Core/Src/hrtim.c **** void MX_HRTIM1_Init(void)
+  31:Core/Src/hrtim.c **** {
+  32:Core/Src/hrtim.c **** 
+  33:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_Init 0 */
+  34:Core/Src/hrtim.c **** 
+  35:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_Init 0 */
+  36:Core/Src/hrtim.c **** 
+  37:Core/Src/hrtim.c ****   HRTIM_TimeBaseCfgTypeDef pTimeBaseCfg = {0};
+  38:Core/Src/hrtim.c ****   HRTIM_TimerCfgTypeDef pTimerCfg = {0};
+  39:Core/Src/hrtim.c ****   HRTIM_CompareCfgTypeDef pCompareCfg = {0};
+  40:Core/Src/hrtim.c ****   HRTIM_DeadTimeCfgTypeDef pDeadTimeCfg = {0};
+  41:Core/Src/hrtim.c ****   HRTIM_OutputCfgTypeDef pOutputCfg = {0};
+  42:Core/Src/hrtim.c **** 
+  43:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_Init 1 */
+  44:Core/Src/hrtim.c **** 
+  45:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_Init 1 */
+  46:Core/Src/hrtim.c ****   hhrtim1.Instance = HRTIM1;
+  47:Core/Src/hrtim.c ****   hhrtim1.Init.HRTIMInterruptResquests = HRTIM_IT_NONE;
+  48:Core/Src/hrtim.c ****   hhrtim1.Init.SyncOptions = HRTIM_SYNCOPTION_NONE;
+  49:Core/Src/hrtim.c ****   if (HAL_HRTIM_Init(&hhrtim1) != HAL_OK)
+  50:Core/Src/hrtim.c ****   {
+  51:Core/Src/hrtim.c ****     Error_Handler();
+  52:Core/Src/hrtim.c ****   }
+  53:Core/Src/hrtim.c ****   if (HAL_HRTIM_DLLCalibrationStart(&hhrtim1, HRTIM_CALIBRATIONRATE_14) != HAL_OK)
+  54:Core/Src/hrtim.c ****   {
+  55:Core/Src/hrtim.c ****     Error_Handler();
+  56:Core/Src/hrtim.c ****   }
+  57:Core/Src/hrtim.c ****   if (HAL_HRTIM_PollForDLLCalibration(&hhrtim1, 10) != HAL_OK)
+  58:Core/Src/hrtim.c ****   {
+  59:Core/Src/hrtim.c ****     Error_Handler();
+  60:Core/Src/hrtim.c ****   }
+  61:Core/Src/hrtim.c ****   pTimeBaseCfg.Period = Hrtim_Period;
+  62:Core/Src/hrtim.c ****   pTimeBaseCfg.RepetitionCounter = 0x00;
+  63:Core/Src/hrtim.c ****   pTimeBaseCfg.PrescalerRatio = HRTIM_PRESCALERRATIO_MUL32;
+  64:Core/Src/hrtim.c ****   pTimeBaseCfg.Mode = HRTIM_MODE_CONTINUOUS;
+  65:Core/Src/hrtim.c ****   if (HAL_HRTIM_TimeBaseConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, &pTimeBaseCfg) != HAL_OK)
+  66:Core/Src/hrtim.c ****   {
+  67:Core/Src/hrtim.c ****     Error_Handler();
+  68:Core/Src/hrtim.c ****   }
+  69:Core/Src/hrtim.c ****   pTimerCfg.InterruptRequests = HRTIM_MASTER_IT_MUPD;
+  70:Core/Src/hrtim.c ****   pTimerCfg.DMARequests = HRTIM_MASTER_DMA_NONE;
+  71:Core/Src/hrtim.c ****   pTimerCfg.DMASrcAddress = 0x0000;
+  72:Core/Src/hrtim.c ****   pTimerCfg.DMADstAddress = 0x0000;
+  73:Core/Src/hrtim.c ****   pTimerCfg.DMASize = 0x1;
+  74:Core/Src/hrtim.c ****   pTimerCfg.HalfModeEnable = HRTIM_HALFMODE_DISABLED;
+  75:Core/Src/hrtim.c ****   pTimerCfg.StartOnSync = HRTIM_SYNCSTART_DISABLED;
+  76:Core/Src/hrtim.c ****   pTimerCfg.ResetOnSync = HRTIM_SYNCRESET_DISABLED;
+  77:Core/Src/hrtim.c ****   pTimerCfg.DACSynchro = HRTIM_DACSYNC_NONE;
+  78:Core/Src/hrtim.c ****   pTimerCfg.PreloadEnable = HRTIM_PRELOAD_ENABLED;
+  79:Core/Src/hrtim.c ****   pTimerCfg.UpdateGating = HRTIM_UPDATEGATING_INDEPENDENT;
+  80:Core/Src/hrtim.c ****   pTimerCfg.BurstMode = HRTIM_TIMERBURSTMODE_RESETCOUNTER;
+  81:Core/Src/hrtim.c ****   pTimerCfg.RepetitionUpdate = HRTIM_UPDATEONREPETITION_ENABLED;
+  82:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, &pTimerCfg) != HAL_OK)
+  83:Core/Src/hrtim.c ****   {
+  84:Core/Src/hrtim.c ****     Error_Handler();
+  85:Core/Src/hrtim.c ****   }
+  86:Core/Src/hrtim.c ****   pCompareCfg.CompareValue = (Hrtim_Period - Hrtim_Period/2)/2;
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 3
+
+
+  87:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_1, &pCom
+  88:Core/Src/hrtim.c ****   {
+  89:Core/Src/hrtim.c ****     Error_Handler();
+  90:Core/Src/hrtim.c ****   }
+  91:Core/Src/hrtim.c ****   pCompareCfg.CompareValue = (Hrtim_Period + Hrtim_Period/2)/2;
+  92:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_2, &pCom
+  93:Core/Src/hrtim.c ****   {
+  94:Core/Src/hrtim.c ****     Error_Handler();
+  95:Core/Src/hrtim.c ****   }
+  96:Core/Src/hrtim.c ****   pCompareCfg.CompareValue = (Hrtim_Period + Hrtim_Period/2 )/2;
+  97:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_3, &pCom
+  98:Core/Src/hrtim.c ****   {
+  99:Core/Src/hrtim.c ****     Error_Handler();
+ 100:Core/Src/hrtim.c ****   }
+ 101:Core/Src/hrtim.c ****   pCompareCfg.CompareValue = (Hrtim_Period - Hrtim_Period/2 )/2;
+ 102:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_4, &pCom
+ 103:Core/Src/hrtim.c ****   {
+ 104:Core/Src/hrtim.c ****     Error_Handler();
+ 105:Core/Src/hrtim.c ****   }
+ 106:Core/Src/hrtim.c ****   if (HAL_HRTIM_TimeBaseConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pTimeBaseCfg) != HAL_OK)
+ 107:Core/Src/hrtim.c ****   {
+ 108:Core/Src/hrtim.c ****     Error_Handler();
+ 109:Core/Src/hrtim.c ****   }
+ 110:Core/Src/hrtim.c ****   pTimerCfg.InterruptRequests = HRTIM_TIM_IT_NONE;
+ 111:Core/Src/hrtim.c ****   pTimerCfg.DMARequests = HRTIM_TIM_DMA_NONE;
+ 112:Core/Src/hrtim.c ****   pTimerCfg.PushPull = HRTIM_TIMPUSHPULLMODE_DISABLED;
+ 113:Core/Src/hrtim.c ****   pTimerCfg.FaultEnable = HRTIM_TIMFAULTENABLE_NONE;
+ 114:Core/Src/hrtim.c ****   pTimerCfg.FaultLock = HRTIM_TIMFAULTLOCK_READWRITE;
+ 115:Core/Src/hrtim.c ****   pTimerCfg.DeadTimeInsertion = HRTIM_TIMDEADTIMEINSERTION_ENABLED;
+ 116:Core/Src/hrtim.c ****   pTimerCfg.DelayedProtectionMode = HRTIM_TIMER_A_B_C_DELAYEDPROTECTION_DISABLED;
+ 117:Core/Src/hrtim.c ****   pTimerCfg.UpdateTrigger = HRTIM_TIMUPDATETRIGGER_NONE;
+ 118:Core/Src/hrtim.c ****   pTimerCfg.ResetTrigger = HRTIM_TIMRESETTRIGGER_MASTER_PER;
+ 119:Core/Src/hrtim.c ****   pTimerCfg.ResetUpdate = HRTIM_TIMUPDATEONRESET_DISABLED;
+ 120:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pTimerCfg) != HAL_OK)
+ 121:Core/Src/hrtim.c ****   {
+ 122:Core/Src/hrtim.c ****     Error_Handler();
+ 123:Core/Src/hrtim.c ****   }
+ 124:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, &pTimerCfg) != HAL_OK)
+ 125:Core/Src/hrtim.c ****   {
+ 126:Core/Src/hrtim.c ****     Error_Handler();
+ 127:Core/Src/hrtim.c ****   }
+ 128:Core/Src/hrtim.c ****   pCompareCfg.CompareValue = 96;
+ 129:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_COMPAREUNIT_1, &pCo
+ 130:Core/Src/hrtim.c ****   {
+ 131:Core/Src/hrtim.c ****     Error_Handler();
+ 132:Core/Src/hrtim.c ****   }
+ 133:Core/Src/hrtim.c ****   pDeadTimeCfg.Prescaler = HRTIM_TIMDEADTIME_PRESCALERRATIO_DIV1;
+ 134:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingValue = 9.5938f*deadtime;
+ 135:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSign = HRTIM_TIMDEADTIME_RISINGSIGN_POSITIVE;
+ 136:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingLock = HRTIM_TIMDEADTIME_RISINGLOCK_READONLY;
+ 137:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSignLock = HRTIM_TIMDEADTIME_RISINGSIGNLOCK_READONLY;
+ 138:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingValue = 9.5938f*deadtime;
+ 139:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSign = HRTIM_TIMDEADTIME_FALLINGSIGN_POSITIVE;
+ 140:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingLock = HRTIM_TIMDEADTIME_FALLINGLOCK_READONLY;
+ 141:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSignLock = HRTIM_TIMDEADTIME_FALLINGSIGNLOCK_READONLY;
+ 142:Core/Src/hrtim.c ****   if (HAL_HRTIM_DeadTimeConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pDeadTimeCfg) != HAL_OK)
+ 143:Core/Src/hrtim.c ****   {
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 4
+
+
+ 144:Core/Src/hrtim.c ****     Error_Handler();
+ 145:Core/Src/hrtim.c ****   }
+ 146:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingValue = 959.375f*deadtime;
+ 147:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingLock = HRTIM_TIMDEADTIME_RISINGLOCK_WRITE;
+ 148:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSignLock = HRTIM_TIMDEADTIME_RISINGSIGNLOCK_WRITE;
+ 149:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingValue = 959.375f*deadtime;
+ 150:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingLock = HRTIM_TIMDEADTIME_FALLINGLOCK_WRITE;
+ 151:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSignLock = HRTIM_TIMDEADTIME_FALLINGSIGNLOCK_WRITE;
+ 152:Core/Src/hrtim.c ****   if (HAL_HRTIM_DeadTimeConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, &pDeadTimeCfg) != HAL_OK)
+ 153:Core/Src/hrtim.c ****   {
+ 154:Core/Src/hrtim.c ****     Error_Handler();
+ 155:Core/Src/hrtim.c ****   }
+ 156:Core/Src/hrtim.c ****   pOutputCfg.Polarity = HRTIM_OUTPUTPOLARITY_HIGH;
+ 157:Core/Src/hrtim.c ****   pOutputCfg.SetSource = HRTIM_OUTPUTSET_MASTERCMP1;
+ 158:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_MASTERCMP2;
+ 159:Core/Src/hrtim.c ****   pOutputCfg.IdleMode = HRTIM_OUTPUTIDLEMODE_NONE;
+ 160:Core/Src/hrtim.c ****   pOutputCfg.IdleLevel = HRTIM_OUTPUTIDLELEVEL_INACTIVE;
+ 161:Core/Src/hrtim.c ****   pOutputCfg.FaultLevel = HRTIM_OUTPUTFAULTLEVEL_NONE;
+ 162:Core/Src/hrtim.c ****   pOutputCfg.ChopperModeEnable = HRTIM_OUTPUTCHOPPERMODE_DISABLED;
+ 163:Core/Src/hrtim.c ****   pOutputCfg.BurstModeEntryDelayed = HRTIM_OUTPUTBURSTMODEENTRY_REGULAR;
+ 164:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA1, &pOutput
+ 165:Core/Src/hrtim.c ****   {
+ 166:Core/Src/hrtim.c ****     Error_Handler();
+ 167:Core/Src/hrtim.c ****   }
+ 168:Core/Src/hrtim.c ****   pOutputCfg.SetSource = HRTIM_OUTPUTSET_MASTERCMP3;
+ 169:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_MASTERCMP4;
+ 170:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, HRTIM_OUTPUT_TB1, &pOutput
+ 171:Core/Src/hrtim.c ****   {
+ 172:Core/Src/hrtim.c ****     Error_Handler();
+ 173:Core/Src/hrtim.c ****   }
+ 174:Core/Src/hrtim.c ****   pOutputCfg.SetSource = HRTIM_OUTPUTSET_NONE;
+ 175:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_NONE;
+ 176:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA2, &pOutput
+ 177:Core/Src/hrtim.c ****   {
+ 178:Core/Src/hrtim.c ****     Error_Handler();
+ 179:Core/Src/hrtim.c ****   }
+ 180:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, HRTIM_OUTPUT_TB2, &pOutput
+ 181:Core/Src/hrtim.c ****   {
+ 182:Core/Src/hrtim.c ****     Error_Handler();
+ 183:Core/Src/hrtim.c ****   }
+ 184:Core/Src/hrtim.c ****   if (HAL_HRTIM_TimeBaseConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, &pTimeBaseCfg) != HAL_OK)
+ 185:Core/Src/hrtim.c ****   {
+ 186:Core/Src/hrtim.c ****     Error_Handler();
+ 187:Core/Src/hrtim.c ****   }
+ 188:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_Init 2 */
+ 189:Core/Src/hrtim.c **** 
+ 190:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_Init 2 */
+ 191:Core/Src/hrtim.c ****   HAL_HRTIM_MspPostInit(&hhrtim1);
+ 192:Core/Src/hrtim.c **** 
+ 193:Core/Src/hrtim.c **** }
+ 194:Core/Src/hrtim.c **** 
+ 195:Core/Src/hrtim.c **** void HAL_HRTIM_MspInit(HRTIM_HandleTypeDef* hrtimHandle)
+ 196:Core/Src/hrtim.c **** {
+  30              		.loc 1 196 1 view -0
+  31              		.cfi_startproc
+  32              		@ args = 0, pretend = 0, frame = 8
+  33              		@ frame_needed = 0, uses_anonymous_args = 0
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 5
+
+
+  34              		@ link register save eliminated.
+ 197:Core/Src/hrtim.c **** 
+ 198:Core/Src/hrtim.c ****   if(hrtimHandle->Instance==HRTIM1)
+  35              		.loc 1 198 3 view .LVU1
+  36              		.loc 1 198 17 is_stmt 0 view .LVU2
+  37 0000 0268     		ldr	r2, [r0]
+  38              		.loc 1 198 5 view .LVU3
+  39 0002 094B     		ldr	r3, .L8
+  40 0004 9A42     		cmp	r2, r3
+  41 0006 00D0     		beq	.L7
+  42 0008 7047     		bx	lr
+  43              	.L7:
+ 196:Core/Src/hrtim.c **** 
+  44              		.loc 1 196 1 view .LVU4
+  45 000a 82B0     		sub	sp, sp, #8
+  46              	.LCFI0:
+  47              		.cfi_def_cfa_offset 8
+ 199:Core/Src/hrtim.c ****   {
+ 200:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspInit 0 */
+ 201:Core/Src/hrtim.c **** 
+ 202:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_MspInit 0 */
+ 203:Core/Src/hrtim.c ****     /* HRTIM1 clock enable */
+ 204:Core/Src/hrtim.c ****     __HAL_RCC_HRTIM1_CLK_ENABLE();
+  48              		.loc 1 204 5 is_stmt 1 view .LVU5
+  49              	.LBB2:
+  50              		.loc 1 204 5 view .LVU6
+  51              		.loc 1 204 5 view .LVU7
+  52 000c 03F51C43 		add	r3, r3, #39936
+  53 0010 9A69     		ldr	r2, [r3, #24]
+  54 0012 42F00052 		orr	r2, r2, #536870912
+  55 0016 9A61     		str	r2, [r3, #24]
+  56              		.loc 1 204 5 view .LVU8
+  57 0018 9B69     		ldr	r3, [r3, #24]
+  58 001a 03F00053 		and	r3, r3, #536870912
+  59 001e 0193     		str	r3, [sp, #4]
+  60              		.loc 1 204 5 view .LVU9
+  61 0020 019B     		ldr	r3, [sp, #4]
+  62              	.LBE2:
+  63              		.loc 1 204 5 view .LVU10
+ 205:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspInit 1 */
+ 206:Core/Src/hrtim.c **** 
+ 207:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_MspInit 1 */
+ 208:Core/Src/hrtim.c ****   }
+ 209:Core/Src/hrtim.c **** }
+  64              		.loc 1 209 1 is_stmt 0 view .LVU11
+  65 0022 02B0     		add	sp, sp, #8
+  66              	.LCFI1:
+  67              		.cfi_def_cfa_offset 0
+  68              		@ sp needed
+  69 0024 7047     		bx	lr
+  70              	.L9:
+  71 0026 00BF     		.align	2
+  72              	.L8:
+  73 0028 00740140 		.word	1073837056
+  74              		.cfi_endproc
+  75              	.LFE124:
+  77              		.section	.text.HAL_HRTIM_MspPostInit,"ax",%progbits
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 6
+
+
+  78              		.align	1
+  79              		.global	HAL_HRTIM_MspPostInit
+  80              		.syntax unified
+  81              		.thumb
+  82              		.thumb_func
+  84              	HAL_HRTIM_MspPostInit:
+  85              	.LVL1:
+  86              	.LFB125:
+ 210:Core/Src/hrtim.c **** 
+ 211:Core/Src/hrtim.c **** void HAL_HRTIM_MspPostInit(HRTIM_HandleTypeDef* hrtimHandle)
+ 212:Core/Src/hrtim.c **** {
+  87              		.loc 1 212 1 is_stmt 1 view -0
+  88              		.cfi_startproc
+  89              		@ args = 0, pretend = 0, frame = 24
+  90              		@ frame_needed = 0, uses_anonymous_args = 0
+  91              		.loc 1 212 1 is_stmt 0 view .LVU13
+  92 0000 00B5     		push	{lr}
+  93              	.LCFI2:
+  94              		.cfi_def_cfa_offset 4
+  95              		.cfi_offset 14, -4
+  96 0002 87B0     		sub	sp, sp, #28
+  97              	.LCFI3:
+  98              		.cfi_def_cfa_offset 32
+ 213:Core/Src/hrtim.c **** 
+ 214:Core/Src/hrtim.c ****   GPIO_InitTypeDef GPIO_InitStruct = {0};
+  99              		.loc 1 214 3 is_stmt 1 view .LVU14
+ 100              		.loc 1 214 20 is_stmt 0 view .LVU15
+ 101 0004 0023     		movs	r3, #0
+ 102 0006 0193     		str	r3, [sp, #4]
+ 103 0008 0293     		str	r3, [sp, #8]
+ 104 000a 0393     		str	r3, [sp, #12]
+ 105 000c 0493     		str	r3, [sp, #16]
+ 106 000e 0593     		str	r3, [sp, #20]
+ 215:Core/Src/hrtim.c ****   if(hrtimHandle->Instance==HRTIM1)
+ 107              		.loc 1 215 3 is_stmt 1 view .LVU16
+ 108              		.loc 1 215 17 is_stmt 0 view .LVU17
+ 109 0010 0268     		ldr	r2, [r0]
+ 110              		.loc 1 215 5 view .LVU18
+ 111 0012 104B     		ldr	r3, .L14
+ 112 0014 9A42     		cmp	r2, r3
+ 113 0016 02D0     		beq	.L13
+ 114              	.LVL2:
+ 115              	.L10:
+ 216:Core/Src/hrtim.c ****   {
+ 217:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspPostInit 0 */
+ 218:Core/Src/hrtim.c **** 
+ 219:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_MspPostInit 0 */
+ 220:Core/Src/hrtim.c **** 
+ 221:Core/Src/hrtim.c ****     __HAL_RCC_GPIOA_CLK_ENABLE();
+ 222:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 223:Core/Src/hrtim.c ****     PA8     ------> HRTIM1_CHA1
+ 224:Core/Src/hrtim.c ****     PA9     ------> HRTIM1_CHA2
+ 225:Core/Src/hrtim.c ****     PA10     ------> HRTIM1_CHB1
+ 226:Core/Src/hrtim.c ****     PA11     ------> HRTIM1_CHB2
+ 227:Core/Src/hrtim.c ****     */
+ 228:Core/Src/hrtim.c ****     GPIO_InitStruct.Pin = GPIO_PIN_8|GPIO_PIN_9|GPIO_PIN_10|GPIO_PIN_11;
+ 229:Core/Src/hrtim.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 7
+
+
+ 230:Core/Src/hrtim.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 231:Core/Src/hrtim.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+ 232:Core/Src/hrtim.c ****     GPIO_InitStruct.Alternate = GPIO_AF13_HRTIM1;
+ 233:Core/Src/hrtim.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 234:Core/Src/hrtim.c **** 
+ 235:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspPostInit 1 */
+ 236:Core/Src/hrtim.c **** 
+ 237:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_MspPostInit 1 */
+ 238:Core/Src/hrtim.c ****   }
+ 239:Core/Src/hrtim.c **** 
+ 240:Core/Src/hrtim.c **** }
+ 116              		.loc 1 240 1 view .LVU19
+ 117 0018 07B0     		add	sp, sp, #28
+ 118              	.LCFI4:
+ 119              		.cfi_remember_state
+ 120              		.cfi_def_cfa_offset 4
+ 121              		@ sp needed
+ 122 001a 5DF804FB 		ldr	pc, [sp], #4
+ 123              	.LVL3:
+ 124              	.L13:
+ 125              	.LCFI5:
+ 126              		.cfi_restore_state
+ 221:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 127              		.loc 1 221 5 is_stmt 1 view .LVU20
+ 128              	.LBB3:
+ 221:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 129              		.loc 1 221 5 view .LVU21
+ 221:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 130              		.loc 1 221 5 view .LVU22
+ 131 001e 03F51C43 		add	r3, r3, #39936
+ 132 0022 5A69     		ldr	r2, [r3, #20]
+ 133 0024 42F40032 		orr	r2, r2, #131072
+ 134 0028 5A61     		str	r2, [r3, #20]
+ 221:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 135              		.loc 1 221 5 view .LVU23
+ 136 002a 5B69     		ldr	r3, [r3, #20]
+ 137 002c 03F40033 		and	r3, r3, #131072
+ 138 0030 0093     		str	r3, [sp]
+ 221:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 139              		.loc 1 221 5 view .LVU24
+ 140 0032 009B     		ldr	r3, [sp]
+ 141              	.LBE3:
+ 221:Core/Src/hrtim.c ****     /**HRTIM1 GPIO Configuration
+ 142              		.loc 1 221 5 view .LVU25
+ 228:Core/Src/hrtim.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 143              		.loc 1 228 5 view .LVU26
+ 228:Core/Src/hrtim.c ****     GPIO_InitStruct.Mode = GPIO_MODE_AF_PP;
+ 144              		.loc 1 228 25 is_stmt 0 view .LVU27
+ 145 0034 4FF47063 		mov	r3, #3840
+ 146 0038 0193     		str	r3, [sp, #4]
+ 229:Core/Src/hrtim.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 147              		.loc 1 229 5 is_stmt 1 view .LVU28
+ 229:Core/Src/hrtim.c ****     GPIO_InitStruct.Pull = GPIO_NOPULL;
+ 148              		.loc 1 229 26 is_stmt 0 view .LVU29
+ 149 003a 0223     		movs	r3, #2
+ 150 003c 0293     		str	r3, [sp, #8]
+ 230:Core/Src/hrtim.c ****     GPIO_InitStruct.Speed = GPIO_SPEED_FREQ_HIGH;
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 8
+
+
+ 151              		.loc 1 230 5 is_stmt 1 view .LVU30
+ 231:Core/Src/hrtim.c ****     GPIO_InitStruct.Alternate = GPIO_AF13_HRTIM1;
+ 152              		.loc 1 231 5 view .LVU31
+ 231:Core/Src/hrtim.c ****     GPIO_InitStruct.Alternate = GPIO_AF13_HRTIM1;
+ 153              		.loc 1 231 27 is_stmt 0 view .LVU32
+ 154 003e 0323     		movs	r3, #3
+ 155 0040 0493     		str	r3, [sp, #16]
+ 232:Core/Src/hrtim.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 156              		.loc 1 232 5 is_stmt 1 view .LVU33
+ 232:Core/Src/hrtim.c ****     HAL_GPIO_Init(GPIOA, &GPIO_InitStruct);
+ 157              		.loc 1 232 31 is_stmt 0 view .LVU34
+ 158 0042 0D23     		movs	r3, #13
+ 159 0044 0593     		str	r3, [sp, #20]
+ 233:Core/Src/hrtim.c **** 
+ 160              		.loc 1 233 5 is_stmt 1 view .LVU35
+ 161 0046 01A9     		add	r1, sp, #4
+ 162 0048 4FF09040 		mov	r0, #1207959552
+ 163              	.LVL4:
+ 233:Core/Src/hrtim.c **** 
+ 164              		.loc 1 233 5 is_stmt 0 view .LVU36
+ 165 004c FFF7FEFF 		bl	HAL_GPIO_Init
+ 166              	.LVL5:
+ 167              		.loc 1 240 1 view .LVU37
+ 168 0050 E2E7     		b	.L10
+ 169              	.L15:
+ 170 0052 00BF     		.align	2
+ 171              	.L14:
+ 172 0054 00740140 		.word	1073837056
+ 173              		.cfi_endproc
+ 174              	.LFE125:
+ 176              		.section	.text.MX_HRTIM1_Init,"ax",%progbits
+ 177              		.align	1
+ 178              		.global	MX_HRTIM1_Init
+ 179              		.syntax unified
+ 180              		.thumb
+ 181              		.thumb_func
+ 183              	MX_HRTIM1_Init:
+ 184              	.LFB123:
+  31:Core/Src/hrtim.c **** 
+ 185              		.loc 1 31 1 is_stmt 1 view -0
+ 186              		.cfi_startproc
+ 187              		@ args = 0, pretend = 0, frame = 184
+ 188              		@ frame_needed = 0, uses_anonymous_args = 0
+ 189 0000 10B5     		push	{r4, lr}
+ 190              	.LCFI6:
+ 191              		.cfi_def_cfa_offset 8
+ 192              		.cfi_offset 4, -8
+ 193              		.cfi_offset 14, -4
+ 194 0002 AEB0     		sub	sp, sp, #184
+ 195              	.LCFI7:
+ 196              		.cfi_def_cfa_offset 192
+  37:Core/Src/hrtim.c ****   HRTIM_TimerCfgTypeDef pTimerCfg = {0};
+ 197              		.loc 1 37 3 view .LVU39
+  37:Core/Src/hrtim.c ****   HRTIM_TimerCfgTypeDef pTimerCfg = {0};
+ 198              		.loc 1 37 28 is_stmt 0 view .LVU40
+ 199 0004 0024     		movs	r4, #0
+ 200 0006 2A94     		str	r4, [sp, #168]
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 9
+
+
+ 201 0008 2B94     		str	r4, [sp, #172]
+ 202 000a 2C94     		str	r4, [sp, #176]
+ 203 000c 2D94     		str	r4, [sp, #180]
+  38:Core/Src/hrtim.c ****   HRTIM_CompareCfgTypeDef pCompareCfg = {0};
+ 204              		.loc 1 38 3 is_stmt 1 view .LVU41
+  38:Core/Src/hrtim.c ****   HRTIM_CompareCfgTypeDef pCompareCfg = {0};
+ 205              		.loc 1 38 25 is_stmt 0 view .LVU42
+ 206 000e 5422     		movs	r2, #84
+ 207 0010 2146     		mov	r1, r4
+ 208 0012 0DEB0200 		add	r0, sp, r2
+ 209 0016 FFF7FEFF 		bl	memset
+ 210              	.LVL6:
+  39:Core/Src/hrtim.c ****   HRTIM_DeadTimeCfgTypeDef pDeadTimeCfg = {0};
+ 211              		.loc 1 39 3 is_stmt 1 view .LVU43
+  39:Core/Src/hrtim.c ****   HRTIM_DeadTimeCfgTypeDef pDeadTimeCfg = {0};
+ 212              		.loc 1 39 27 is_stmt 0 view .LVU44
+ 213 001a 1294     		str	r4, [sp, #72]
+ 214 001c 1394     		str	r4, [sp, #76]
+ 215 001e 1494     		str	r4, [sp, #80]
+  40:Core/Src/hrtim.c ****   HRTIM_OutputCfgTypeDef pOutputCfg = {0};
+ 216              		.loc 1 40 3 is_stmt 1 view .LVU45
+  40:Core/Src/hrtim.c ****   HRTIM_OutputCfgTypeDef pOutputCfg = {0};
+ 217              		.loc 1 40 28 is_stmt 0 view .LVU46
+ 218 0020 2422     		movs	r2, #36
+ 219 0022 2146     		mov	r1, r4
+ 220 0024 0DEB0200 		add	r0, sp, r2
+ 221 0028 FFF7FEFF 		bl	memset
+ 222              	.LVL7:
+  41:Core/Src/hrtim.c **** 
+ 223              		.loc 1 41 3 is_stmt 1 view .LVU47
+  41:Core/Src/hrtim.c **** 
+ 224              		.loc 1 41 26 is_stmt 0 view .LVU48
+ 225 002c 2022     		movs	r2, #32
+ 226 002e 2146     		mov	r1, r4
+ 227 0030 01A8     		add	r0, sp, #4
+ 228 0032 FFF7FEFF 		bl	memset
+ 229              	.LVL8:
+  46:Core/Src/hrtim.c ****   hhrtim1.Init.HRTIMInterruptResquests = HRTIM_IT_NONE;
+ 230              		.loc 1 46 3 is_stmt 1 view .LVU49
+  46:Core/Src/hrtim.c ****   hhrtim1.Init.HRTIMInterruptResquests = HRTIM_IT_NONE;
+ 231              		.loc 1 46 20 is_stmt 0 view .LVU50
+ 232 0036 A548     		ldr	r0, .L58
+ 233 0038 A54B     		ldr	r3, .L58+4
+ 234 003a 0360     		str	r3, [r0]
+  47:Core/Src/hrtim.c ****   hhrtim1.Init.SyncOptions = HRTIM_SYNCOPTION_NONE;
+ 235              		.loc 1 47 3 is_stmt 1 view .LVU51
+  47:Core/Src/hrtim.c ****   hhrtim1.Init.SyncOptions = HRTIM_SYNCOPTION_NONE;
+ 236              		.loc 1 47 40 is_stmt 0 view .LVU52
+ 237 003c 4460     		str	r4, [r0, #4]
+  48:Core/Src/hrtim.c ****   if (HAL_HRTIM_Init(&hhrtim1) != HAL_OK)
+ 238              		.loc 1 48 3 is_stmt 1 view .LVU53
+  48:Core/Src/hrtim.c ****   if (HAL_HRTIM_Init(&hhrtim1) != HAL_OK)
+ 239              		.loc 1 48 28 is_stmt 0 view .LVU54
+ 240 003e 8460     		str	r4, [r0, #8]
+  49:Core/Src/hrtim.c ****   {
+ 241              		.loc 1 49 3 is_stmt 1 view .LVU55
+  49:Core/Src/hrtim.c ****   {
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 10
+
+
+ 242              		.loc 1 49 7 is_stmt 0 view .LVU56
+ 243 0040 FFF7FEFF 		bl	HAL_HRTIM_Init
+ 244              	.LVL9:
+  49:Core/Src/hrtim.c ****   {
+ 245              		.loc 1 49 6 view .LVU57
+ 246 0044 0028     		cmp	r0, #0
+ 247 0046 40F00581 		bne	.L38
+ 248              	.L17:
+  53:Core/Src/hrtim.c ****   {
+ 249              		.loc 1 53 3 is_stmt 1 view .LVU58
+  53:Core/Src/hrtim.c ****   {
+ 250              		.loc 1 53 7 is_stmt 0 view .LVU59
+ 251 004a 0C21     		movs	r1, #12
+ 252 004c 9F48     		ldr	r0, .L58
+ 253 004e FFF7FEFF 		bl	HAL_HRTIM_DLLCalibrationStart
+ 254              	.LVL10:
+  53:Core/Src/hrtim.c ****   {
+ 255              		.loc 1 53 6 view .LVU60
+ 256 0052 0028     		cmp	r0, #0
+ 257 0054 40F00181 		bne	.L39
+ 258              	.L18:
+  57:Core/Src/hrtim.c ****   {
+ 259              		.loc 1 57 3 is_stmt 1 view .LVU61
+  57:Core/Src/hrtim.c ****   {
+ 260              		.loc 1 57 7 is_stmt 0 view .LVU62
+ 261 0058 0A21     		movs	r1, #10
+ 262 005a 9C48     		ldr	r0, .L58
+ 263 005c FFF7FEFF 		bl	HAL_HRTIM_PollForDLLCalibration
+ 264              	.LVL11:
+  57:Core/Src/hrtim.c ****   {
+ 265              		.loc 1 57 6 view .LVU63
+ 266 0060 0028     		cmp	r0, #0
+ 267 0062 40F0FD80 		bne	.L40
+ 268              	.L19:
+  61:Core/Src/hrtim.c ****   pTimeBaseCfg.RepetitionCounter = 0x00;
+ 269              		.loc 1 61 3 is_stmt 1 view .LVU64
+  61:Core/Src/hrtim.c ****   pTimeBaseCfg.RepetitionCounter = 0x00;
+ 270              		.loc 1 61 23 is_stmt 0 view .LVU65
+ 271 0066 4FF43443 		mov	r3, #46080
+ 272 006a 2A93     		str	r3, [sp, #168]
+  62:Core/Src/hrtim.c ****   pTimeBaseCfg.PrescalerRatio = HRTIM_PRESCALERRATIO_MUL32;
+ 273              		.loc 1 62 3 is_stmt 1 view .LVU66
+  62:Core/Src/hrtim.c ****   pTimeBaseCfg.PrescalerRatio = HRTIM_PRESCALERRATIO_MUL32;
+ 274              		.loc 1 62 34 is_stmt 0 view .LVU67
+ 275 006c 0023     		movs	r3, #0
+ 276 006e 2B93     		str	r3, [sp, #172]
+  63:Core/Src/hrtim.c ****   pTimeBaseCfg.Mode = HRTIM_MODE_CONTINUOUS;
+ 277              		.loc 1 63 3 is_stmt 1 view .LVU68
+  63:Core/Src/hrtim.c ****   pTimeBaseCfg.Mode = HRTIM_MODE_CONTINUOUS;
+ 278              		.loc 1 63 31 is_stmt 0 view .LVU69
+ 279 0070 2C93     		str	r3, [sp, #176]
+  64:Core/Src/hrtim.c ****   if (HAL_HRTIM_TimeBaseConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, &pTimeBaseCfg) != HAL_OK)
+ 280              		.loc 1 64 3 is_stmt 1 view .LVU70
+  64:Core/Src/hrtim.c ****   if (HAL_HRTIM_TimeBaseConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, &pTimeBaseCfg) != HAL_OK)
+ 281              		.loc 1 64 21 is_stmt 0 view .LVU71
+ 282 0072 0823     		movs	r3, #8
+ 283 0074 2D93     		str	r3, [sp, #180]
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 11
+
+
+  65:Core/Src/hrtim.c ****   {
+ 284              		.loc 1 65 3 is_stmt 1 view .LVU72
+  65:Core/Src/hrtim.c ****   {
+ 285              		.loc 1 65 7 is_stmt 0 view .LVU73
+ 286 0076 2AAA     		add	r2, sp, #168
+ 287 0078 0521     		movs	r1, #5
+ 288 007a 9448     		ldr	r0, .L58
+ 289 007c FFF7FEFF 		bl	HAL_HRTIM_TimeBaseConfig
+ 290              	.LVL12:
+  65:Core/Src/hrtim.c ****   {
+ 291              		.loc 1 65 6 view .LVU74
+ 292 0080 0028     		cmp	r0, #0
+ 293 0082 40F0F080 		bne	.L41
+ 294              	.L20:
+  69:Core/Src/hrtim.c ****   pTimerCfg.DMARequests = HRTIM_MASTER_DMA_NONE;
+ 295              		.loc 1 69 3 is_stmt 1 view .LVU75
+  69:Core/Src/hrtim.c ****   pTimerCfg.DMARequests = HRTIM_MASTER_DMA_NONE;
+ 296              		.loc 1 69 31 is_stmt 0 view .LVU76
+ 297 0086 4023     		movs	r3, #64
+ 298 0088 1593     		str	r3, [sp, #84]
+  70:Core/Src/hrtim.c ****   pTimerCfg.DMASrcAddress = 0x0000;
+ 299              		.loc 1 70 3 is_stmt 1 view .LVU77
+  70:Core/Src/hrtim.c ****   pTimerCfg.DMASrcAddress = 0x0000;
+ 300              		.loc 1 70 25 is_stmt 0 view .LVU78
+ 301 008a 0023     		movs	r3, #0
+ 302 008c 1693     		str	r3, [sp, #88]
+  71:Core/Src/hrtim.c ****   pTimerCfg.DMADstAddress = 0x0000;
+ 303              		.loc 1 71 3 is_stmt 1 view .LVU79
+  71:Core/Src/hrtim.c ****   pTimerCfg.DMADstAddress = 0x0000;
+ 304              		.loc 1 71 27 is_stmt 0 view .LVU80
+ 305 008e 1793     		str	r3, [sp, #92]
+  72:Core/Src/hrtim.c ****   pTimerCfg.DMASize = 0x1;
+ 306              		.loc 1 72 3 is_stmt 1 view .LVU81
+  72:Core/Src/hrtim.c ****   pTimerCfg.DMASize = 0x1;
+ 307              		.loc 1 72 27 is_stmt 0 view .LVU82
+ 308 0090 1893     		str	r3, [sp, #96]
+  73:Core/Src/hrtim.c ****   pTimerCfg.HalfModeEnable = HRTIM_HALFMODE_DISABLED;
+ 309              		.loc 1 73 3 is_stmt 1 view .LVU83
+  73:Core/Src/hrtim.c ****   pTimerCfg.HalfModeEnable = HRTIM_HALFMODE_DISABLED;
+ 310              		.loc 1 73 21 is_stmt 0 view .LVU84
+ 311 0092 0122     		movs	r2, #1
+ 312 0094 1992     		str	r2, [sp, #100]
+  74:Core/Src/hrtim.c ****   pTimerCfg.StartOnSync = HRTIM_SYNCSTART_DISABLED;
+ 313              		.loc 1 74 3 is_stmt 1 view .LVU85
+  74:Core/Src/hrtim.c ****   pTimerCfg.StartOnSync = HRTIM_SYNCSTART_DISABLED;
+ 314              		.loc 1 74 28 is_stmt 0 view .LVU86
+ 315 0096 1A93     		str	r3, [sp, #104]
+  75:Core/Src/hrtim.c ****   pTimerCfg.ResetOnSync = HRTIM_SYNCRESET_DISABLED;
+ 316              		.loc 1 75 3 is_stmt 1 view .LVU87
+  75:Core/Src/hrtim.c ****   pTimerCfg.ResetOnSync = HRTIM_SYNCRESET_DISABLED;
+ 317              		.loc 1 75 25 is_stmt 0 view .LVU88
+ 318 0098 1B93     		str	r3, [sp, #108]
+  76:Core/Src/hrtim.c ****   pTimerCfg.DACSynchro = HRTIM_DACSYNC_NONE;
+ 319              		.loc 1 76 3 is_stmt 1 view .LVU89
+  76:Core/Src/hrtim.c ****   pTimerCfg.DACSynchro = HRTIM_DACSYNC_NONE;
+ 320              		.loc 1 76 25 is_stmt 0 view .LVU90
+ 321 009a 1C93     		str	r3, [sp, #112]
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 12
+
+
+  77:Core/Src/hrtim.c ****   pTimerCfg.PreloadEnable = HRTIM_PRELOAD_ENABLED;
+ 322              		.loc 1 77 3 is_stmt 1 view .LVU91
+  77:Core/Src/hrtim.c ****   pTimerCfg.PreloadEnable = HRTIM_PRELOAD_ENABLED;
+ 323              		.loc 1 77 24 is_stmt 0 view .LVU92
+ 324 009c 1D93     		str	r3, [sp, #116]
+  78:Core/Src/hrtim.c ****   pTimerCfg.UpdateGating = HRTIM_UPDATEGATING_INDEPENDENT;
+ 325              		.loc 1 78 3 is_stmt 1 view .LVU93
+  78:Core/Src/hrtim.c ****   pTimerCfg.UpdateGating = HRTIM_UPDATEGATING_INDEPENDENT;
+ 326              		.loc 1 78 27 is_stmt 0 view .LVU94
+ 327 009e 4FF00062 		mov	r2, #134217728
+ 328 00a2 1E92     		str	r2, [sp, #120]
+  79:Core/Src/hrtim.c ****   pTimerCfg.BurstMode = HRTIM_TIMERBURSTMODE_RESETCOUNTER;
+ 329              		.loc 1 79 3 is_stmt 1 view .LVU95
+  79:Core/Src/hrtim.c ****   pTimerCfg.BurstMode = HRTIM_TIMERBURSTMODE_RESETCOUNTER;
+ 330              		.loc 1 79 26 is_stmt 0 view .LVU96
+ 331 00a4 1F93     		str	r3, [sp, #124]
+  80:Core/Src/hrtim.c ****   pTimerCfg.RepetitionUpdate = HRTIM_UPDATEONREPETITION_ENABLED;
+ 332              		.loc 1 80 3 is_stmt 1 view .LVU97
+  80:Core/Src/hrtim.c ****   pTimerCfg.RepetitionUpdate = HRTIM_UPDATEONREPETITION_ENABLED;
+ 333              		.loc 1 80 23 is_stmt 0 view .LVU98
+ 334 00a6 4FF48033 		mov	r3, #65536
+ 335 00aa 2093     		str	r3, [sp, #128]
+  81:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, &pTimerCfg) != HAL_OK)
+ 336              		.loc 1 81 3 is_stmt 1 view .LVU99
+  81:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, &pTimerCfg) != HAL_OK)
+ 337              		.loc 1 81 30 is_stmt 0 view .LVU100
+ 338 00ac 4FF00053 		mov	r3, #536870912
+ 339 00b0 2193     		str	r3, [sp, #132]
+  82:Core/Src/hrtim.c ****   {
+ 340              		.loc 1 82 3 is_stmt 1 view .LVU101
+  82:Core/Src/hrtim.c ****   {
+ 341              		.loc 1 82 7 is_stmt 0 view .LVU102
+ 342 00b2 15AA     		add	r2, sp, #84
+ 343 00b4 0521     		movs	r1, #5
+ 344 00b6 8548     		ldr	r0, .L58
+ 345 00b8 FFF7FEFF 		bl	HAL_HRTIM_WaveformTimerConfig
+ 346              	.LVL13:
+  82:Core/Src/hrtim.c ****   {
+ 347              		.loc 1 82 6 view .LVU103
+ 348 00bc 0028     		cmp	r0, #0
+ 349 00be 40F0D580 		bne	.L42
+ 350              	.L21:
+  86:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_1, &pCom
+ 351              		.loc 1 86 3 is_stmt 1 view .LVU104
+  86:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_1, &pCom
+ 352              		.loc 1 86 28 is_stmt 0 view .LVU105
+ 353 00c2 4FF43453 		mov	r3, #11520
+ 354 00c6 1293     		str	r3, [sp, #72]
+  87:Core/Src/hrtim.c ****   {
+ 355              		.loc 1 87 3 is_stmt 1 view .LVU106
+  87:Core/Src/hrtim.c ****   {
+ 356              		.loc 1 87 7 is_stmt 0 view .LVU107
+ 357 00c8 12AB     		add	r3, sp, #72
+ 358 00ca 0122     		movs	r2, #1
+ 359 00cc 0521     		movs	r1, #5
+ 360 00ce 7F48     		ldr	r0, .L58
+ 361 00d0 FFF7FEFF 		bl	HAL_HRTIM_WaveformCompareConfig
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 13
+
+
+ 362              	.LVL14:
+  87:Core/Src/hrtim.c ****   {
+ 363              		.loc 1 87 6 view .LVU108
+ 364 00d4 0028     		cmp	r0, #0
+ 365 00d6 40F0CC80 		bne	.L43
+ 366              	.L22:
+  91:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_2, &pCom
+ 367              		.loc 1 91 3 is_stmt 1 view .LVU109
+  91:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_2, &pCom
+ 368              		.loc 1 91 28 is_stmt 0 view .LVU110
+ 369 00da 4FF40743 		mov	r3, #34560
+ 370 00de 1293     		str	r3, [sp, #72]
+  92:Core/Src/hrtim.c ****   {
+ 371              		.loc 1 92 3 is_stmt 1 view .LVU111
+  92:Core/Src/hrtim.c ****   {
+ 372              		.loc 1 92 7 is_stmt 0 view .LVU112
+ 373 00e0 12AB     		add	r3, sp, #72
+ 374 00e2 0222     		movs	r2, #2
+ 375 00e4 0521     		movs	r1, #5
+ 376 00e6 7948     		ldr	r0, .L58
+ 377 00e8 FFF7FEFF 		bl	HAL_HRTIM_WaveformCompareConfig
+ 378              	.LVL15:
+  92:Core/Src/hrtim.c ****   {
+ 379              		.loc 1 92 6 view .LVU113
+ 380 00ec 0028     		cmp	r0, #0
+ 381 00ee 40F0C380 		bne	.L44
+ 382              	.L23:
+  96:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_3, &pCom
+ 383              		.loc 1 96 3 is_stmt 1 view .LVU114
+  96:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_3, &pCom
+ 384              		.loc 1 96 28 is_stmt 0 view .LVU115
+ 385 00f2 4FF40743 		mov	r3, #34560
+ 386 00f6 1293     		str	r3, [sp, #72]
+  97:Core/Src/hrtim.c ****   {
+ 387              		.loc 1 97 3 is_stmt 1 view .LVU116
+  97:Core/Src/hrtim.c ****   {
+ 388              		.loc 1 97 7 is_stmt 0 view .LVU117
+ 389 00f8 12AB     		add	r3, sp, #72
+ 390 00fa 0422     		movs	r2, #4
+ 391 00fc 0521     		movs	r1, #5
+ 392 00fe 7348     		ldr	r0, .L58
+ 393 0100 FFF7FEFF 		bl	HAL_HRTIM_WaveformCompareConfig
+ 394              	.LVL16:
+  97:Core/Src/hrtim.c ****   {
+ 395              		.loc 1 97 6 view .LVU118
+ 396 0104 0028     		cmp	r0, #0
+ 397 0106 40F0BA80 		bne	.L45
+ 398              	.L24:
+ 101:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_4, &pCom
+ 399              		.loc 1 101 3 is_stmt 1 view .LVU119
+ 101:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_MASTER, HRTIM_COMPAREUNIT_4, &pCom
+ 400              		.loc 1 101 28 is_stmt 0 view .LVU120
+ 401 010a 4FF43453 		mov	r3, #11520
+ 402 010e 1293     		str	r3, [sp, #72]
+ 102:Core/Src/hrtim.c ****   {
+ 403              		.loc 1 102 3 is_stmt 1 view .LVU121
+ 102:Core/Src/hrtim.c ****   {
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 14
+
+
+ 404              		.loc 1 102 7 is_stmt 0 view .LVU122
+ 405 0110 12AB     		add	r3, sp, #72
+ 406 0112 0822     		movs	r2, #8
+ 407 0114 0521     		movs	r1, #5
+ 408 0116 6D48     		ldr	r0, .L58
+ 409 0118 FFF7FEFF 		bl	HAL_HRTIM_WaveformCompareConfig
+ 410              	.LVL17:
+ 102:Core/Src/hrtim.c ****   {
+ 411              		.loc 1 102 6 view .LVU123
+ 412 011c 0028     		cmp	r0, #0
+ 413 011e 40F0B180 		bne	.L46
+ 414              	.L25:
+ 106:Core/Src/hrtim.c ****   {
+ 415              		.loc 1 106 3 is_stmt 1 view .LVU124
+ 106:Core/Src/hrtim.c ****   {
+ 416              		.loc 1 106 7 is_stmt 0 view .LVU125
+ 417 0122 2AAA     		add	r2, sp, #168
+ 418 0124 0021     		movs	r1, #0
+ 419 0126 6948     		ldr	r0, .L58
+ 420 0128 FFF7FEFF 		bl	HAL_HRTIM_TimeBaseConfig
+ 421              	.LVL18:
+ 106:Core/Src/hrtim.c ****   {
+ 422              		.loc 1 106 6 view .LVU126
+ 423 012c 0028     		cmp	r0, #0
+ 424 012e 40F0AC80 		bne	.L47
+ 425              	.L26:
+ 110:Core/Src/hrtim.c ****   pTimerCfg.DMARequests = HRTIM_TIM_DMA_NONE;
+ 426              		.loc 1 110 3 is_stmt 1 view .LVU127
+ 110:Core/Src/hrtim.c ****   pTimerCfg.DMARequests = HRTIM_TIM_DMA_NONE;
+ 427              		.loc 1 110 31 is_stmt 0 view .LVU128
+ 428 0132 0021     		movs	r1, #0
+ 429 0134 1591     		str	r1, [sp, #84]
+ 111:Core/Src/hrtim.c ****   pTimerCfg.PushPull = HRTIM_TIMPUSHPULLMODE_DISABLED;
+ 430              		.loc 1 111 3 is_stmt 1 view .LVU129
+ 111:Core/Src/hrtim.c ****   pTimerCfg.PushPull = HRTIM_TIMPUSHPULLMODE_DISABLED;
+ 431              		.loc 1 111 25 is_stmt 0 view .LVU130
+ 432 0136 1691     		str	r1, [sp, #88]
+ 112:Core/Src/hrtim.c ****   pTimerCfg.FaultEnable = HRTIM_TIMFAULTENABLE_NONE;
+ 433              		.loc 1 112 3 is_stmt 1 view .LVU131
+ 112:Core/Src/hrtim.c ****   pTimerCfg.FaultEnable = HRTIM_TIMFAULTENABLE_NONE;
+ 434              		.loc 1 112 22 is_stmt 0 view .LVU132
+ 435 0138 2291     		str	r1, [sp, #136]
+ 113:Core/Src/hrtim.c ****   pTimerCfg.FaultLock = HRTIM_TIMFAULTLOCK_READWRITE;
+ 436              		.loc 1 113 3 is_stmt 1 view .LVU133
+ 113:Core/Src/hrtim.c ****   pTimerCfg.FaultLock = HRTIM_TIMFAULTLOCK_READWRITE;
+ 437              		.loc 1 113 25 is_stmt 0 view .LVU134
+ 438 013a 2391     		str	r1, [sp, #140]
+ 114:Core/Src/hrtim.c ****   pTimerCfg.DeadTimeInsertion = HRTIM_TIMDEADTIMEINSERTION_ENABLED;
+ 439              		.loc 1 114 3 is_stmt 1 view .LVU135
+ 114:Core/Src/hrtim.c ****   pTimerCfg.DeadTimeInsertion = HRTIM_TIMDEADTIMEINSERTION_ENABLED;
+ 440              		.loc 1 114 23 is_stmt 0 view .LVU136
+ 441 013c 2491     		str	r1, [sp, #144]
+ 115:Core/Src/hrtim.c ****   pTimerCfg.DelayedProtectionMode = HRTIM_TIMER_A_B_C_DELAYEDPROTECTION_DISABLED;
+ 442              		.loc 1 115 3 is_stmt 1 view .LVU137
+ 115:Core/Src/hrtim.c ****   pTimerCfg.DelayedProtectionMode = HRTIM_TIMER_A_B_C_DELAYEDPROTECTION_DISABLED;
+ 443              		.loc 1 115 31 is_stmt 0 view .LVU138
+ 444 013e 4FF48073 		mov	r3, #256
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 15
+
+
+ 445 0142 2593     		str	r3, [sp, #148]
+ 116:Core/Src/hrtim.c ****   pTimerCfg.UpdateTrigger = HRTIM_TIMUPDATETRIGGER_NONE;
+ 446              		.loc 1 116 3 is_stmt 1 view .LVU139
+ 116:Core/Src/hrtim.c ****   pTimerCfg.UpdateTrigger = HRTIM_TIMUPDATETRIGGER_NONE;
+ 447              		.loc 1 116 35 is_stmt 0 view .LVU140
+ 448 0144 2691     		str	r1, [sp, #152]
+ 117:Core/Src/hrtim.c ****   pTimerCfg.ResetTrigger = HRTIM_TIMRESETTRIGGER_MASTER_PER;
+ 449              		.loc 1 117 3 is_stmt 1 view .LVU141
+ 117:Core/Src/hrtim.c ****   pTimerCfg.ResetTrigger = HRTIM_TIMRESETTRIGGER_MASTER_PER;
+ 450              		.loc 1 117 27 is_stmt 0 view .LVU142
+ 451 0146 2791     		str	r1, [sp, #156]
+ 118:Core/Src/hrtim.c ****   pTimerCfg.ResetUpdate = HRTIM_TIMUPDATEONRESET_DISABLED;
+ 452              		.loc 1 118 3 is_stmt 1 view .LVU143
+ 118:Core/Src/hrtim.c ****   pTimerCfg.ResetUpdate = HRTIM_TIMUPDATEONRESET_DISABLED;
+ 453              		.loc 1 118 26 is_stmt 0 view .LVU144
+ 454 0148 1023     		movs	r3, #16
+ 455 014a 2893     		str	r3, [sp, #160]
+ 119:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pTimerCfg) != HAL_OK)
+ 456              		.loc 1 119 3 is_stmt 1 view .LVU145
+ 119:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pTimerCfg) != HAL_OK)
+ 457              		.loc 1 119 25 is_stmt 0 view .LVU146
+ 458 014c 2991     		str	r1, [sp, #164]
+ 120:Core/Src/hrtim.c ****   {
+ 459              		.loc 1 120 3 is_stmt 1 view .LVU147
+ 120:Core/Src/hrtim.c ****   {
+ 460              		.loc 1 120 7 is_stmt 0 view .LVU148
+ 461 014e 15AA     		add	r2, sp, #84
+ 462 0150 5E48     		ldr	r0, .L58
+ 463 0152 FFF7FEFF 		bl	HAL_HRTIM_WaveformTimerConfig
+ 464              	.LVL19:
+ 120:Core/Src/hrtim.c ****   {
+ 465              		.loc 1 120 6 view .LVU149
+ 466 0156 0028     		cmp	r0, #0
+ 467 0158 40F09A80 		bne	.L48
+ 468              	.L27:
+ 124:Core/Src/hrtim.c ****   {
+ 469              		.loc 1 124 3 is_stmt 1 view .LVU150
+ 124:Core/Src/hrtim.c ****   {
+ 470              		.loc 1 124 7 is_stmt 0 view .LVU151
+ 471 015c 15AA     		add	r2, sp, #84
+ 472 015e 0121     		movs	r1, #1
+ 473 0160 5A48     		ldr	r0, .L58
+ 474 0162 FFF7FEFF 		bl	HAL_HRTIM_WaveformTimerConfig
+ 475              	.LVL20:
+ 124:Core/Src/hrtim.c ****   {
+ 476              		.loc 1 124 6 view .LVU152
+ 477 0166 0028     		cmp	r0, #0
+ 478 0168 40F09580 		bne	.L49
+ 479              	.L28:
+ 128:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_COMPAREUNIT_1, &pCo
+ 480              		.loc 1 128 3 is_stmt 1 view .LVU153
+ 128:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformCompareConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_COMPAREUNIT_1, &pCo
+ 481              		.loc 1 128 28 is_stmt 0 view .LVU154
+ 482 016c 6023     		movs	r3, #96
+ 483 016e 1293     		str	r3, [sp, #72]
+ 129:Core/Src/hrtim.c ****   {
+ 484              		.loc 1 129 3 is_stmt 1 view .LVU155
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 16
+
+
+ 129:Core/Src/hrtim.c ****   {
+ 485              		.loc 1 129 7 is_stmt 0 view .LVU156
+ 486 0170 12AB     		add	r3, sp, #72
+ 487 0172 0122     		movs	r2, #1
+ 488 0174 0021     		movs	r1, #0
+ 489 0176 5548     		ldr	r0, .L58
+ 490 0178 FFF7FEFF 		bl	HAL_HRTIM_WaveformCompareConfig
+ 491              	.LVL21:
+ 129:Core/Src/hrtim.c ****   {
+ 492              		.loc 1 129 6 view .LVU157
+ 493 017c 0028     		cmp	r0, #0
+ 494 017e 40F08D80 		bne	.L50
+ 495              	.L29:
+ 133:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingValue = 9.5938f*deadtime;
+ 496              		.loc 1 133 3 is_stmt 1 view .LVU158
+ 133:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingValue = 9.5938f*deadtime;
+ 497              		.loc 1 133 26 is_stmt 0 view .LVU159
+ 498 0182 4FF44063 		mov	r3, #3072
+ 499 0186 0993     		str	r3, [sp, #36]
+ 134:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSign = HRTIM_TIMDEADTIME_RISINGSIGN_POSITIVE;
+ 500              		.loc 1 134 3 is_stmt 1 view .LVU160
+ 134:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSign = HRTIM_TIMDEADTIME_RISINGSIGN_POSITIVE;
+ 501              		.loc 1 134 28 is_stmt 0 view .LVU161
+ 502 0188 0123     		movs	r3, #1
+ 503 018a 0A93     		str	r3, [sp, #40]
+ 135:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingLock = HRTIM_TIMDEADTIME_RISINGLOCK_READONLY;
+ 504              		.loc 1 135 3 is_stmt 1 view .LVU162
+ 135:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingLock = HRTIM_TIMDEADTIME_RISINGLOCK_READONLY;
+ 505              		.loc 1 135 27 is_stmt 0 view .LVU163
+ 506 018c 0021     		movs	r1, #0
+ 507 018e 0B91     		str	r1, [sp, #44]
+ 136:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSignLock = HRTIM_TIMDEADTIME_RISINGSIGNLOCK_READONLY;
+ 508              		.loc 1 136 3 is_stmt 1 view .LVU164
+ 136:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSignLock = HRTIM_TIMDEADTIME_RISINGSIGNLOCK_READONLY;
+ 509              		.loc 1 136 27 is_stmt 0 view .LVU165
+ 510 0190 4FF40042 		mov	r2, #32768
+ 511 0194 0C92     		str	r2, [sp, #48]
+ 137:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingValue = 9.5938f*deadtime;
+ 512              		.loc 1 137 3 is_stmt 1 view .LVU166
+ 137:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingValue = 9.5938f*deadtime;
+ 513              		.loc 1 137 31 is_stmt 0 view .LVU167
+ 514 0196 4FF48042 		mov	r2, #16384
+ 515 019a 0D92     		str	r2, [sp, #52]
+ 138:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSign = HRTIM_TIMDEADTIME_FALLINGSIGN_POSITIVE;
+ 516              		.loc 1 138 3 is_stmt 1 view .LVU168
+ 138:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSign = HRTIM_TIMDEADTIME_FALLINGSIGN_POSITIVE;
+ 517              		.loc 1 138 29 is_stmt 0 view .LVU169
+ 518 019c 0E93     		str	r3, [sp, #56]
+ 139:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingLock = HRTIM_TIMDEADTIME_FALLINGLOCK_READONLY;
+ 519              		.loc 1 139 3 is_stmt 1 view .LVU170
+ 139:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingLock = HRTIM_TIMDEADTIME_FALLINGLOCK_READONLY;
+ 520              		.loc 1 139 28 is_stmt 0 view .LVU171
+ 521 019e 0F91     		str	r1, [sp, #60]
+ 140:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSignLock = HRTIM_TIMDEADTIME_FALLINGSIGNLOCK_READONLY;
+ 522              		.loc 1 140 3 is_stmt 1 view .LVU172
+ 140:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSignLock = HRTIM_TIMDEADTIME_FALLINGSIGNLOCK_READONLY;
+ 523              		.loc 1 140 28 is_stmt 0 view .LVU173
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 17
+
+
+ 524 01a0 4FF00043 		mov	r3, #-2147483648
+ 525 01a4 1093     		str	r3, [sp, #64]
+ 141:Core/Src/hrtim.c ****   if (HAL_HRTIM_DeadTimeConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pDeadTimeCfg) != HAL_OK)
+ 526              		.loc 1 141 3 is_stmt 1 view .LVU174
+ 141:Core/Src/hrtim.c ****   if (HAL_HRTIM_DeadTimeConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pDeadTimeCfg) != HAL_OK)
+ 527              		.loc 1 141 32 is_stmt 0 view .LVU175
+ 528 01a6 4FF08043 		mov	r3, #1073741824
+ 529 01aa 1193     		str	r3, [sp, #68]
+ 142:Core/Src/hrtim.c ****   {
+ 530              		.loc 1 142 3 is_stmt 1 view .LVU176
+ 142:Core/Src/hrtim.c ****   {
+ 531              		.loc 1 142 7 is_stmt 0 view .LVU177
+ 532 01ac 09AA     		add	r2, sp, #36
+ 533 01ae 4748     		ldr	r0, .L58
+ 534 01b0 FFF7FEFF 		bl	HAL_HRTIM_DeadTimeConfig
+ 535              	.LVL22:
+ 142:Core/Src/hrtim.c ****   {
+ 536              		.loc 1 142 6 view .LVU178
+ 537 01b4 0028     		cmp	r0, #0
+ 538 01b6 74D1     		bne	.L51
+ 539              	.L30:
+ 146:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingLock = HRTIM_TIMDEADTIME_RISINGLOCK_WRITE;
+ 540              		.loc 1 146 3 is_stmt 1 view .LVU179
+ 146:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingLock = HRTIM_TIMDEADTIME_RISINGLOCK_WRITE;
+ 541              		.loc 1 146 28 is_stmt 0 view .LVU180
+ 542 01b8 9922     		movs	r2, #153
+ 543 01ba 0A92     		str	r2, [sp, #40]
+ 147:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSignLock = HRTIM_TIMDEADTIME_RISINGSIGNLOCK_WRITE;
+ 544              		.loc 1 147 3 is_stmt 1 view .LVU181
+ 147:Core/Src/hrtim.c ****   pDeadTimeCfg.RisingSignLock = HRTIM_TIMDEADTIME_RISINGSIGNLOCK_WRITE;
+ 545              		.loc 1 147 27 is_stmt 0 view .LVU182
+ 546 01bc 0023     		movs	r3, #0
+ 547 01be 0C93     		str	r3, [sp, #48]
+ 148:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingValue = 959.375f*deadtime;
+ 548              		.loc 1 148 3 is_stmt 1 view .LVU183
+ 148:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingValue = 959.375f*deadtime;
+ 549              		.loc 1 148 31 is_stmt 0 view .LVU184
+ 550 01c0 0D93     		str	r3, [sp, #52]
+ 149:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingLock = HRTIM_TIMDEADTIME_FALLINGLOCK_WRITE;
+ 551              		.loc 1 149 3 is_stmt 1 view .LVU185
+ 149:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingLock = HRTIM_TIMDEADTIME_FALLINGLOCK_WRITE;
+ 552              		.loc 1 149 29 is_stmt 0 view .LVU186
+ 553 01c2 0E92     		str	r2, [sp, #56]
+ 150:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSignLock = HRTIM_TIMDEADTIME_FALLINGSIGNLOCK_WRITE;
+ 554              		.loc 1 150 3 is_stmt 1 view .LVU187
+ 150:Core/Src/hrtim.c ****   pDeadTimeCfg.FallingSignLock = HRTIM_TIMDEADTIME_FALLINGSIGNLOCK_WRITE;
+ 555              		.loc 1 150 28 is_stmt 0 view .LVU188
+ 556 01c4 1093     		str	r3, [sp, #64]
+ 151:Core/Src/hrtim.c ****   if (HAL_HRTIM_DeadTimeConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, &pDeadTimeCfg) != HAL_OK)
+ 557              		.loc 1 151 3 is_stmt 1 view .LVU189
+ 151:Core/Src/hrtim.c ****   if (HAL_HRTIM_DeadTimeConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, &pDeadTimeCfg) != HAL_OK)
+ 558              		.loc 1 151 32 is_stmt 0 view .LVU190
+ 559 01c6 1193     		str	r3, [sp, #68]
+ 152:Core/Src/hrtim.c ****   {
+ 560              		.loc 1 152 3 is_stmt 1 view .LVU191
+ 152:Core/Src/hrtim.c ****   {
+ 561              		.loc 1 152 7 is_stmt 0 view .LVU192
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 18
+
+
+ 562 01c8 09AA     		add	r2, sp, #36
+ 563 01ca 0121     		movs	r1, #1
+ 564 01cc 3F48     		ldr	r0, .L58
+ 565 01ce FFF7FEFF 		bl	HAL_HRTIM_DeadTimeConfig
+ 566              	.LVL23:
+ 152:Core/Src/hrtim.c ****   {
+ 567              		.loc 1 152 6 view .LVU193
+ 568 01d2 0028     		cmp	r0, #0
+ 569 01d4 68D1     		bne	.L52
+ 570              	.L31:
+ 156:Core/Src/hrtim.c ****   pOutputCfg.SetSource = HRTIM_OUTPUTSET_MASTERCMP1;
+ 571              		.loc 1 156 3 is_stmt 1 view .LVU194
+ 156:Core/Src/hrtim.c ****   pOutputCfg.SetSource = HRTIM_OUTPUTSET_MASTERCMP1;
+ 572              		.loc 1 156 23 is_stmt 0 view .LVU195
+ 573 01d6 0021     		movs	r1, #0
+ 574 01d8 0191     		str	r1, [sp, #4]
+ 157:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_MASTERCMP2;
+ 575              		.loc 1 157 3 is_stmt 1 view .LVU196
+ 157:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_MASTERCMP2;
+ 576              		.loc 1 157 24 is_stmt 0 view .LVU197
+ 577 01da 4FF48073 		mov	r3, #256
+ 578 01de 0293     		str	r3, [sp, #8]
+ 158:Core/Src/hrtim.c ****   pOutputCfg.IdleMode = HRTIM_OUTPUTIDLEMODE_NONE;
+ 579              		.loc 1 158 3 is_stmt 1 view .LVU198
+ 158:Core/Src/hrtim.c ****   pOutputCfg.IdleMode = HRTIM_OUTPUTIDLEMODE_NONE;
+ 580              		.loc 1 158 26 is_stmt 0 view .LVU199
+ 581 01e0 4FF40073 		mov	r3, #512
+ 582 01e4 0393     		str	r3, [sp, #12]
+ 159:Core/Src/hrtim.c ****   pOutputCfg.IdleLevel = HRTIM_OUTPUTIDLELEVEL_INACTIVE;
+ 583              		.loc 1 159 3 is_stmt 1 view .LVU200
+ 159:Core/Src/hrtim.c ****   pOutputCfg.IdleLevel = HRTIM_OUTPUTIDLELEVEL_INACTIVE;
+ 584              		.loc 1 159 23 is_stmt 0 view .LVU201
+ 585 01e6 0491     		str	r1, [sp, #16]
+ 160:Core/Src/hrtim.c ****   pOutputCfg.FaultLevel = HRTIM_OUTPUTFAULTLEVEL_NONE;
+ 586              		.loc 1 160 3 is_stmt 1 view .LVU202
+ 160:Core/Src/hrtim.c ****   pOutputCfg.FaultLevel = HRTIM_OUTPUTFAULTLEVEL_NONE;
+ 587              		.loc 1 160 24 is_stmt 0 view .LVU203
+ 588 01e8 0591     		str	r1, [sp, #20]
+ 161:Core/Src/hrtim.c ****   pOutputCfg.ChopperModeEnable = HRTIM_OUTPUTCHOPPERMODE_DISABLED;
+ 589              		.loc 1 161 3 is_stmt 1 view .LVU204
+ 161:Core/Src/hrtim.c ****   pOutputCfg.ChopperModeEnable = HRTIM_OUTPUTCHOPPERMODE_DISABLED;
+ 590              		.loc 1 161 25 is_stmt 0 view .LVU205
+ 591 01ea 0691     		str	r1, [sp, #24]
+ 162:Core/Src/hrtim.c ****   pOutputCfg.BurstModeEntryDelayed = HRTIM_OUTPUTBURSTMODEENTRY_REGULAR;
+ 592              		.loc 1 162 3 is_stmt 1 view .LVU206
+ 162:Core/Src/hrtim.c ****   pOutputCfg.BurstModeEntryDelayed = HRTIM_OUTPUTBURSTMODEENTRY_REGULAR;
+ 593              		.loc 1 162 32 is_stmt 0 view .LVU207
+ 594 01ec 0791     		str	r1, [sp, #28]
+ 163:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA1, &pOutput
+ 595              		.loc 1 163 3 is_stmt 1 view .LVU208
+ 163:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA1, &pOutput
+ 596              		.loc 1 163 36 is_stmt 0 view .LVU209
+ 597 01ee 0891     		str	r1, [sp, #32]
+ 164:Core/Src/hrtim.c ****   {
+ 598              		.loc 1 164 3 is_stmt 1 view .LVU210
+ 164:Core/Src/hrtim.c ****   {
+ 599              		.loc 1 164 7 is_stmt 0 view .LVU211
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 19
+
+
+ 600 01f0 01AB     		add	r3, sp, #4
+ 601 01f2 0122     		movs	r2, #1
+ 602 01f4 3548     		ldr	r0, .L58
+ 603 01f6 FFF7FEFF 		bl	HAL_HRTIM_WaveformOutputConfig
+ 604              	.LVL24:
+ 164:Core/Src/hrtim.c ****   {
+ 605              		.loc 1 164 6 view .LVU212
+ 606 01fa 0028     		cmp	r0, #0
+ 607 01fc 57D1     		bne	.L53
+ 608              	.L32:
+ 168:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_MASTERCMP4;
+ 609              		.loc 1 168 3 is_stmt 1 view .LVU213
+ 168:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_MASTERCMP4;
+ 610              		.loc 1 168 24 is_stmt 0 view .LVU214
+ 611 01fe 4FF48063 		mov	r3, #1024
+ 612 0202 0293     		str	r3, [sp, #8]
+ 169:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, HRTIM_OUTPUT_TB1, &pOutput
+ 613              		.loc 1 169 3 is_stmt 1 view .LVU215
+ 169:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_B, HRTIM_OUTPUT_TB1, &pOutput
+ 614              		.loc 1 169 26 is_stmt 0 view .LVU216
+ 615 0204 4FF40063 		mov	r3, #2048
+ 616 0208 0393     		str	r3, [sp, #12]
+ 170:Core/Src/hrtim.c ****   {
+ 617              		.loc 1 170 3 is_stmt 1 view .LVU217
+ 170:Core/Src/hrtim.c ****   {
+ 618              		.loc 1 170 7 is_stmt 0 view .LVU218
+ 619 020a 01AB     		add	r3, sp, #4
+ 620 020c 0422     		movs	r2, #4
+ 621 020e 0121     		movs	r1, #1
+ 622 0210 2E48     		ldr	r0, .L58
+ 623 0212 FFF7FEFF 		bl	HAL_HRTIM_WaveformOutputConfig
+ 624              	.LVL25:
+ 170:Core/Src/hrtim.c ****   {
+ 625              		.loc 1 170 6 view .LVU219
+ 626 0216 0028     		cmp	r0, #0
+ 627 0218 4CD1     		bne	.L54
+ 628              	.L33:
+ 174:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_NONE;
+ 629              		.loc 1 174 3 is_stmt 1 view .LVU220
+ 174:Core/Src/hrtim.c ****   pOutputCfg.ResetSource = HRTIM_OUTPUTRESET_NONE;
+ 630              		.loc 1 174 24 is_stmt 0 view .LVU221
+ 631 021a 0021     		movs	r1, #0
+ 632 021c 0291     		str	r1, [sp, #8]
+ 175:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA2, &pOutput
+ 633              		.loc 1 175 3 is_stmt 1 view .LVU222
+ 175:Core/Src/hrtim.c ****   if (HAL_HRTIM_WaveformOutputConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, HRTIM_OUTPUT_TA2, &pOutput
+ 634              		.loc 1 175 26 is_stmt 0 view .LVU223
+ 635 021e 0391     		str	r1, [sp, #12]
+ 176:Core/Src/hrtim.c ****   {
+ 636              		.loc 1 176 3 is_stmt 1 view .LVU224
+ 176:Core/Src/hrtim.c ****   {
+ 637              		.loc 1 176 7 is_stmt 0 view .LVU225
+ 638 0220 01AB     		add	r3, sp, #4
+ 639 0222 0222     		movs	r2, #2
+ 640 0224 2948     		ldr	r0, .L58
+ 641 0226 FFF7FEFF 		bl	HAL_HRTIM_WaveformOutputConfig
+ 642              	.LVL26:
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 20
+
+
+ 176:Core/Src/hrtim.c ****   {
+ 643              		.loc 1 176 6 view .LVU226
+ 644 022a 0028     		cmp	r0, #0
+ 645 022c 45D1     		bne	.L55
+ 646              	.L34:
+ 180:Core/Src/hrtim.c ****   {
+ 647              		.loc 1 180 3 is_stmt 1 view .LVU227
+ 180:Core/Src/hrtim.c ****   {
+ 648              		.loc 1 180 7 is_stmt 0 view .LVU228
+ 649 022e 01AB     		add	r3, sp, #4
+ 650 0230 0822     		movs	r2, #8
+ 651 0232 0121     		movs	r1, #1
+ 652 0234 2548     		ldr	r0, .L58
+ 653 0236 FFF7FEFF 		bl	HAL_HRTIM_WaveformOutputConfig
+ 654              	.LVL27:
+ 180:Core/Src/hrtim.c ****   {
+ 655              		.loc 1 180 6 view .LVU229
+ 656 023a 0028     		cmp	r0, #0
+ 657 023c 40D1     		bne	.L56
+ 658              	.L35:
+ 184:Core/Src/hrtim.c ****   {
+ 659              		.loc 1 184 3 is_stmt 1 view .LVU230
+ 184:Core/Src/hrtim.c ****   {
+ 660              		.loc 1 184 7 is_stmt 0 view .LVU231
+ 661 023e 2AAA     		add	r2, sp, #168
+ 662 0240 0121     		movs	r1, #1
+ 663 0242 2248     		ldr	r0, .L58
+ 664 0244 FFF7FEFF 		bl	HAL_HRTIM_TimeBaseConfig
+ 665              	.LVL28:
+ 184:Core/Src/hrtim.c ****   {
+ 666              		.loc 1 184 6 view .LVU232
+ 667 0248 E8BB     		cbnz	r0, .L57
+ 668              	.L36:
+ 191:Core/Src/hrtim.c **** 
+ 669              		.loc 1 191 3 is_stmt 1 view .LVU233
+ 670 024a 2048     		ldr	r0, .L58
+ 671 024c FFF7FEFF 		bl	HAL_HRTIM_MspPostInit
+ 672              	.LVL29:
+ 193:Core/Src/hrtim.c **** 
+ 673              		.loc 1 193 1 is_stmt 0 view .LVU234
+ 674 0250 2EB0     		add	sp, sp, #184
+ 675              	.LCFI8:
+ 676              		.cfi_remember_state
+ 677              		.cfi_def_cfa_offset 8
+ 678              		@ sp needed
+ 679 0252 10BD     		pop	{r4, pc}
+ 680              	.L38:
+ 681              	.LCFI9:
+ 682              		.cfi_restore_state
+  51:Core/Src/hrtim.c ****   }
+ 683              		.loc 1 51 5 is_stmt 1 view .LVU235
+ 684 0254 FFF7FEFF 		bl	Error_Handler
+ 685              	.LVL30:
+ 686 0258 F7E6     		b	.L17
+ 687              	.L39:
+  55:Core/Src/hrtim.c ****   }
+ 688              		.loc 1 55 5 view .LVU236
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 21
+
+
+ 689 025a FFF7FEFF 		bl	Error_Handler
+ 690              	.LVL31:
+ 691 025e FBE6     		b	.L18
+ 692              	.L40:
+  59:Core/Src/hrtim.c ****   }
+ 693              		.loc 1 59 5 view .LVU237
+ 694 0260 FFF7FEFF 		bl	Error_Handler
+ 695              	.LVL32:
+ 696 0264 FFE6     		b	.L19
+ 697              	.L41:
+  67:Core/Src/hrtim.c ****   }
+ 698              		.loc 1 67 5 view .LVU238
+ 699 0266 FFF7FEFF 		bl	Error_Handler
+ 700              	.LVL33:
+ 701 026a 0CE7     		b	.L20
+ 702              	.L42:
+  84:Core/Src/hrtim.c ****   }
+ 703              		.loc 1 84 5 view .LVU239
+ 704 026c FFF7FEFF 		bl	Error_Handler
+ 705              	.LVL34:
+ 706 0270 27E7     		b	.L21
+ 707              	.L43:
+  89:Core/Src/hrtim.c ****   }
+ 708              		.loc 1 89 5 view .LVU240
+ 709 0272 FFF7FEFF 		bl	Error_Handler
+ 710              	.LVL35:
+ 711 0276 30E7     		b	.L22
+ 712              	.L44:
+  94:Core/Src/hrtim.c ****   }
+ 713              		.loc 1 94 5 view .LVU241
+ 714 0278 FFF7FEFF 		bl	Error_Handler
+ 715              	.LVL36:
+ 716 027c 39E7     		b	.L23
+ 717              	.L45:
+  99:Core/Src/hrtim.c ****   }
+ 718              		.loc 1 99 5 view .LVU242
+ 719 027e FFF7FEFF 		bl	Error_Handler
+ 720              	.LVL37:
+ 721 0282 42E7     		b	.L24
+ 722              	.L46:
+ 104:Core/Src/hrtim.c ****   }
+ 723              		.loc 1 104 5 view .LVU243
+ 724 0284 FFF7FEFF 		bl	Error_Handler
+ 725              	.LVL38:
+ 726 0288 4BE7     		b	.L25
+ 727              	.L47:
+ 108:Core/Src/hrtim.c ****   }
+ 728              		.loc 1 108 5 view .LVU244
+ 729 028a FFF7FEFF 		bl	Error_Handler
+ 730              	.LVL39:
+ 731 028e 50E7     		b	.L26
+ 732              	.L48:
+ 122:Core/Src/hrtim.c ****   }
+ 733              		.loc 1 122 5 view .LVU245
+ 734 0290 FFF7FEFF 		bl	Error_Handler
+ 735              	.LVL40:
+ 736 0294 62E7     		b	.L27
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 22
+
+
+ 737              	.L49:
+ 126:Core/Src/hrtim.c ****   }
+ 738              		.loc 1 126 5 view .LVU246
+ 739 0296 FFF7FEFF 		bl	Error_Handler
+ 740              	.LVL41:
+ 741 029a 67E7     		b	.L28
+ 742              	.L50:
+ 131:Core/Src/hrtim.c ****   }
+ 743              		.loc 1 131 5 view .LVU247
+ 744 029c FFF7FEFF 		bl	Error_Handler
+ 745              	.LVL42:
+ 746 02a0 6FE7     		b	.L29
+ 747              	.L51:
+ 144:Core/Src/hrtim.c ****   }
+ 748              		.loc 1 144 5 view .LVU248
+ 749 02a2 FFF7FEFF 		bl	Error_Handler
+ 750              	.LVL43:
+ 751 02a6 87E7     		b	.L30
+ 752              	.L52:
+ 154:Core/Src/hrtim.c ****   }
+ 753              		.loc 1 154 5 view .LVU249
+ 754 02a8 FFF7FEFF 		bl	Error_Handler
+ 755              	.LVL44:
+ 756 02ac 93E7     		b	.L31
+ 757              	.L53:
+ 166:Core/Src/hrtim.c ****   }
+ 758              		.loc 1 166 5 view .LVU250
+ 759 02ae FFF7FEFF 		bl	Error_Handler
+ 760              	.LVL45:
+ 761 02b2 A4E7     		b	.L32
+ 762              	.L54:
+ 172:Core/Src/hrtim.c ****   }
+ 763              		.loc 1 172 5 view .LVU251
+ 764 02b4 FFF7FEFF 		bl	Error_Handler
+ 765              	.LVL46:
+ 766 02b8 AFE7     		b	.L33
+ 767              	.L55:
+ 178:Core/Src/hrtim.c ****   }
+ 768              		.loc 1 178 5 view .LVU252
+ 769 02ba FFF7FEFF 		bl	Error_Handler
+ 770              	.LVL47:
+ 771 02be B6E7     		b	.L34
+ 772              	.L56:
+ 182:Core/Src/hrtim.c ****   }
+ 773              		.loc 1 182 5 view .LVU253
+ 774 02c0 FFF7FEFF 		bl	Error_Handler
+ 775              	.LVL48:
+ 776 02c4 BBE7     		b	.L35
+ 777              	.L57:
+ 186:Core/Src/hrtim.c ****   }
+ 778              		.loc 1 186 5 view .LVU254
+ 779 02c6 FFF7FEFF 		bl	Error_Handler
+ 780              	.LVL49:
+ 781 02ca BEE7     		b	.L36
+ 782              	.L59:
+ 783              		.align	2
+ 784              	.L58:
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 23
+
+
+ 785 02cc 00000000 		.word	hhrtim1
+ 786 02d0 00740140 		.word	1073837056
+ 787              		.cfi_endproc
+ 788              	.LFE123:
+ 790              		.section	.text.HAL_HRTIM_MspDeInit,"ax",%progbits
+ 791              		.align	1
+ 792              		.global	HAL_HRTIM_MspDeInit
+ 793              		.syntax unified
+ 794              		.thumb
+ 795              		.thumb_func
+ 797              	HAL_HRTIM_MspDeInit:
+ 798              	.LVL50:
+ 799              	.LFB126:
+ 241:Core/Src/hrtim.c **** 
+ 242:Core/Src/hrtim.c **** void HAL_HRTIM_MspDeInit(HRTIM_HandleTypeDef* hrtimHandle)
+ 243:Core/Src/hrtim.c **** {
+ 800              		.loc 1 243 1 view -0
+ 801              		.cfi_startproc
+ 802              		@ args = 0, pretend = 0, frame = 0
+ 803              		@ frame_needed = 0, uses_anonymous_args = 0
+ 804              		@ link register save eliminated.
+ 244:Core/Src/hrtim.c **** 
+ 245:Core/Src/hrtim.c ****   if(hrtimHandle->Instance==HRTIM1)
+ 805              		.loc 1 245 3 view .LVU256
+ 806              		.loc 1 245 17 is_stmt 0 view .LVU257
+ 807 0000 0268     		ldr	r2, [r0]
+ 808              		.loc 1 245 5 view .LVU258
+ 809 0002 054B     		ldr	r3, .L63
+ 810 0004 9A42     		cmp	r2, r3
+ 811 0006 00D0     		beq	.L62
+ 812              	.L60:
+ 246:Core/Src/hrtim.c ****   {
+ 247:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspDeInit 0 */
+ 248:Core/Src/hrtim.c **** 
+ 249:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_MspDeInit 0 */
+ 250:Core/Src/hrtim.c ****     /* Peripheral clock disable */
+ 251:Core/Src/hrtim.c ****     __HAL_RCC_HRTIM1_CLK_DISABLE();
+ 252:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspDeInit 1 */
+ 253:Core/Src/hrtim.c **** 
+ 254:Core/Src/hrtim.c ****   /* USER CODE END HRTIM1_MspDeInit 1 */
+ 255:Core/Src/hrtim.c ****   }
+ 256:Core/Src/hrtim.c **** }
+ 813              		.loc 1 256 1 view .LVU259
+ 814 0008 7047     		bx	lr
+ 815              	.L62:
+ 251:Core/Src/hrtim.c ****   /* USER CODE BEGIN HRTIM1_MspDeInit 1 */
+ 816              		.loc 1 251 5 is_stmt 1 view .LVU260
+ 817 000a 044A     		ldr	r2, .L63+4
+ 818 000c 9369     		ldr	r3, [r2, #24]
+ 819 000e 23F00053 		bic	r3, r3, #536870912
+ 820 0012 9361     		str	r3, [r2, #24]
+ 821              		.loc 1 256 1 is_stmt 0 view .LVU261
+ 822 0014 F8E7     		b	.L60
+ 823              	.L64:
+ 824 0016 00BF     		.align	2
+ 825              	.L63:
+ 826 0018 00740140 		.word	1073837056
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 24
+
+
+ 827 001c 00100240 		.word	1073876992
+ 828              		.cfi_endproc
+ 829              	.LFE126:
+ 831              		.global	hhrtim1
+ 832              		.section	.bss.hhrtim1,"aw",%nobits
+ 833              		.align	2
+ 836              	hhrtim1:
+ 837 0000 00000000 		.space	220
+ 837      00000000 
+ 837      00000000 
+ 837      00000000 
+ 837      00000000 
+ 838              		.text
+ 839              	.Letext0:
+ 840              		.file 2 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 841              		.file 3 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 842              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f334x8.h"
+ 843              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
+ 844              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_gpio.h"
+ 845              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
+ 846              		.file 8 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_hrtim.h"
+ 847              		.file 9 "Core/Inc/hrtim.h"
+ 848              		.file 10 "Core/Inc/main.h"
+ 849              		.file 11 "<built-in>"
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s 			page 25
+
+
+DEFINED SYMBOLS
+                            *ABS*:00000000 hrtim.c
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:21     .text.HAL_HRTIM_MspInit:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:27     .text.HAL_HRTIM_MspInit:00000000 HAL_HRTIM_MspInit
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:73     .text.HAL_HRTIM_MspInit:00000028 $d
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:78     .text.HAL_HRTIM_MspPostInit:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:84     .text.HAL_HRTIM_MspPostInit:00000000 HAL_HRTIM_MspPostInit
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:172    .text.HAL_HRTIM_MspPostInit:00000054 $d
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:177    .text.MX_HRTIM1_Init:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:183    .text.MX_HRTIM1_Init:00000000 MX_HRTIM1_Init
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:785    .text.MX_HRTIM1_Init:000002cc $d
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:836    .bss.hhrtim1:00000000 hhrtim1
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:791    .text.HAL_HRTIM_MspDeInit:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:797    .text.HAL_HRTIM_MspDeInit:00000000 HAL_HRTIM_MspDeInit
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:826    .text.HAL_HRTIM_MspDeInit:00000018 $d
+C:\Users\31005\AppData\Local\Temp\ccPJGFW1.s:833    .bss.hhrtim1:00000000 $d
+
+UNDEFINED SYMBOLS
+HAL_GPIO_Init
+memset
+HAL_HRTIM_Init
+HAL_HRTIM_DLLCalibrationStart
+HAL_HRTIM_PollForDLLCalibration
+HAL_HRTIM_TimeBaseConfig
+HAL_HRTIM_WaveformTimerConfig
+HAL_HRTIM_WaveformCompareConfig
+HAL_HRTIM_DeadTimeConfig
+HAL_HRTIM_WaveformOutputConfig
+Error_Handler
