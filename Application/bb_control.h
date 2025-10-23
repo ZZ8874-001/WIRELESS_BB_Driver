@@ -12,10 +12,11 @@
 // #define Frequency 75000.0f
 #define ADC_Ratio 3.3f/4096.0f
 #define Current_Out_Offset 0.1f
-#define Kp_FFB 0.1f     //前馈增量系数
-#define Voltage_Ratio 12.370f
+#define Voltage_Out_Offset 0.0f
+#define Kp_FFB 12.0f     //前馈增量系数
+#define Voltage_Ratio 12.528f
 #define Current_Ratio 10.0f
-#define Voltage_Out_Ref 20.0f
+#define Voltage_Out_Ref 24.0f
 #define Current_Out_Max 1.0f
 #define Power_Out_Limit 88.0f
 
