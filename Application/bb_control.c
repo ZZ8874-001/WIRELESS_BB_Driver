@@ -124,7 +124,6 @@ void Duty_Set_FFB()
     duty_voltage_gain_measure = bb.voltage_gain_measure_ / (bb.voltage_gain_measure_ + 1.0f);
     duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
     dutyoutput = bb.dutyoutput_PID + (duty_voltage_gain_ref - duty_voltage_gain_measure) * Kp_FFB;
-    // aaa
     dutyoutput = float_constrain(dutyoutput,bb.duty_min_,bb.duty_max_);
     bb.buck_duty_cycle_ = float_constrain(dutyoutput,bb.duty_min_,bb.duty_max_);
     bb.boost_duty_cycle_ = bb.buck_duty_cycle_;
