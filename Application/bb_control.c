@@ -22,7 +22,7 @@ void BB_Control_Init(void)
     // PID_Init(&bb.current_out_PID_,6.0f,0,0,0,1.9f,0.5f,1.9f,0.5f,0.001f);
 
     PID_Init(&bb.voltage_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.8f,20.0f,-0.1f,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);
-    PID_Init(&bb.current_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.5f,0,0,0,0,0,1/Frequency,0,Integral_Limit | OutputFilter);//0.5  0.2
+    PID_Init(&bb.current_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.5f,0,0,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);//0.5  0.2
 
     
     // 滤波器初始化
