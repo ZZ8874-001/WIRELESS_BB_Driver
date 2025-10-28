@@ -172,7 +172,7 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     static uint32_t count = 0;
-    if (htim == &htim2)
+    if (htim->Instance == TIM2)
     {
         count++;
         Buck_Boost_Task();

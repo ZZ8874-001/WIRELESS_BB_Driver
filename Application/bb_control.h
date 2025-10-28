@@ -20,7 +20,6 @@
 #define Current_Out_Max 1.0f
 #define Power_Out_Limit 88.0f
 
-
 typedef struct
 {
     float voltage_out_;
@@ -52,7 +51,7 @@ typedef struct
 
     float duty_PID_output_;
 
-    PID_t voltage_out_PID_;
+    PID_t voltage_gain_PID_;
     PID_t current_out_PID_;
 
     First_Order_Filter_t voltage_out_filter_;
@@ -74,7 +73,7 @@ enum Buck_Boost_State
 void BB_Control_Init(void);
 void Buck_Boost_Task();
 void Data_Handle();
-void Duty_Set();
+void Duty_Set_PID();
 void Duty_Set_FFB();
 void MOS_PWM_Set();
 

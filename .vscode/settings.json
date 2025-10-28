@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "bb_control.h": "c",
-        "type_traits": "c"
+        "type_traits": "c",
+        "usart.h": "c"
     }
 }
