@@ -1,5 +1,6 @@
 {
     "files.associations": {
-        "bb_control.h": "c"
+        "bb_control.h": "c",
+        "type_traits": "c"
     }
 }

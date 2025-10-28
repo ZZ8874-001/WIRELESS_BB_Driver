@@ -36,9 +36,13 @@ typedef struct
     float duty_;
     float duty_min_;
     float duty_max_;
+    float duty_changing_min_;   // 动态占空比防止输出电压过高
+    float duty_changing_max_;   
 
     float voltage_gain_measure_;
     float voltage_gain_ref_;
+    float voltage_gain_min_;
+    float voltage_gain_max_;
 
     float voltage_out_ref_;
     float current_out_ref_;
@@ -46,7 +50,7 @@ typedef struct
     float buck_duty_cycle_;
     float boost_duty_cycle_;
 
-    float dutyoutput_PID;
+    float duty_PID_output_;
 
     PID_t voltage_out_PID_;
     PID_t current_out_PID_;

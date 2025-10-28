@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 1
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc7hYAop.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 1
   28:Core/Src/dma.c **** /*----------------------------------------------------------------------------*/
   29:Core/Src/dma.c **** /* Configure DMA                                                              */
   30:Core/Src/dma.c **** /*----------------------------------------------------------------------------*/
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 2
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc7hYAop.s 			page 2
 
 
   31:Core/Src/dma.c **** 
@@ -89,7 +89,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 1
   41              	.LBB2:
   42              		.loc 1 43 3 view .LVU2
   43              		.loc 1 43 3 view .LVU3
-  44 0004 0A4B     		ldr	r3, .L3
+  44 0004 164B     		ldr	r3, .L3
   45 0006 5A69     		ldr	r2, [r3, #20]
   46 0008 42F00102 		orr	r2, r2, #1
   47 000c 5A61     		str	r2, [r3, #20]
@@ -104,10 +104,10 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 1
   44:Core/Src/dma.c **** 
   45:Core/Src/dma.c ****   /* DMA interrupt init */
   46:Core/Src/dma.c ****   /* DMA1_Channel1_IRQn interrupt configuration */
-  47:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 0, 0);
+  47:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Channel1_IRQn, 2, 0);
   56              		.loc 1 47 3 view .LVU7
   57 0018 0022     		movs	r2, #0
-  58 001a 1146     		mov	r1, r2
+  58 001a 0221     		movs	r1, #2
   59 001c 0B20     		movs	r0, #11
   60 001e FFF7FEFF 		bl	HAL_NVIC_SetPriority
   61              	.LVL0:
@@ -116,37 +116,79 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 1
   63 0022 0B20     		movs	r0, #11
   64 0024 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
   65              	.LVL1:
-  49:Core/Src/dma.c **** 
-  50:Core/Src/dma.c **** }
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 3
+  49:Core/Src/dma.c ****   /* DMA1_Channel2_IRQn interrupt configuration */
+  50:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Channel2_IRQn, 2, 0);
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc7hYAop.s 			page 3
 
 
-  66              		.loc 1 50 1 is_stmt 0 view .LVU9
-  67 0028 03B0     		add	sp, sp, #12
-  68              	.LCFI2:
-  69              		.cfi_def_cfa_offset 4
-  70              		@ sp needed
-  71 002a 5DF804FB 		ldr	pc, [sp], #4
-  72              	.L4:
-  73 002e 00BF     		.align	2
-  74              	.L3:
-  75 0030 00100240 		.word	1073876992
-  76              		.cfi_endproc
-  77              	.LFE123:
-  79              		.text
-  80              	.Letext0:
-  81              		.file 2 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f334x8.h"
-  82              		.file 3 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
-  83              		.file 4 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
-  84              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_cortex.h"
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s 			page 4
+  66              		.loc 1 50 3 view .LVU9
+  67 0028 0022     		movs	r2, #0
+  68 002a 0221     		movs	r1, #2
+  69 002c 0C20     		movs	r0, #12
+  70 002e FFF7FEFF 		bl	HAL_NVIC_SetPriority
+  71              	.LVL2:
+  51:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA1_Channel2_IRQn);
+  72              		.loc 1 51 3 view .LVU10
+  73 0032 0C20     		movs	r0, #12
+  74 0034 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+  75              	.LVL3:
+  52:Core/Src/dma.c ****   /* DMA1_Channel6_IRQn interrupt configuration */
+  53:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Channel6_IRQn, 3, 0);
+  76              		.loc 1 53 3 view .LVU11
+  77 0038 0022     		movs	r2, #0
+  78 003a 0321     		movs	r1, #3
+  79 003c 1020     		movs	r0, #16
+  80 003e FFF7FEFF 		bl	HAL_NVIC_SetPriority
+  81              	.LVL4:
+  54:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA1_Channel6_IRQn);
+  82              		.loc 1 54 3 view .LVU12
+  83 0042 1020     		movs	r0, #16
+  84 0044 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+  85              	.LVL5:
+  55:Core/Src/dma.c ****   /* DMA1_Channel7_IRQn interrupt configuration */
+  56:Core/Src/dma.c ****   HAL_NVIC_SetPriority(DMA1_Channel7_IRQn, 3, 0);
+  86              		.loc 1 56 3 view .LVU13
+  87 0048 0022     		movs	r2, #0
+  88 004a 0321     		movs	r1, #3
+  89 004c 1120     		movs	r0, #17
+  90 004e FFF7FEFF 		bl	HAL_NVIC_SetPriority
+  91              	.LVL6:
+  57:Core/Src/dma.c ****   HAL_NVIC_EnableIRQ(DMA1_Channel7_IRQn);
+  92              		.loc 1 57 3 view .LVU14
+  93 0052 1120     		movs	r0, #17
+  94 0054 FFF7FEFF 		bl	HAL_NVIC_EnableIRQ
+  95              	.LVL7:
+  58:Core/Src/dma.c **** 
+  59:Core/Src/dma.c **** }
+  96              		.loc 1 59 1 is_stmt 0 view .LVU15
+  97 0058 03B0     		add	sp, sp, #12
+  98              	.LCFI2:
+  99              		.cfi_def_cfa_offset 4
+ 100              		@ sp needed
+ 101 005a 5DF804FB 		ldr	pc, [sp], #4
+ 102              	.L4:
+ 103 005e 00BF     		.align	2
+ 104              	.L3:
+ 105 0060 00100240 		.word	1073876992
+ 106              		.cfi_endproc
+ 107              	.LFE123:
+ 109              		.text
+ 110              	.Letext0:
+ 111              		.file 2 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f334x8.h"
+ 112              		.file 3 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 113              		.file 4 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 114              		.file 5 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_cortex.h"
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc7hYAop.s 			page 4
+
+
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc7hYAop.s 			page 5
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 dma.c
-C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s:21     .text.MX_DMA_Init:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s:27     .text.MX_DMA_Init:00000000 MX_DMA_Init
-C:\Users\31005\AppData\Local\Temp\ccvNSXTY.s:75     .text.MX_DMA_Init:00000030 $d
+C:\Users\31005\AppData\Local\Temp\cc7hYAop.s:21     .text.MX_DMA_Init:00000000 $t
+C:\Users\31005\AppData\Local\Temp\cc7hYAop.s:27     .text.MX_DMA_Init:00000000 MX_DMA_Init
+C:\Users\31005\AppData\Local\Temp\cc7hYAop.s:105    .text.MX_DMA_Init:00000060 $d
 
 UNDEFINED SYMBOLS
 HAL_NVIC_SetPriority
