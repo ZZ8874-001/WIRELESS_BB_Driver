@@ -5,10 +5,7 @@ float kp_ffb1;
 uint32_t DWT_Count;
 uint32_t ADC1_Rx[2];
 uint32_t ADC2_Rx;
-Buck_Boost_Str bb;
-static GPIO_PinState debug[4];
-
-enum Buck_Boost_State bb_status = None;
+Buck_Boost_Str bb = {0};
 
 void BB_Control_Init(void)
 {
@@ -18,11 +15,6 @@ void BB_Control_Init(void)
     bb.current_out_ref_ = Current_Out_Max;
     bb.voltage_out_ref_ = Voltage_Out_Ref;
     kp_ffb1 = Kp_FFB;
-    // bb.state_ = None;
-
-    // PID初始化
-    // PID_Init(&bb.voltage_gain_PID_,20.0f,0.04f,0.001f,0,1.9f,0.5f,1.9f,0.5f,0.001f);
-    // PID_Init(&bb.current_out_PID_,6.0f,0,0,0,1.9f,0.5f,1.9f,0.5f,0.001f);
 
     PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,1000.0f,2000.0f,-0.1f,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);
     PID_Init(&bb.current_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.5f,0,0,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);//0.5  0.2
@@ -42,7 +34,6 @@ void BB_Control_Init(void)
     // 开启hrtim
     HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2 | HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2);
     HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B);
-    // __HAL_HRTIM_MASTER_ENABLE_IT(&hhrtim1,HRTIM_MASTER_IT_MREP);
 }
 
 void Buck_Boost_Task()
@@ -50,25 +41,11 @@ void Buck_Boost_Task()
     dt=DWT_GetDeltaT(&DWT_Count);
     t += dt;
     Data_Handle();
-    Duty_Set_PID();
-    Duty_Set_FFB();
+    Duty_Calculate();
     MOS_PWM_Set();
 }
-// float current_out_offset=0.0;
 void Data_Handle()
 {
-    // static uint32_t count = 0;
-    // static int flag = 1;
-    // if (flag)
-    // {
-    //     count++;    
-    //     current_out_offset+=bb.current_out_;
-    //     if(count >= 100000)
-    //     {
-    //         current_out_offset /= count;
-    //         flag = 0;
-    //     }
-    // }
 
     bb.voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
     bb.voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
@@ -80,15 +57,15 @@ void Data_Handle()
 
     if(bb.voltage_in_f_ > 1.2*Voltage_Out_Ref)
     {
-        bb_status = Buck;
+        bb.status_ = Buck;
     }
     else if(bb.voltage_in_f_ < 0.8*Voltage_Out_Ref)
     {
-        bb_status = Boost;
+        bb.status_ = Boost;
     }
     else
     {
-        bb_status = Buck_Boost;
+        bb.status_ = Buck_Boost;
     }
 
     // buck连vin,boost连vout
@@ -97,93 +74,81 @@ void Data_Handle()
     bb.voltage_gain_min_ = 0.8 * Voltage_Out_Ref / bb.voltage_in_f_;
     bb.voltage_gain_max_ = 1.6 * Voltage_Out_Ref / bb.voltage_in_f_;
     
-    bb.duty_changing_min_ = bb.voltage_gain_min_ / (bb.voltage_gain_min_ + 1.0f);
-    bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
-    
 }
-
-void Duty_Set_PID()
-{
-    static float voltage_gain_PID_output;
-    static float duty_cyc1;
-	static float duty_cyc2;
-	static float output;
-    static float dutyoutput;
-    static uint8_t count_duty_set = 0;
-
-    voltage_gain_PID_output = Inc_PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
-    if(count_duty_set%8 == 0)
-    {
-        duty_cyc2 = Inc_PID_Calculate(&bb.current_out_PID_, bb.current_out_f_, bb.current_out_ref_);//1k
-    }
-    switch (bb_status)
-    {
-    case Buck:
-        bb.duty_changing_min_ = bb.voltage_gain_min_;
-        bb.duty_changing_max_ = bb.voltage_gain_max_;
-        duty_cyc1 = voltage_gain_PID_output;
-        break;
-    
-    case Boost:
-        bb.duty_changing_min_ = 1 - 1.0f/bb.voltage_gain_min_;
-        bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
-        duty_cyc1 = 1 - 1.0f/voltage_gain_PID_output;
-        break;
-    
-    case Buck_Boost:
-        bb.duty_changing_min_ = bb.voltage_gain_min_ / (bb.voltage_gain_min_ + 1.0f);
-        bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
-        duty_cyc1 = voltage_gain_PID_output/(1.0f + voltage_gain_PID_output);
-        break;
-    
-    default:
-        break;
-    }
-
-    bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.2f
-
-    count_duty_set++;
-}
-
-void Duty_Set_FFB()
+void Duty_Calculate()
 {   
-    static float dutyoutput;
     static float duty_voltage_gain_measure;
     static float duty_voltage_gain_ref;
-    duty_voltage_gain_measure = bb.voltage_gain_measure_ / (bb.voltage_gain_measure_ + 1.0f);
-    duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+    static float duty_cyc1;
+	static float duty_cyc2;
+    static uint8_t count_duty_set_current = 0;
+
+    Inc_PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
 
     // dutyoutput = 0.25;
-    switch (bb_status)
+    switch (bb.status_)
     {
     case Buck:
+        // pid输出
+        duty_cyc1 = bb.voltage_gain_PID_.Output;
+        bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+
+        // 前馈输出
         duty_voltage_gain_measure = bb.voltage_gain_measure_;
         duty_voltage_gain_ref = bb.voltage_gain_ref_;
-        dutyoutput = bb.duty_PID_output_ + (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
-        dutyoutput = float_constrain(dutyoutput,bb.duty_changing_min_,bb.duty_changing_max_);
-        dutyoutput = float_constrain(dutyoutput,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.6f
-        bb.buck_duty_cycle_ = dutyoutput;
+        bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+
+        // 动态占空比
+        bb.duty_changing_min_ = bb.voltage_gain_min_;
+        bb.duty_changing_max_ = bb.voltage_gain_max_;
+
+        // 占空比约束
+        bb.duty_ = bb.duty_PID_output_ + bb.duty_FFB_output_;
+        bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+        bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+
+        bb.buck_duty_cycle_ = bb.duty_;
         bb.boost_duty_cycle_ = 0;
         break;
     
     case Boost:
+        
+        duty_cyc1 = 1 - 1.0f/bb.voltage_gain_PID_.Output;
+        bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+
         duty_voltage_gain_measure = 1 - 1.0f/bb.voltage_gain_measure_;
         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
-        dutyoutput = bb.duty_PID_output_ + (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
-        dutyoutput = float_constrain(dutyoutput,bb.duty_changing_min_,bb.duty_changing_max_);
-        dutyoutput = float_constrain(dutyoutput,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.6f
+        bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+
+        bb.duty_changing_min_ = 1 - 1.0f/bb.voltage_gain_min_;
+        bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+
+        bb.duty_ = bb.duty_PID_output_ + bb.duty_FFB_output_;
+        bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+        bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+
         bb.buck_duty_cycle_ = 0;
-        bb.boost_duty_cycle_ = dutyoutput;
+        bb.boost_duty_cycle_ = bb.duty_;
         break;
     
     case Buck_Boost:
+
+        duty_cyc1 = bb.voltage_gain_PID_.Output/(1.0f + bb.voltage_gain_PID_.Output);
+        bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+
         duty_voltage_gain_measure = bb.voltage_gain_measure_ / (bb.voltage_gain_measure_ + 1.0f);
         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
-        dutyoutput = bb.duty_PID_output_ + (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
-        dutyoutput = float_constrain(dutyoutput,bb.duty_changing_min_,bb.duty_changing_max_);
-        dutyoutput = float_constrain(dutyoutput,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.6f
-        bb.buck_duty_cycle_ = dutyoutput;
-        bb.boost_duty_cycle_ = dutyoutput;
+        bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+
+        bb.duty_changing_min_ = bb.voltage_gain_min_ / (bb.voltage_gain_min_ + 1.0f);
+        bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+
+        bb.duty_ = bb.duty_PID_output_ + bb.duty_FFB_output_;
+        bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+        bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+
+        bb.buck_duty_cycle_ = bb.duty_;
+        bb.boost_duty_cycle_ = bb.duty_;
         break;
     
     default:

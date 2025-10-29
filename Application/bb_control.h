@@ -20,18 +20,24 @@
 #define Current_Out_Max 1.0f
 #define Power_Out_Limit 88.0f
 
+enum Buck_Boost_State
+{
+    Buck = 0,
+    Boost,
+    Buck_Boost,
+    None,
+};
+
 typedef struct
 {
     float voltage_out_;
     float voltage_in_;
     float current_out_;
-    float power_out_;
 
     float voltage_out_f_;
     float voltage_in_f_;
     float current_out_f_;
 
-    float I_Ref_;
     float duty_;
     float duty_min_;
     float duty_max_;
@@ -50,6 +56,7 @@ typedef struct
     float boost_duty_cycle_;
 
     float duty_PID_output_;
+    float duty_FFB_output_;
 
     PID_t voltage_gain_PID_;
     PID_t current_out_PID_;
@@ -58,23 +65,16 @@ typedef struct
     First_Order_Filter_t voltage_in_filter_;
     First_Order_Filter_t current_out_filter_;
 
-    uint8_t state_;
+    enum Buck_Boost_State status_;
 
 }Buck_Boost_Str;
 
-enum Buck_Boost_State
-{
-    Buck = 0,
-    Boost,
-    Buck_Boost,
-    None,
-};
+extern Buck_Boost_Str bb;
 
 void BB_Control_Init(void);
 void Buck_Boost_Task();
 void Data_Handle();
-void Duty_Set_PID();
-void Duty_Set_FFB();
+void Duty_Calculate();
 void MOS_PWM_Set();
 
 #endif
