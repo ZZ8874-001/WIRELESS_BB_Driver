@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -58,7 +58,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
   27:Commponents/user_lib.c **** {
   30              		.loc 1 27 1 view -0
   31              		.cfi_startproc
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 2
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 2
 
 
   32              		@ args = 0, pretend = 0, frame = 0
@@ -118,7 +118,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
   67 002a 87EEA67A 		vdiv.f32	s14, s15, s13
   68              		.loc 1 46 11 discriminator 3 view .LVU18
   69 002e 30EE470A 		vsub.f32	s0, s0, s14
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 3
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 3
 
 
   70              	.LVL4:
@@ -178,7 +178,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
   65:Commponents/user_lib.c **** /**
   66:Commponents/user_lib.c ****  * @brief          斜波函数初始化
   67:Commponents/user_lib.c ****  * @author         RM
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 4
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 4
 
 
   68:Commponents/user_lib.c ****  * @param[in]      斜波函数结构体
@@ -238,7 +238,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
   88:Commponents/user_lib.c ****  * @retval         返回空
   89:Commponents/user_lib.c ****  */
   90:Commponents/user_lib.c **** float ramp_calc(ramp_function_source_t *ramp_source_type, float input)
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 5
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 5
 
 
   91:Commponents/user_lib.c **** {
@@ -298,7 +298,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
   98:Commponents/user_lib.c ****     {
  182              		.loc 1 98 13 view .LVU54
  183 0034 B4EEE70A 		vcmpe.f32	s0, s15
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 6
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 6
 
 
  184 0038 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
@@ -358,7 +358,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  115:Commponents/user_lib.c ****     }
  116:Commponents/user_lib.c ****     return num;
  227              		.loc 1 116 5 is_stmt 1 view .LVU64
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 7
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 7
 
 
  117:Commponents/user_lib.c **** }
@@ -418,7 +418,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  271              		.syntax unified
  272              		.thumb
  273              		.thumb_func
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 8
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 8
 
 
  275              	float_deadband:
@@ -478,7 +478,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  317              		.cfi_startproc
  318              		@ args = 0, pretend = 0, frame = 0
  319              		@ frame_needed = 0, uses_anonymous_args = 0
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 9
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 9
 
 
  320              		@ link register save eliminated.
@@ -538,7 +538,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  158:Commponents/user_lib.c ****         return maxValue;
  363              		.loc 1 158 16 view .LVU92
  364 0014 B0EE410A 		vmov.f32	s0, s2
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 10
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 10
 
 
  365              	.LVL22:
@@ -598,7 +598,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  167:Commponents/user_lib.c ****         return minValue;
  409              		.loc 1 167 16 view .LVU103
  410 000c 0846     		mov	r0, r1
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 11
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 11
 
 
  411              	.LVL28:
@@ -658,7 +658,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  451              	.L50:
  186:Commponents/user_lib.c ****         {
  187:Commponents/user_lib.c ****             Input -= len;
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 12
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 12
 
 
  452              		.loc 1 187 13 is_stmt 1 view .LVU114
@@ -718,7 +718,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  198:Commponents/user_lib.c ****     return Input;
  199:Commponents/user_lib.c **** }
  493              		.loc 1 199 1 view .LVU129
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 13
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 13
 
 
  494 0048 7047     		bx	lr
@@ -778,7 +778,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  208:Commponents/user_lib.c **** 
  209:Commponents/user_lib.c **** int float_rounding(float raw)
  210:Commponents/user_lib.c **** {
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 14
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 14
 
 
  544              		.loc 1 210 1 is_stmt 1 view -0
@@ -838,7 +838,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  591              		.section	.text.OLS_Init,"ax",%progbits
  592              		.align	1
  593              		.global	OLS_Init
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 15
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 15
 
 
  594              		.syntax unified
@@ -898,7 +898,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  636              		.loc 1 231 23 is_stmt 0 view .LVU162
  637 0016 2846     		mov	r0, r5
  638 0018 FFF7FEFF 		bl	malloc
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 16
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 16
 
 
  639              	.LVL43:
@@ -958,7 +958,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  245:Commponents/user_lib.c **** void OLS_Update(Ordinary_Least_Squares_t *OLS, float deltax, float y)
  246:Commponents/user_lib.c **** {
  682              		.loc 1 246 1 is_stmt 1 view -0
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 17
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 17
 
 
  683              		.cfi_startproc
@@ -1018,7 +1018,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  730 0036 8BB2     		uxth	r3, r1
  731              	.LVL50:
  732              	.L70:
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 18
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 18
 
 
  249:Commponents/user_lib.c ****     for (uint16_t i = 0; i < OLS->Order - 1; ++i)
@@ -1078,7 +1078,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  258:Commponents/user_lib.c ****     {
  259:Commponents/user_lib.c ****         OLS->Count++;
  778              		.loc 1 259 9 is_stmt 1 view .LVU214
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 19
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 19
 
 
  779              		.loc 1 259 19 is_stmt 0 view .LVU215
@@ -1138,7 +1138,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  826              		.loc 1 266 15 is_stmt 0 discriminator 3 view .LVU234
  827 00be D0ED097A 		vldr.32	s15, [r0, #36]
  828              		.loc 1 266 28 discriminator 3 view .LVU235
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 20
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 20
 
 
  829 00c2 91ED007A 		vldr.32	s14, [r1]
@@ -1198,7 +1198,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  876              		.loc 1 270 76 view .LVU255
  877 0118 25EE047A 		vmul.f32	s14, s10, s8
  878              		.loc 1 270 101 view .LVU256
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 21
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 21
 
 
  879 011c 66EE065A 		vmul.f32	s11, s12, s12
@@ -1258,7 +1258,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  927              		.loc 1 276 69 discriminator 3 view .LVU280
  928 0166 77EEE67A 		vsub.f32	s15, s15, s13
  929              		.loc 1 276 35 discriminator 3 view .LVU281
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 22
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 22
 
 
  930 016a F0EEE77A 		vabs.f32	s15, s15
@@ -1318,7 +1318,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  288:Commponents/user_lib.c **** float OLS_Derivative(Ordinary_Least_Squares_t *OLS, float deltax, float y)
  289:Commponents/user_lib.c **** {
  971              		.loc 1 289 1 is_stmt 1 view -0
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 23
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 23
 
 
  972              		.cfi_startproc
@@ -1378,7 +1378,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1019 0036 8BB2     		uxth	r3, r1
  1020              	.LVL64:
  1021              	.L80:
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 24
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 24
 
 
  292:Commponents/user_lib.c ****     for (uint16_t i = 0; i < OLS->Order - 1; ++i)
@@ -1438,7 +1438,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  301:Commponents/user_lib.c ****     {
  302:Commponents/user_lib.c ****         OLS->Count++;
  1067              		.loc 1 302 9 is_stmt 1 view .LVU332
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 25
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 25
 
 
  1068              		.loc 1 302 19 is_stmt 0 view .LVU333
@@ -1498,7 +1498,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1114              		.loc 1 310 9 is_stmt 1 discriminator 3 view .LVU351
  1115              		.loc 1 310 15 is_stmt 0 discriminator 3 view .LVU352
  1116 00be D0ED097A 		vldr.32	s15, [r0, #36]
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 26
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 26
 
 
  1117              		.loc 1 310 28 discriminator 3 view .LVU353
@@ -1558,7 +1558,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1164 0114 D0ED077A 		vldr.32	s15, [r0, #28]
  1165              		.loc 1 314 76 view .LVU373
  1166 0118 66EE277A 		vmul.f32	s15, s12, s15
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 27
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 27
 
 
  1167              		.loc 1 314 101 view .LVU374
@@ -1618,7 +1618,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1215              		.loc 1 317 64 is_stmt 1 discriminator 3 view .LVU396
  1216 0166 0133     		adds	r3, r3, #1
  1217              	.LVL73:
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 28
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 28
 
 
  317:Commponents/user_lib.c ****     for (uint16_t i = OLS->Order - OLS->Count; i < OLS->Order; ++i)
@@ -1678,7 +1678,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  333:Commponents/user_lib.c ****     return OLS->k;
  1258              		.loc 1 333 5 view .LVU406
  334:Commponents/user_lib.c **** }
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 29
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 29
 
 
  1259              		.loc 1 334 1 is_stmt 0 view .LVU407
@@ -1738,7 +1738,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1300 0010 8268     		ldr	r2, [r0, #8]
  1301              		.loc 1 349 27 discriminator 3 view .LVU419
  1302 0012 591C     		adds	r1, r3, #1
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 30
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 30
 
 
  1303 0014 02EB810C 		add	ip, r2, r1, lsl #2
@@ -1798,7 +1798,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1349              		.loc 1 352 53 view .LVU438
  1350 005a 77EE807A 		vadd.f32	s15, s15, s0
  1351              		.loc 1 352 28 view .LVU439
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 31
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 31
 
 
  1352 005e C1ED007A 		vstr.32	s15, [r1]
@@ -1858,7 +1858,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  362:Commponents/user_lib.c ****     {
  363:Commponents/user_lib.c ****         OLS->t[0] += OLS->x[i] * OLS->x[i];
  1397              		.loc 1 363 9 is_stmt 1 discriminator 3 view .LVU458
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 32
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 32
 
 
  1398              		.loc 1 363 15 is_stmt 0 discriminator 3 view .LVU459
@@ -1918,7 +1918,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1447              	.L94:
  361:Commponents/user_lib.c ****     {
  1448              		.loc 1 361 50 is_stmt 1 discriminator 1 view .LVU481
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 33
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 33
 
 
  1449 00f0 9445     		cmp	ip, r2
@@ -1978,7 +1978,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  373:Commponents/user_lib.c ****     for (uint16_t i = OLS->Order - OLS->Count; i < OLS->Order; ++i)
  1497              		.loc 1 373 5 is_stmt 1 view .LVU504
  1498              	.LBB12:
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 34
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 34
 
 
  1499              		.loc 1 373 10 view .LVU505
@@ -2038,7 +2038,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1545 0186 C0ED067A 		vstr.32	s15, [r0, #24]
  378:Commponents/user_lib.c **** 
  379:Commponents/user_lib.c ****     return OLS->k * OLS->x[OLS->Order - 1] + OLS->b;
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 35
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 35
 
 
  1546              		.loc 1 379 5 is_stmt 1 view .LVU525
@@ -2098,7 +2098,7 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1592 000e 02EB8302 		add	r2, r2, r3, lsl #2
  1593 0012 92ED007A 		vldr.32	s14, [r2]
  1594              		.loc 1 389 19 view .LVU536
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 36
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 36
 
 
  1595 0016 67EE877A 		vmul.f32	s15, s15, s14
@@ -2139,67 +2139,67 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 1
  1640              		.file 6 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\string.h"
  1641              		.file 7 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\stdlib.h"
  1642              		.file 8 "<built-in>"
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 37
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 37
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 user_lib.c
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:21     .text.Sqrt:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:27     .text.Sqrt:00000000 Sqrt
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:92     .text.Sqrt:00000054 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:98     .text.ramp_init:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:104    .text.ramp_init:00000000 ramp_init
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:134    .text.ramp_calc:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:140    .text.ramp_calc:00000000 ramp_calc
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:194    .text.abs_limit:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:200    .text.abs_limit:00000000 abs_limit
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:234    .text.sign:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:240    .text.sign:00000000 sign
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:269    .text.float_deadband:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:275    .text.float_deadband:00000000 float_deadband
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:302    .text.float_deadband:0000001c $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:307    .text.int16_deadline:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:313    .text.int16_deadline:00000000 int16_deadline
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:339    .text.float_constrain:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:345    .text.float_constrain:00000000 float_constrain
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:380    .text.int16_constrain:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:386    .text.int16_constrain:00000000 int16_constrain
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:419    .text.loop_float_constrain:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:425    .text.loop_float_constrain:00000000 loop_float_constrain
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:499    .text.theta_format:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:505    .text.theta_format:00000000 theta_format
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:529    .text.theta_format:00000010 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:535    .text.float_rounding:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:541    .text.float_rounding:00000000 float_rounding
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:586    .text.float_rounding:00000038 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1632   .bss.integer.4:00000000 integer.4
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1626   .bss.decimal.3:00000000 decimal.3
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:592    .text.OLS_Init:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:598    .text.OLS_Init:00000000 OLS_Init
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:673    .text.OLS_Update:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:679    .text.OLS_Update:00000000 OLS_Update
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:957    .text.OLS_Update:0000018c $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1620   .bss.temp.2:00000000 temp.2
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:962    .text.OLS_Derivative:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:968    .text.OLS_Derivative:00000000 OLS_Derivative
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1239   .text.OLS_Derivative:0000017c $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1614   .bss.temp.1:00000000 temp.1
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1244   .text.Get_OLS_Derivative:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1250   .text.Get_OLS_Derivative:00000000 Get_OLS_Derivative
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1266   .text.OLS_Smooth:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1272   .text.OLS_Smooth:00000000 OLS_Smooth
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1563   .text.OLS_Smooth:000001a8 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1608   .bss.temp.0:00000000 temp.0
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1568   .text.Get_OLS_Smooth:00000000 $t
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1574   .text.Get_OLS_Smooth:00000000 Get_OLS_Smooth
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1605   .bss.temp.0:00000000 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1611   .bss.temp.1:00000000 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1617   .bss.temp.2:00000000 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1623   .bss.decimal.3:00000000 $d
-C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s:1629   .bss.integer.4:00000000 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:21     .text.Sqrt:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:27     .text.Sqrt:00000000 Sqrt
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:92     .text.Sqrt:00000054 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:98     .text.ramp_init:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:104    .text.ramp_init:00000000 ramp_init
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:134    .text.ramp_calc:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:140    .text.ramp_calc:00000000 ramp_calc
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:194    .text.abs_limit:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:200    .text.abs_limit:00000000 abs_limit
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:234    .text.sign:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:240    .text.sign:00000000 sign
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:269    .text.float_deadband:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:275    .text.float_deadband:00000000 float_deadband
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:302    .text.float_deadband:0000001c $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:307    .text.int16_deadline:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:313    .text.int16_deadline:00000000 int16_deadline
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:339    .text.float_constrain:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:345    .text.float_constrain:00000000 float_constrain
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:380    .text.int16_constrain:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:386    .text.int16_constrain:00000000 int16_constrain
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:419    .text.loop_float_constrain:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:425    .text.loop_float_constrain:00000000 loop_float_constrain
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:499    .text.theta_format:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:505    .text.theta_format:00000000 theta_format
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:529    .text.theta_format:00000010 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:535    .text.float_rounding:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:541    .text.float_rounding:00000000 float_rounding
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:586    .text.float_rounding:00000038 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1632   .bss.integer.4:00000000 integer.4
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1626   .bss.decimal.3:00000000 decimal.3
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:592    .text.OLS_Init:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:598    .text.OLS_Init:00000000 OLS_Init
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:673    .text.OLS_Update:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:679    .text.OLS_Update:00000000 OLS_Update
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:957    .text.OLS_Update:0000018c $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1620   .bss.temp.2:00000000 temp.2
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:962    .text.OLS_Derivative:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:968    .text.OLS_Derivative:00000000 OLS_Derivative
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1239   .text.OLS_Derivative:0000017c $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1614   .bss.temp.1:00000000 temp.1
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1244   .text.Get_OLS_Derivative:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1250   .text.Get_OLS_Derivative:00000000 Get_OLS_Derivative
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1266   .text.OLS_Smooth:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1272   .text.OLS_Smooth:00000000 OLS_Smooth
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1563   .text.OLS_Smooth:000001a8 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1608   .bss.temp.0:00000000 temp.0
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1568   .text.Get_OLS_Smooth:00000000 $t
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1574   .text.Get_OLS_Smooth:00000000 Get_OLS_Smooth
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1605   .bss.temp.0:00000000 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1611   .bss.temp.1:00000000 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1617   .bss.temp.2:00000000 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1623   .bss.decimal.3:00000000 $d
+C:\Users\31005\AppData\Local\Temp\ccqr90DN.s:1629   .bss.integer.4:00000000 $d
 
 UNDEFINED SYMBOLS
-ARM GAS  C:\Users\31005\AppData\Local\Temp\cc5Sw66H.s 			page 38
+ARM GAS  C:\Users\31005\AppData\Local\Temp\ccqr90DN.s 			page 38
 
 
 malloc

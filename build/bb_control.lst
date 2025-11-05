@@ -1,4 +1,4 @@
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 1
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 1
 
 
    1              		.cpu cortex-m4
@@ -35,12 +35,11 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 1
    5:Application/bb_control.c **** uint32_t DWT_Count;
    6:Application/bb_control.c **** uint32_t ADC1_Rx[2];
    7:Application/bb_control.c **** uint32_t ADC2_Rx;
-   8:Application/bb_control.c **** Buck_Boost_Str bb;
-   9:Application/bb_control.c **** static GPIO_PinState debug[4];
-  10:Application/bb_control.c **** 
-  11:Application/bb_control.c **** void BB_Control_Init(void)
-  12:Application/bb_control.c **** {
-  29              		.loc 1 12 1 view -0
+   8:Application/bb_control.c **** Buck_Boost_Str bb = {0};
+   9:Application/bb_control.c **** 
+  10:Application/bb_control.c **** void BB_Control_Init(void)
+  11:Application/bb_control.c **** {
+  29              		.loc 1 11 1 view -0
   30              		.cfi_startproc
   31              		@ args = 0, pretend = 0, frame = 0
   32              		@ frame_needed = 0, uses_anonymous_args = 0
@@ -51,1044 +50,1346 @@ ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 1
   37              		.cfi_offset 4, -12
   38              		.cfi_offset 5, -8
   39              		.cfi_offset 14, -4
-  40 0002 2DED068B 		vpush.64	{d8, d9, d10}
+  40 0002 2DED048B 		vpush.64	{d8, d9}
   41              	.LCFI1:
-  42              		.cfi_def_cfa_offset 40
-  43              		.cfi_offset 80, -40
-  44              		.cfi_offset 81, -36
-  45              		.cfi_offset 82, -32
-  46              		.cfi_offset 83, -28
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 2
+  42              		.cfi_def_cfa_offset 32
+  43              		.cfi_offset 80, -32
+  44              		.cfi_offset 81, -28
+  45              		.cfi_offset 82, -24
+  46              		.cfi_offset 83, -20
+  12:Application/bb_control.c ****     bb.duty_max_ = 0.83;
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 2
 
 
-  47              		.cfi_offset 84, -24
-  48              		.cfi_offset 85, -20
-  13:Application/bb_control.c ****     bb.duty_max_ = 0.6;
-  49              		.loc 1 13 5 view .LVU1
-  50              		.loc 1 13 18 is_stmt 0 view .LVU2
-  51 0006 484C     		ldr	r4, .L3
-  52 0008 DFED489A 		vldr.32	s19, .L3+4
-  53 000c C4ED0A9A 		vstr.32	s19, [r4, #40]
-  14:Application/bb_control.c ****     bb.duty_min_ = 0.2;
-  54              		.loc 1 14 5 is_stmt 1 view .LVU3
-  55              		.loc 1 14 18 is_stmt 0 view .LVU4
-  56 0010 DFED478A 		vldr.32	s17, .L3+8
-  57 0014 C4ED098A 		vstr.32	s17, [r4, #36]
-  15:Application/bb_control.c ****     bb.duty_ = bb.duty_min_;
-  58              		.loc 1 15 5 is_stmt 1 view .LVU5
-  59              		.loc 1 15 14 is_stmt 0 view .LVU6
-  60 0018 C4ED088A 		vstr.32	s17, [r4, #32]
-  16:Application/bb_control.c ****     bb.current_out_ref_ = Current_Out_Max;
-  61              		.loc 1 16 5 is_stmt 1 view .LVU7
-  62              		.loc 1 16 25 is_stmt 0 view .LVU8
-  63 001c 4FF07E53 		mov	r3, #1065353216
-  64 0020 A364     		str	r3, [r4, #72]	@ float
-  17:Application/bb_control.c ****     bb.voltage_out_ref_ = Voltage_Out_Ref;
-  65              		.loc 1 17 5 is_stmt 1 view .LVU9
-  66              		.loc 1 17 25 is_stmt 0 view .LVU10
-  67 0022 444B     		ldr	r3, .L3+12
-  68 0024 6364     		str	r3, [r4, #68]	@ float
-  18:Application/bb_control.c ****     kp_ffb1 = Kp_FFB;
-  69              		.loc 1 18 5 is_stmt 1 view .LVU11
-  70              		.loc 1 18 13 is_stmt 0 view .LVU12
-  71 0026 444B     		ldr	r3, .L3+16
-  72 0028 444A     		ldr	r2, .L3+20
-  73 002a 1A60     		str	r2, [r3]	@ float
-  19:Application/bb_control.c ****     // bb.state_ = None;
-  20:Application/bb_control.c **** 
-  21:Application/bb_control.c ****     // PID初始化
-  22:Application/bb_control.c ****     // PID_Init(&bb.voltage_out_PID_,20.0f,0.04f,0.001f,0,1.9f,0.5f,1.9f,0.5f,0.001f);
-  23:Application/bb_control.c ****     // PID_Init(&bb.current_out_PID_,6.0f,0,0,0,1.9f,0.5f,1.9f,0.5f,0.001f);
-  24:Application/bb_control.c **** 
-  25:Application/bb_control.c ****     PID_Init(&bb.voltage_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.8f,20.0f,-0.1f,0,0,0,0.5,0,Inte
-  74              		.loc 1 25 5 is_stmt 1 view .LVU13
-  75 002c 9FED448A 		vldr.32	s16, .L3+24
-  76 0030 9FED449A 		vldr.32	s18, .L3+28
-  77 0034 9FED44AA 		vldr.32	s20, .L3+32
-  78 0038 5122     		movs	r2, #81
-  79 003a 0021     		movs	r1, #0
-  80 003c F6EE005A 		vmov.f32	s11, #5.0e-1
-  81 0040 B0EE485A 		vmov.f32	s10, s16
-  82 0044 F0EE484A 		vmov.f32	s9, s16
-  83 0048 B0EE484A 		vmov.f32	s8, s16
-  84 004c DFED3F3A 		vldr.32	s7, .L3+36
-  85 0050 B3EE043A 		vmov.f32	s6, #2.0e+1
-  86 0054 DFED3E2A 		vldr.32	s5, .L3+40
-  87 0058 B0EE492A 		vmov.f32	s4, s18
-  88 005c F0EE4A1A 		vmov.f32	s3, s20
-  89 0060 B0EE491A 		vmov.f32	s2, s18
-  90 0064 F0EE680A 		vmov.f32	s1, s17
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 3
+  47              		.loc 1 12 5 view .LVU1
+  48              		.loc 1 12 18 is_stmt 0 view .LVU2
+  49 0006 464C     		ldr	r4, .L3
+  50 0008 464B     		ldr	r3, .L3+4
+  51 000a 2362     		str	r3, [r4, #32]	@ float
+  13:Application/bb_control.c ****     bb.duty_min_ = 0.2;
+  52              		.loc 1 13 5 is_stmt 1 view .LVU3
+  53              		.loc 1 13 18 is_stmt 0 view .LVU4
+  54 000c DFED468A 		vldr.32	s17, .L3+8
+  55 0010 C4ED078A 		vstr.32	s17, [r4, #28]
+  14:Application/bb_control.c ****     bb.duty_ = bb.duty_min_;
+  56              		.loc 1 14 5 is_stmt 1 view .LVU5
+  57              		.loc 1 14 14 is_stmt 0 view .LVU6
+  58 0014 C4ED068A 		vstr.32	s17, [r4, #24]
+  15:Application/bb_control.c ****     bb.current_out_ref_ = Current_Out_Max;
+  59              		.loc 1 15 5 is_stmt 1 view .LVU7
+  60              		.loc 1 15 25 is_stmt 0 view .LVU8
+  61 0018 B7EE001A 		vmov.f32	s2, #1.0e+0
+  62 001c 84ED101A 		vstr.32	s2, [r4, #64]
+  16:Application/bb_control.c ****     bb.voltage_out_ref_ = Voltage_Out_Ref;
+  63              		.loc 1 16 5 is_stmt 1 view .LVU9
+  64              		.loc 1 16 25 is_stmt 0 view .LVU10
+  65 0020 424B     		ldr	r3, .L3+12
+  66 0022 E363     		str	r3, [r4, #60]	@ float
+  17:Application/bb_control.c ****     kp_ffb1 = Kp_FFB;
+  67              		.loc 1 17 5 is_stmt 1 view .LVU11
+  68              		.loc 1 17 13 is_stmt 0 view .LVU12
+  69 0024 424B     		ldr	r3, .L3+16
+  70 0026 434A     		ldr	r2, .L3+20
+  71 0028 1A60     		str	r2, [r3]	@ float
+  18:Application/bb_control.c **** 
+  19:Application/bb_control.c ****     PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,1000.0f,2000.0f,-0.1f,0,0,0,0.5,0,In
+  72              		.loc 1 19 5 is_stmt 1 view .LVU13
+  73 002a 9FED438A 		vldr.32	s16, .L3+24
+  74 002e 9FED439A 		vldr.32	s18, .L3+28
+  75 0032 5122     		movs	r2, #81
+  76 0034 0021     		movs	r1, #0
+  77 0036 F6EE005A 		vmov.f32	s11, #5.0e-1
+  78 003a B0EE485A 		vmov.f32	s10, s16
+  79 003e F0EE484A 		vmov.f32	s9, s16
+  80 0042 B0EE484A 		vmov.f32	s8, s16
+  81 0046 DFED3E3A 		vldr.32	s7, .L3+32
+  82 004a 9FED3E3A 		vldr.32	s6, .L3+36
+  83 004e DFED3E2A 		vldr.32	s5, .L3+40
+  84 0052 B0EE492A 		vmov.f32	s4, s18
+  85 0056 FFEE001A 		vmov.f32	s3, #-1.0e+0
+  86 005a F0EE650A 		vmov.f32	s1, s11
+  87 005e B7EE080A 		vmov.f32	s0, #1.5e+0
+  88 0062 04F15800 		add	r0, r4, #88
+  89 0066 FFF7FEFF 		bl	PID_Init
+  90              	.LVL0:
+  20:Application/bb_control.c ****     PID_Init(&bb.current_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.5f,0,0,0,0,0,0.5,0,Integral_Lim
+  91              		.loc 1 20 5 view .LVU14
+  92 006a 5122     		movs	r2, #81
+  93 006c 0021     		movs	r1, #0
+  94 006e F6EE005A 		vmov.f32	s11, #5.0e-1
+  95 0072 B0EE485A 		vmov.f32	s10, s16
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 3
 
 
-  91 0068 B0EE690A 		vmov.f32	s0, s19
-  92 006c 04F15800 		add	r0, r4, #88
-  93 0070 FFF7FEFF 		bl	PID_Init
-  94              	.LVL0:
-  26:Application/bb_control.c ****     PID_Init(&bb.current_out_PID_,0.6f,0.2f,0.001f,-0.001f,0.001f,0.5f,0,0,0,0,0,0.5,0,Integral_Lim
-  95              		.loc 1 26 5 view .LVU14
-  96 0074 5122     		movs	r2, #81
-  97 0076 0021     		movs	r1, #0
-  98 0078 F6EE005A 		vmov.f32	s11, #5.0e-1
-  99 007c B0EE485A 		vmov.f32	s10, s16
- 100 0080 F0EE484A 		vmov.f32	s9, s16
- 101 0084 B0EE484A 		vmov.f32	s8, s16
- 102 0088 F0EE483A 		vmov.f32	s7, s16
- 103 008c B0EE483A 		vmov.f32	s6, s16
- 104 0090 F0EE652A 		vmov.f32	s5, s11
- 105 0094 B0EE492A 		vmov.f32	s4, s18
- 106 0098 F0EE4A1A 		vmov.f32	s3, s20
- 107 009c B0EE491A 		vmov.f32	s2, s18
- 108 00a0 F0EE680A 		vmov.f32	s1, s17
- 109 00a4 B0EE690A 		vmov.f32	s0, s19
- 110 00a8 04F59870 		add	r0, r4, #304
- 111 00ac FFF7FEFF 		bl	PID_Init
- 112              	.LVL1:
+  96 0076 F0EE484A 		vmov.f32	s9, s16
+  97 007a B0EE484A 		vmov.f32	s8, s16
+  98 007e F0EE483A 		vmov.f32	s7, s16
+  99 0082 B0EE483A 		vmov.f32	s6, s16
+ 100 0086 F0EE652A 		vmov.f32	s5, s11
+ 101 008a B0EE492A 		vmov.f32	s4, s18
+ 102 008e DFED2F1A 		vldr.32	s3, .L3+44
+ 103 0092 B0EE491A 		vmov.f32	s2, s18
+ 104 0096 F0EE680A 		vmov.f32	s1, s17
+ 105 009a 9FED2D0A 		vldr.32	s0, .L3+48
+ 106 009e 04F59870 		add	r0, r4, #304
+ 107 00a2 FFF7FEFF 		bl	PID_Init
+ 108              	.LVL1:
+  21:Application/bb_control.c **** 
+  22:Application/bb_control.c ****     
+  23:Application/bb_control.c ****     // 滤波器初始化
+  24:Application/bb_control.c ****     First_Order_Filter_Init(&bb.voltage_in_filter_,1/Frequency,30);
+ 109              		.loc 1 24 5 view .LVU15
+ 110 00a6 9FED2B8A 		vldr.32	s16, .L3+52
+ 111 00aa F3EE0E0A 		vmov.f32	s1, #3.0e+1
+ 112 00ae B0EE480A 		vmov.f32	s0, s16
+ 113 00b2 04F50770 		add	r0, r4, #540
+ 114 00b6 FFF7FEFF 		bl	First_Order_Filter_Init
+ 115              	.LVL2:
+  25:Application/bb_control.c ****     First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,5);
+ 116              		.loc 1 25 5 view .LVU16
+ 117 00ba F1EE040A 		vmov.f32	s1, #5.0e+0
+ 118 00be B0EE480A 		vmov.f32	s0, s16
+ 119 00c2 04F50270 		add	r0, r4, #520
+ 120 00c6 FFF7FEFF 		bl	First_Order_Filter_Init
+ 121              	.LVL3:
+  26:Application/bb_control.c ****     First_Order_Filter_Init(&bb.current_out_filter_,1/Frequency,5);
+ 122              		.loc 1 26 5 view .LVU17
+ 123 00ca F1EE040A 		vmov.f32	s1, #5.0e+0
+ 124 00ce B0EE480A 		vmov.f32	s0, s16
+ 125 00d2 04F50C70 		add	r0, r4, #560
+ 126 00d6 FFF7FEFF 		bl	First_Order_Filter_Init
+ 127              	.LVL4:
   27:Application/bb_control.c **** 
-  28:Application/bb_control.c ****     
-  29:Application/bb_control.c ****     // 滤波器初始化
-  30:Application/bb_control.c ****     First_Order_Filter_Init(&bb.voltage_in_filter_,1/Frequency,30);
- 113              		.loc 1 30 5 view .LVU15
- 114 00b0 9FED288A 		vldr.32	s16, .L3+44
- 115 00b4 F3EE0E0A 		vmov.f32	s1, #3.0e+1
- 116 00b8 B0EE480A 		vmov.f32	s0, s16
- 117 00bc 04F50770 		add	r0, r4, #540
- 118 00c0 FFF7FEFF 		bl	First_Order_Filter_Init
- 119              	.LVL2:
-  31:Application/bb_control.c ****     First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,5);
- 120              		.loc 1 31 5 view .LVU16
- 121 00c4 F1EE040A 		vmov.f32	s1, #5.0e+0
- 122 00c8 B0EE480A 		vmov.f32	s0, s16
- 123 00cc 04F50270 		add	r0, r4, #520
- 124 00d0 FFF7FEFF 		bl	First_Order_Filter_Init
- 125              	.LVL3:
-  32:Application/bb_control.c ****     First_Order_Filter_Init(&bb.current_out_filter_,1/Frequency,5);
- 126              		.loc 1 32 5 view .LVU17
- 127 00d4 F1EE040A 		vmov.f32	s1, #5.0e+0
- 128 00d8 B0EE480A 		vmov.f32	s0, s16
- 129 00dc 04F50C70 		add	r0, r4, #560
- 130 00e0 FFF7FEFF 		bl	First_Order_Filter_Init
- 131              	.LVL4:
+  28:Application/bb_control.c ****     // 开启ADC
+  29:Application/bb_control.c ****     HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED);
+ 128              		.loc 1 29 5 view .LVU18
+ 129 00da 1F4D     		ldr	r5, .L3+56
+ 130 00dc 0021     		movs	r1, #0
+ 131 00de 2846     		mov	r0, r5
+ 132 00e0 FFF7FEFF 		bl	HAL_ADCEx_Calibration_Start
+ 133              	.LVL5:
+  30:Application/bb_control.c ****     HAL_ADCEx_Calibration_Start(&hadc2,ADC_SINGLE_ENDED);
+ 134              		.loc 1 30 5 view .LVU19
+ 135 00e4 1D4C     		ldr	r4, .L3+60
+ 136 00e6 0021     		movs	r1, #0
+ 137 00e8 2046     		mov	r0, r4
+ 138 00ea FFF7FEFF 		bl	HAL_ADCEx_Calibration_Start
+ 139              	.LVL6:
+  31:Application/bb_control.c ****     HAL_ADC_Start_DMA(&hadc1,ADC1_Rx,2);
+ 140              		.loc 1 31 5 view .LVU20
+ 141 00ee 0222     		movs	r2, #2
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 4
+
+
+ 142 00f0 1B49     		ldr	r1, .L3+64
+ 143 00f2 2846     		mov	r0, r5
+ 144 00f4 FFF7FEFF 		bl	HAL_ADC_Start_DMA
+ 145              	.LVL7:
+  32:Application/bb_control.c ****     HAL_ADC_Start_DMA(&hadc2,ADC2_Rx,1);
+ 146              		.loc 1 32 5 view .LVU21
+ 147 00f8 0122     		movs	r2, #1
+ 148 00fa 1A4B     		ldr	r3, .L3+68
+ 149 00fc 1968     		ldr	r1, [r3]
+ 150 00fe 2046     		mov	r0, r4
+ 151 0100 FFF7FEFF 		bl	HAL_ADC_Start_DMA
+ 152              	.LVL8:
   33:Application/bb_control.c **** 
-  34:Application/bb_control.c ****     // 开启ADC
-  35:Application/bb_control.c ****     HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED);
- 132              		.loc 1 35 5 view .LVU18
- 133 00e4 1C4D     		ldr	r5, .L3+48
- 134 00e6 0021     		movs	r1, #0
- 135 00e8 2846     		mov	r0, r5
- 136 00ea FFF7FEFF 		bl	HAL_ADCEx_Calibration_Start
- 137              	.LVL5:
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 4
+  34:Application/bb_control.c ****     // 开启hrtim
+  35:Application/bb_control.c ****     HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2 | HRTIM_OUTPUT_TB1 
+ 153              		.loc 1 35 5 view .LVU22
+ 154 0104 184C     		ldr	r4, .L3+72
+ 155 0106 0F21     		movs	r1, #15
+ 156 0108 2046     		mov	r0, r4
+ 157 010a FFF7FEFF 		bl	HAL_HRTIM_WaveformOutputStart
+ 158              	.LVL9:
+  36:Application/bb_control.c ****     HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A | HRTIM_TIM
+ 159              		.loc 1 36 5 view .LVU23
+ 160 010e 4FF4E021 		mov	r1, #458752
+ 161 0112 2046     		mov	r0, r4
+ 162 0114 FFF7FEFF 		bl	HAL_HRTIM_WaveformCountStart
+ 163              	.LVL10:
+  37:Application/bb_control.c **** }
+ 164              		.loc 1 37 1 is_stmt 0 view .LVU24
+ 165 0118 BDEC048B 		vldm	sp!, {d8-d9}
+ 166              	.LCFI2:
+ 167              		.cfi_restore 82
+ 168              		.cfi_restore 83
+ 169              		.cfi_restore 80
+ 170              		.cfi_restore 81
+ 171              		.cfi_def_cfa_offset 16
+ 172 011c 38BD     		pop	{r3, r4, r5, pc}
+ 173              	.L4:
+ 174 011e 00BF     		.align	2
+ 175              	.L3:
+ 176 0120 00000000 		.word	bb
+ 177 0124 E17A543F 		.word	1062501089
+ 178 0128 CDCC4C3E 		.word	1045220557
+ 179 012c 0000C041 		.word	1103101952
+ 180 0130 00000000 		.word	kp_ffb1
+ 181 0134 00004041 		.word	1094713344
+ 182 0138 00000000 		.word	0
+ 183 013c 6F12833A 		.word	981668463
+ 184 0140 CDCCCCBD 		.word	-1110651699
+ 185 0144 0000FA44 		.word	1157234688
+ 186 0148 00007A44 		.word	1148846080
+ 187 014c 6F1283BA 		.word	-1165815185
+ 188 0150 9A99193F 		.word	1058642330
+ 189 0154 ACC52737 		.word	925353388
+ 190 0158 00000000 		.word	hadc1
+ 191 015c 00000000 		.word	hadc2
+ 192 0160 00000000 		.word	ADC1_Rx
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 5
 
 
-  36:Application/bb_control.c ****     HAL_ADCEx_Calibration_Start(&hadc2,ADC_SINGLE_ENDED);
- 138              		.loc 1 36 5 view .LVU19
- 139 00ee 1B4C     		ldr	r4, .L3+52
- 140 00f0 0021     		movs	r1, #0
- 141 00f2 2046     		mov	r0, r4
- 142 00f4 FFF7FEFF 		bl	HAL_ADCEx_Calibration_Start
- 143              	.LVL6:
-  37:Application/bb_control.c ****     HAL_ADC_Start_DMA(&hadc1,ADC1_Rx,2);
- 144              		.loc 1 37 5 view .LVU20
- 145 00f8 0222     		movs	r2, #2
- 146 00fa 1949     		ldr	r1, .L3+56
- 147 00fc 2846     		mov	r0, r5
- 148 00fe FFF7FEFF 		bl	HAL_ADC_Start_DMA
- 149              	.LVL7:
-  38:Application/bb_control.c ****     HAL_ADC_Start_DMA(&hadc2,ADC2_Rx,1);
- 150              		.loc 1 38 5 view .LVU21
- 151 0102 0122     		movs	r2, #1
- 152 0104 174B     		ldr	r3, .L3+60
- 153 0106 1968     		ldr	r1, [r3]
- 154 0108 2046     		mov	r0, r4
- 155 010a FFF7FEFF 		bl	HAL_ADC_Start_DMA
- 156              	.LVL8:
-  39:Application/bb_control.c **** 
-  40:Application/bb_control.c ****     // 开启hrtim
-  41:Application/bb_control.c ****     HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2 | HRTIM_OUTPUT_TB1 
- 157              		.loc 1 41 5 view .LVU22
- 158 010e 164C     		ldr	r4, .L3+64
- 159 0110 0F21     		movs	r1, #15
- 160 0112 2046     		mov	r0, r4
- 161 0114 FFF7FEFF 		bl	HAL_HRTIM_WaveformOutputStart
- 162              	.LVL9:
-  42:Application/bb_control.c ****     HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A | HRTIM_TIM
- 163              		.loc 1 42 5 view .LVU23
- 164 0118 4FF4E021 		mov	r1, #458752
- 165 011c 2046     		mov	r0, r4
- 166 011e FFF7FEFF 		bl	HAL_HRTIM_WaveformCountStart
- 167              	.LVL10:
-  43:Application/bb_control.c ****     // __HAL_HRTIM_MASTER_ENABLE_IT(&hhrtim1,HRTIM_MASTER_IT_MREP);
-  44:Application/bb_control.c **** }
- 168              		.loc 1 44 1 is_stmt 0 view .LVU24
- 169 0122 BDEC068B 		vldm	sp!, {d8-d10}
- 170              	.LCFI2:
- 171              		.cfi_restore 84
- 172              		.cfi_restore 85
- 173              		.cfi_restore 82
- 174              		.cfi_restore 83
- 175              		.cfi_restore 80
- 176              		.cfi_restore 81
- 177              		.cfi_def_cfa_offset 16
- 178 0126 38BD     		pop	{r3, r4, r5, pc}
- 179              	.L4:
- 180              		.align	2
- 181              	.L3:
- 182 0128 00000000 		.word	bb
- 183 012c 9A99193F 		.word	1058642330
- 184 0130 CDCC4C3E 		.word	1045220557
- 185 0134 0000C041 		.word	1103101952
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 5
+ 193 0164 00000000 		.word	ADC2_Rx
+ 194 0168 00000000 		.word	hhrtim1
+ 195              		.cfi_endproc
+ 196              	.LFE156:
+ 198              		.global	__aeabi_f2d
+ 199              		.global	__aeabi_dcmpgt
+ 200              		.global	__aeabi_dcmplt
+ 201              		.global	__aeabi_ddiv
+ 202              		.global	__aeabi_d2f
+ 203              		.section	.text.Data_Handle,"ax",%progbits
+ 204              		.align	1
+ 205              		.global	Data_Handle
+ 206              		.syntax unified
+ 207              		.thumb
+ 208              		.thumb_func
+ 210              	Data_Handle:
+ 211              	.LFB158:
+  38:Application/bb_control.c **** 
+  39:Application/bb_control.c **** void Buck_Boost_Task()
+  40:Application/bb_control.c **** {
+  41:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
+  42:Application/bb_control.c ****     t += dt;
+  43:Application/bb_control.c ****     Data_Handle();
+  44:Application/bb_control.c ****     Duty_Calculate();
+  45:Application/bb_control.c ****     MOS_PWM_Set();
+  46:Application/bb_control.c **** }
+  47:Application/bb_control.c **** void Data_Handle()
+  48:Application/bb_control.c **** {
+ 212              		.loc 1 48 1 is_stmt 1 view -0
+ 213              		.cfi_startproc
+ 214              		@ args = 0, pretend = 0, frame = 0
+ 215              		@ frame_needed = 0, uses_anonymous_args = 0
+ 216 0000 D0B5     		push	{r4, r6, r7, lr}
+ 217              	.LCFI3:
+ 218              		.cfi_def_cfa_offset 16
+ 219              		.cfi_offset 4, -16
+ 220              		.cfi_offset 6, -12
+ 221              		.cfi_offset 7, -8
+ 222              		.cfi_offset 14, -4
+ 223 0002 2DED028B 		vpush.64	{d8}
+ 224              	.LCFI4:
+ 225              		.cfi_def_cfa_offset 24
+ 226              		.cfi_offset 80, -24
+ 227              		.cfi_offset 81, -20
+  49:Application/bb_control.c **** 
+  50:Application/bb_control.c ****     bb.voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
+ 228              		.loc 1 50 5 view .LVU26
+ 229              		.loc 1 50 37 is_stmt 0 view .LVU27
+ 230 0006 4E4B     		ldr	r3, .L16+24
+ 231              		.loc 1 50 23 view .LVU28
+ 232 0008 D3ED007A 		vldr.32	s15, [r3]	@ int
+ 233 000c B8EE670A 		vcvt.f32.u32	s0, s15
+ 234              		.loc 1 50 41 view .LVU29
+ 235 0010 DFED4C6A 		vldr.32	s13, .L16+28
+ 236 0014 20EE260A 		vmul.f32	s0, s0, s13
+ 237              		.loc 1 50 43 view .LVU30
+ 238 0018 9FED4B7A 		vldr.32	s14, .L16+32
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 6
 
 
- 186 0138 00000000 		.word	kp_ffb1
- 187 013c 00004041 		.word	1094713344
- 188 0140 00000000 		.word	0
- 189 0144 6F12833A 		.word	981668463
- 190 0148 6F1283BA 		.word	-1165815185
- 191 014c CDCCCCBD 		.word	-1110651699
- 192 0150 CDCC4C3F 		.word	1061997773
- 193 0154 ACC52737 		.word	925353388
- 194 0158 00000000 		.word	hadc1
- 195 015c 00000000 		.word	hadc2
- 196 0160 00000000 		.word	ADC1_Rx
- 197 0164 00000000 		.word	ADC2_Rx
- 198 0168 00000000 		.word	hhrtim1
- 199              		.cfi_endproc
- 200              	.LFE156:
- 202              		.global	__aeabi_f2d
- 203              		.global	__aeabi_ddiv
- 204              		.global	__aeabi_d2f
- 205              		.section	.text.Data_Handle,"ax",%progbits
- 206              		.align	1
- 207              		.global	Data_Handle
- 208              		.syntax unified
- 209              		.thumb
- 210              		.thumb_func
- 212              	Data_Handle:
- 213              	.LFB158:
-  45:Application/bb_control.c **** 
-  46:Application/bb_control.c **** void Buck_Boost_Task()
-  47:Application/bb_control.c **** {
-  48:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
-  49:Application/bb_control.c ****     t += dt;
-  50:Application/bb_control.c ****     Data_Handle();
-  51:Application/bb_control.c ****     Duty_Set();
-  52:Application/bb_control.c ****     Duty_Set_FFB();
-  53:Application/bb_control.c ****     MOS_PWM_Set();
-  54:Application/bb_control.c **** }
-  55:Application/bb_control.c **** // float current_out_offset=0.0;
-  56:Application/bb_control.c **** void Data_Handle()
-  57:Application/bb_control.c **** {
- 214              		.loc 1 57 1 is_stmt 1 view -0
- 215              		.cfi_startproc
- 216              		@ args = 0, pretend = 0, frame = 0
- 217              		@ frame_needed = 0, uses_anonymous_args = 0
- 218 0000 D0B5     		push	{r4, r6, r7, lr}
- 219              	.LCFI3:
- 220              		.cfi_def_cfa_offset 16
- 221              		.cfi_offset 4, -16
- 222              		.cfi_offset 6, -12
- 223              		.cfi_offset 7, -8
- 224              		.cfi_offset 14, -4
- 225 0002 2DED048B 		vpush.64	{d8, d9}
- 226              	.LCFI4:
- 227              		.cfi_def_cfa_offset 32
- 228              		.cfi_offset 80, -32
- 229              		.cfi_offset 81, -28
- 230              		.cfi_offset 82, -24
- 231              		.cfi_offset 83, -20
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 6
+ 239 001c 20EE070A 		vmul.f32	s0, s0, s14
+ 240              		.loc 1 50 69 view .LVU31
+ 241 0020 9FED4A6A 		vldr.32	s12, .L16+36
+ 242 0024 20EE060A 		vmul.f32	s0, s0, s12
+ 243              		.loc 1 50 21 view .LVU32
+ 244 0028 494C     		ldr	r4, .L16+40
+ 245 002a 84ED000A 		vstr.32	s0, [r4]
+  51:Application/bb_control.c ****     bb.voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
+ 246              		.loc 1 51 5 is_stmt 1 view .LVU33
+ 247              		.loc 1 51 36 is_stmt 0 view .LVU34
+ 248 002e D3ED017A 		vldr.32	s15, [r3, #4]	@ int
+ 249              		.loc 1 51 22 view .LVU35
+ 250 0032 F8EE677A 		vcvt.f32.u32	s15, s15
+ 251              		.loc 1 51 40 view .LVU36
+ 252 0036 67EEA67A 		vmul.f32	s15, s15, s13
+ 253              		.loc 1 51 42 view .LVU37
+ 254 003a 67EE877A 		vmul.f32	s15, s15, s14
+ 255              		.loc 1 51 52 view .LVU38
+ 256 003e 67EE867A 		vmul.f32	s15, s15, s12
+ 257              		.loc 1 51 20 view .LVU39
+ 258 0042 C4ED017A 		vstr.32	s15, [r4, #4]
+  52:Application/bb_control.c ****     bb.current_out_ = (float)(ADC2_Rx) * ADC_Ratio * Current_Ratio - Current_Out_Offset;
+ 259              		.loc 1 52 5 is_stmt 1 view .LVU40
+ 260              		.loc 1 52 23 is_stmt 0 view .LVU41
+ 261 0046 434B     		ldr	r3, .L16+44
+ 262 0048 D3ED007A 		vldr.32	s15, [r3]	@ int
+ 263 004c F8EE677A 		vcvt.f32.u32	s15, s15
+ 264              		.loc 1 52 40 view .LVU42
+ 265 0050 67EEA67A 		vmul.f32	s15, s15, s13
+ 266              		.loc 1 52 42 view .LVU43
+ 267 0054 67EE877A 		vmul.f32	s15, s15, s14
+ 268              		.loc 1 52 52 view .LVU44
+ 269 0058 B2EE047A 		vmov.f32	s14, #1.0e+1
+ 270 005c 67EE877A 		vmul.f32	s15, s15, s14
+ 271              		.loc 1 52 68 view .LVU45
+ 272 0060 9FED3D7A 		vldr.32	s14, .L16+48
+ 273 0064 77EEC77A 		vsub.f32	s15, s15, s14
+ 274              		.loc 1 52 21 view .LVU46
+ 275 0068 C4ED027A 		vstr.32	s15, [r4, #8]
+  53:Application/bb_control.c ****     
+  54:Application/bb_control.c ****     bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,bb.voltage_out_);
+ 276              		.loc 1 54 5 is_stmt 1 view .LVU47
+ 277              		.loc 1 54 25 is_stmt 0 view .LVU48
+ 278 006c 04F50270 		add	r0, r4, #520
+ 279 0070 FFF7FEFF 		bl	First_Order_Filter_Calculate
+ 280              	.LVL11:
+ 281              		.loc 1 54 23 view .LVU49
+ 282 0074 84ED030A 		vstr.32	s0, [r4, #12]
+  55:Application/bb_control.c ****     bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,bb.voltage_in_);
+ 283              		.loc 1 55 5 is_stmt 1 view .LVU50
+ 284              		.loc 1 55 24 is_stmt 0 view .LVU51
+ 285 0078 94ED010A 		vldr.32	s0, [r4, #4]
+ 286 007c 04F50770 		add	r0, r4, #540
+ 287 0080 FFF7FEFF 		bl	First_Order_Filter_Calculate
+ 288              	.LVL12:
+ 289              		.loc 1 55 22 view .LVU52
+ 290 0084 84ED040A 		vstr.32	s0, [r4, #16]
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 7
 
 
-  58:Application/bb_control.c ****     // static uint32_t count = 0;
-  59:Application/bb_control.c ****     // static int flag = 1;
-  60:Application/bb_control.c ****     // if (flag)
-  61:Application/bb_control.c ****     // {
-  62:Application/bb_control.c ****     //     count++;    
-  63:Application/bb_control.c ****     //     current_out_offset+=bb.current_out_;
-  64:Application/bb_control.c ****     //     if(count >= 100000)
-  65:Application/bb_control.c ****     //     {
-  66:Application/bb_control.c ****     //         current_out_offset /= count;
-  67:Application/bb_control.c ****     //         flag = 0;
-  68:Application/bb_control.c ****     //     }
-  69:Application/bb_control.c ****     // }
+  56:Application/bb_control.c ****     bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,bb.current_out_);
+ 291              		.loc 1 56 5 is_stmt 1 view .LVU53
+ 292              		.loc 1 56 25 is_stmt 0 view .LVU54
+ 293 0088 94ED020A 		vldr.32	s0, [r4, #8]
+ 294 008c 04F50C70 		add	r0, r4, #560
+ 295 0090 FFF7FEFF 		bl	First_Order_Filter_Calculate
+ 296              	.LVL13:
+ 297              		.loc 1 56 23 view .LVU55
+ 298 0094 84ED050A 		vstr.32	s0, [r4, #20]
+  57:Application/bb_control.c **** 
+  58:Application/bb_control.c ****     if(bb.voltage_in_f_ > 1.2*Voltage_Out_Ref)
+ 299              		.loc 1 58 5 is_stmt 1 view .LVU56
+ 300              		.loc 1 58 10 is_stmt 0 view .LVU57
+ 301 0098 94ED048A 		vldr.32	s16, [r4, #16]
+ 302 009c 18EE100A 		vmov	r0, s16
+ 303 00a0 FFF7FEFF 		bl	__aeabi_f2d
+ 304              	.LVL14:
+ 305 00a4 0646     		mov	r6, r0
+ 306 00a6 0F46     		mov	r7, r1
+ 307              		.loc 1 58 7 view .LVU58
+ 308 00a8 1FA3     		adr	r3, .L16
+ 309 00aa D3E90023 		ldrd	r2, [r3]
+ 310 00ae FFF7FEFF 		bl	__aeabi_dcmpgt
+ 311              	.LVL15:
+ 312 00b2 30B3     		cbz	r0, .L13
+  59:Application/bb_control.c ****     {
+  60:Application/bb_control.c ****         bb.status_ = Buck;
+ 313              		.loc 1 60 9 is_stmt 1 view .LVU59
+ 314              		.loc 1 60 20 is_stmt 0 view .LVU60
+ 315 00b4 0022     		movs	r2, #0
+ 316 00b6 84F84422 		strb	r2, [r4, #580]
+ 317              	.L8:
+  61:Application/bb_control.c ****     }
+  62:Application/bb_control.c ****     else if(bb.voltage_in_f_ < 0.8*Voltage_Out_Ref)
+  63:Application/bb_control.c ****     {
+  64:Application/bb_control.c ****         bb.status_ = Boost;
+  65:Application/bb_control.c ****     }
+  66:Application/bb_control.c ****     else
+  67:Application/bb_control.c ****     {
+  68:Application/bb_control.c ****         bb.status_ = Buck_Boost;
+  69:Application/bb_control.c ****     }
   70:Application/bb_control.c **** 
-  71:Application/bb_control.c ****     bb.voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
- 232              		.loc 1 71 5 view .LVU26
- 233              		.loc 1 71 37 is_stmt 0 view .LVU27
- 234 0006 4A4B     		ldr	r3, .L7+16
- 235              		.loc 1 71 23 view .LVU28
- 236 0008 D3ED007A 		vldr.32	s15, [r3]	@ int
- 237 000c B8EE670A 		vcvt.f32.u32	s0, s15
- 238              		.loc 1 71 41 view .LVU29
- 239 0010 DFED486A 		vldr.32	s13, .L7+20
- 240 0014 20EE260A 		vmul.f32	s0, s0, s13
- 241              		.loc 1 71 43 view .LVU30
- 242 0018 9FED477A 		vldr.32	s14, .L7+24
- 243 001c 20EE070A 		vmul.f32	s0, s0, s14
- 244              		.loc 1 71 69 view .LVU31
- 245 0020 9FED466A 		vldr.32	s12, .L7+28
- 246 0024 20EE060A 		vmul.f32	s0, s0, s12
- 247              		.loc 1 71 21 view .LVU32
- 248 0028 454C     		ldr	r4, .L7+32
- 249 002a 84ED000A 		vstr.32	s0, [r4]
-  72:Application/bb_control.c ****     bb.voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
- 250              		.loc 1 72 5 is_stmt 1 view .LVU33
- 251              		.loc 1 72 36 is_stmt 0 view .LVU34
- 252 002e D3ED017A 		vldr.32	s15, [r3, #4]	@ int
- 253              		.loc 1 72 22 view .LVU35
- 254 0032 F8EE677A 		vcvt.f32.u32	s15, s15
- 255              		.loc 1 72 40 view .LVU36
- 256 0036 67EEA67A 		vmul.f32	s15, s15, s13
- 257              		.loc 1 72 42 view .LVU37
- 258 003a 67EE877A 		vmul.f32	s15, s15, s14
- 259              		.loc 1 72 52 view .LVU38
- 260 003e 67EE867A 		vmul.f32	s15, s15, s12
- 261              		.loc 1 72 20 view .LVU39
- 262 0042 C4ED017A 		vstr.32	s15, [r4, #4]
-  73:Application/bb_control.c ****     bb.current_out_ = (float)(ADC2_Rx) * ADC_Ratio * Current_Ratio - Current_Out_Offset;
- 263              		.loc 1 73 5 is_stmt 1 view .LVU40
- 264              		.loc 1 73 23 is_stmt 0 view .LVU41
- 265 0046 3F4B     		ldr	r3, .L7+36
- 266 0048 D3ED007A 		vldr.32	s15, [r3]	@ int
- 267 004c F8EE677A 		vcvt.f32.u32	s15, s15
- 268              		.loc 1 73 40 view .LVU42
- 269 0050 67EEA67A 		vmul.f32	s15, s15, s13
- 270              		.loc 1 73 42 view .LVU43
- 271 0054 67EE877A 		vmul.f32	s15, s15, s14
- 272              		.loc 1 73 52 view .LVU44
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 7
+  71:Application/bb_control.c ****     // buck连vin,boost连vout
+  72:Application/bb_control.c ****     bb.voltage_gain_measure_ = bb.voltage_out_f_ / bb.voltage_in_f_;
+ 318              		.loc 1 72 5 is_stmt 1 view .LVU61
+ 319              		.loc 1 72 34 is_stmt 0 view .LVU62
+ 320 00ba 254C     		ldr	r4, .L16+40
+ 321 00bc 94ED037A 		vldr.32	s14, [r4, #12]
+ 322              		.loc 1 72 50 view .LVU63
+ 323 00c0 C7EE087A 		vdiv.f32	s15, s14, s16
+ 324              		.loc 1 72 30 view .LVU64
+ 325 00c4 C4ED0B7A 		vstr.32	s15, [r4, #44]
+  73:Application/bb_control.c ****     bb.voltage_gain_ref_ = Voltage_Out_Ref / bb.voltage_in_f_;
+ 326              		.loc 1 73 5 is_stmt 1 view .LVU65
+ 327              		.loc 1 73 44 is_stmt 0 view .LVU66
+ 328 00c8 B3EE087A 		vmov.f32	s14, #2.4e+1
+ 329 00cc C7EE087A 		vdiv.f32	s15, s14, s16
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 8
 
 
- 273 0058 B2EE047A 		vmov.f32	s14, #1.0e+1
- 274 005c 67EE877A 		vmul.f32	s15, s15, s14
- 275              		.loc 1 73 68 view .LVU45
- 276 0060 9FED397A 		vldr.32	s14, .L7+40
- 277 0064 77EEC77A 		vsub.f32	s15, s15, s14
- 278              		.loc 1 73 21 view .LVU46
- 279 0068 C4ED027A 		vstr.32	s15, [r4, #8]
-  74:Application/bb_control.c ****     
-  75:Application/bb_control.c ****     bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,bb.voltage_out_);
- 280              		.loc 1 75 5 is_stmt 1 view .LVU47
- 281              		.loc 1 75 25 is_stmt 0 view .LVU48
- 282 006c 04F50270 		add	r0, r4, #520
- 283 0070 FFF7FEFF 		bl	First_Order_Filter_Calculate
- 284              	.LVL11:
- 285              		.loc 1 75 23 view .LVU49
- 286 0074 84ED040A 		vstr.32	s0, [r4, #16]
-  76:Application/bb_control.c ****     bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,bb.voltage_in_);
- 287              		.loc 1 76 5 is_stmt 1 view .LVU50
- 288              		.loc 1 76 24 is_stmt 0 view .LVU51
- 289 0078 94ED010A 		vldr.32	s0, [r4, #4]
- 290 007c 04F50770 		add	r0, r4, #540
- 291 0080 FFF7FEFF 		bl	First_Order_Filter_Calculate
- 292              	.LVL12:
- 293              		.loc 1 76 22 view .LVU52
- 294 0084 84ED050A 		vstr.32	s0, [r4, #20]
-  77:Application/bb_control.c ****     bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,bb.current_out_);
- 295              		.loc 1 77 5 is_stmt 1 view .LVU53
- 296              		.loc 1 77 25 is_stmt 0 view .LVU54
- 297 0088 94ED020A 		vldr.32	s0, [r4, #8]
- 298 008c 04F50C70 		add	r0, r4, #560
- 299 0090 FFF7FEFF 		bl	First_Order_Filter_Calculate
- 300              	.LVL13:
- 301 0094 B0EE408A 		vmov.f32	s16, s0
- 302              		.loc 1 77 23 view .LVU55
- 303 0098 84ED060A 		vstr.32	s0, [r4, #24]
-  78:Application/bb_control.c **** 
-  79:Application/bb_control.c ****     // buck连vin,boost连vout
-  80:Application/bb_control.c ****     bb.voltage_gain_measure_ = bb.voltage_out_f_ / bb.voltage_in_f_;
- 304              		.loc 1 80 5 is_stmt 1 view .LVU56
- 305              		.loc 1 80 34 is_stmt 0 view .LVU57
- 306 009c 94ED049A 		vldr.32	s18, [r4, #16]
- 307              		.loc 1 80 54 view .LVU58
- 308 00a0 D4ED057A 		vldr.32	s15, [r4, #20]
- 309              		.loc 1 80 50 view .LVU59
- 310 00a4 89EE277A 		vdiv.f32	s14, s18, s15
- 311              		.loc 1 80 30 view .LVU60
- 312 00a8 84ED0D7A 		vstr.32	s14, [r4, #52]
-  81:Application/bb_control.c ****     bb.voltage_gain_ref_ = Voltage_Out_Ref / bb.voltage_in_f_;
- 313              		.loc 1 81 5 is_stmt 1 view .LVU61
- 314              		.loc 1 81 44 is_stmt 0 view .LVU62
- 315 00ac F3EE086A 		vmov.f32	s13, #2.4e+1
- 316 00b0 86EEA77A 		vdiv.f32	s14, s13, s15
- 317              		.loc 1 81 26 view .LVU63
- 318 00b4 84ED0E7A 		vstr.32	s14, [r4, #56]
-  82:Application/bb_control.c ****     bb.voltage_gain_min_ = 0.8 * Voltage_Out_Ref / bb.voltage_in_f_;
- 319              		.loc 1 82 5 is_stmt 1 view .LVU64
- 320              		.loc 1 82 54 is_stmt 0 view .LVU65
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 8
+ 330              		.loc 1 73 26 view .LVU67
+ 331 00d0 C4ED0C7A 		vstr.32	s15, [r4, #48]
+  74:Application/bb_control.c ****     bb.voltage_gain_min_ = 0.8 * Voltage_Out_Ref / bb.voltage_in_f_;
+ 332              		.loc 1 74 5 is_stmt 1 view .LVU68
+ 333              		.loc 1 74 50 is_stmt 0 view .LVU69
+ 334 00d4 3246     		mov	r2, r6
+ 335 00d6 3B46     		mov	r3, r7
+ 336 00d8 15A1     		adr	r1, .L16+8
+ 337 00da D1E90001 		ldrd	r0, [r1]
+ 338 00de FFF7FEFF 		bl	__aeabi_ddiv
+ 339              	.LVL16:
+ 340 00e2 FFF7FEFF 		bl	__aeabi_d2f
+ 341              	.LVL17:
+ 342              		.loc 1 74 26 view .LVU70
+ 343 00e6 6063     		str	r0, [r4, #52]	@ float
+  75:Application/bb_control.c ****     bb.voltage_gain_max_ = 1.6 * Voltage_Out_Ref / bb.voltage_in_f_;
+ 344              		.loc 1 75 5 is_stmt 1 view .LVU71
+ 345              		.loc 1 75 50 is_stmt 0 view .LVU72
+ 346 00e8 3246     		mov	r2, r6
+ 347 00ea 3B46     		mov	r3, r7
+ 348 00ec 12A1     		adr	r1, .L16+16
+ 349 00ee D1E90001 		ldrd	r0, [r1]
+ 350 00f2 FFF7FEFF 		bl	__aeabi_ddiv
+ 351              	.LVL18:
+ 352 00f6 FFF7FEFF 		bl	__aeabi_d2f
+ 353              	.LVL19:
+ 354              		.loc 1 75 26 view .LVU73
+ 355 00fa A063     		str	r0, [r4, #56]	@ float
+  76:Application/bb_control.c ****     
+  77:Application/bb_control.c **** }
+ 356              		.loc 1 77 1 view .LVU74
+ 357 00fc BDEC028B 		vldm	sp!, {d8}
+ 358              	.LCFI5:
+ 359              		.cfi_remember_state
+ 360              		.cfi_restore 80
+ 361              		.cfi_restore 81
+ 362              		.cfi_def_cfa_offset 16
+ 363 0100 D0BD     		pop	{r4, r6, r7, pc}
+ 364              	.L13:
+ 365              	.LCFI6:
+ 366              		.cfi_restore_state
+  62:Application/bb_control.c ****     {
+ 367              		.loc 1 62 10 is_stmt 1 view .LVU75
+  62:Application/bb_control.c ****     {
+ 368              		.loc 1 62 12 is_stmt 0 view .LVU76
+ 369 0102 0BA3     		adr	r3, .L16+8
+ 370 0104 D3E90023 		ldrd	r2, [r3]
+ 371 0108 3046     		mov	r0, r6
+ 372 010a 3946     		mov	r1, r7
+ 373 010c FFF7FEFF 		bl	__aeabi_dcmplt
+ 374              	.LVL20:
+ 375 0110 20B1     		cbz	r0, .L14
+  64:Application/bb_control.c ****     }
+ 376              		.loc 1 64 9 is_stmt 1 view .LVU77
+  64:Application/bb_control.c ****     }
+ 377              		.loc 1 64 20 is_stmt 0 view .LVU78
+ 378 0112 0F4B     		ldr	r3, .L16+40
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 9
 
 
- 321 00b8 17EE900A 		vmov	r0, s15
- 322 00bc FFF7FEFF 		bl	__aeabi_f2d
- 323              	.LVL14:
- 324 00c0 0646     		mov	r6, r0
- 325 00c2 0F46     		mov	r7, r1
- 326              		.loc 1 82 50 view .LVU66
- 327 00c4 0246     		mov	r2, r0
- 328 00c6 0B46     		mov	r3, r1
- 329 00c8 15A1     		adr	r1, .L7
- 330 00ca D1E90001 		ldrd	r0, [r1]
- 331 00ce FFF7FEFF 		bl	__aeabi_ddiv
- 332              	.LVL15:
- 333 00d2 FFF7FEFF 		bl	__aeabi_d2f
- 334              	.LVL16:
- 335 00d6 08EE900A 		vmov	s17, r0
- 336              		.loc 1 82 26 view .LVU67
- 337 00da E063     		str	r0, [r4, #60]	@ float
-  83:Application/bb_control.c ****     bb.voltage_gain_max_ = 1.2 * Voltage_Out_Ref / bb.voltage_in_f_;
- 338              		.loc 1 83 5 is_stmt 1 view .LVU68
- 339              		.loc 1 83 50 is_stmt 0 view .LVU69
- 340 00dc 3246     		mov	r2, r6
- 341 00de 3B46     		mov	r3, r7
- 342 00e0 11A1     		adr	r1, .L7+8
- 343 00e2 D1E90001 		ldrd	r0, [r1]
- 344 00e6 FFF7FEFF 		bl	__aeabi_ddiv
- 345              	.LVL17:
- 346 00ea FFF7FEFF 		bl	__aeabi_d2f
- 347              	.LVL18:
- 348 00ee 07EE900A 		vmov	s15, r0
- 349              		.loc 1 83 26 view .LVU70
- 350 00f2 2064     		str	r0, [r4, #64]	@ float
-  84:Application/bb_control.c ****     bb.duty_changing_min_ = bb.voltage_gain_min_ / (bb.voltage_gain_min_ + 1.0f);
- 351              		.loc 1 84 5 is_stmt 1 view .LVU71
- 352              		.loc 1 84 74 is_stmt 0 view .LVU72
- 353 00f4 B7EE007A 		vmov.f32	s14, #1.0e+0
- 354 00f8 38EE876A 		vadd.f32	s12, s17, s14
- 355              		.loc 1 84 50 view .LVU73
- 356 00fc C8EE866A 		vdiv.f32	s13, s17, s12
- 357              		.loc 1 84 27 view .LVU74
- 358 0100 C4ED0B6A 		vstr.32	s13, [r4, #44]
-  85:Application/bb_control.c ****     bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
- 359              		.loc 1 85 5 is_stmt 1 view .LVU75
- 360              		.loc 1 85 74 is_stmt 0 view .LVU76
- 361 0104 37EE877A 		vadd.f32	s14, s15, s14
- 362              		.loc 1 85 50 view .LVU77
- 363 0108 C7EE876A 		vdiv.f32	s13, s15, s14
- 364              		.loc 1 85 27 view .LVU78
- 365 010c C4ED0C6A 		vstr.32	s13, [r4, #48]
-  86:Application/bb_control.c ****     
-  87:Application/bb_control.c ****     bb.power_out_ = bb.voltage_out_f_ * bb.current_out_f_;
- 366              		.loc 1 87 5 is_stmt 1 view .LVU79
- 367              		.loc 1 87 39 is_stmt 0 view .LVU80
- 368 0110 28EE098A 		vmul.f32	s16, s16, s18
- 369              		.loc 1 87 19 view .LVU81
- 370 0114 84ED038A 		vstr.32	s16, [r4, #12]
-  88:Application/bb_control.c **** 
-  89:Application/bb_control.c **** }
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 9
+ 379 0114 0122     		movs	r2, #1
+ 380 0116 83F84422 		strb	r2, [r3, #580]
+ 381 011a CEE7     		b	.L8
+ 382              	.L14:
+  68:Application/bb_control.c ****     }
+ 383              		.loc 1 68 9 is_stmt 1 view .LVU79
+  68:Application/bb_control.c ****     }
+ 384              		.loc 1 68 20 is_stmt 0 view .LVU80
+ 385 011c 0C4B     		ldr	r3, .L16+40
+ 386 011e 0222     		movs	r2, #2
+ 387 0120 83F84422 		strb	r2, [r3, #580]
+ 388 0124 C9E7     		b	.L8
+ 389              	.L17:
+ 390 0126 00BF     		.align	3
+ 391              	.L16:
+ 392 0128 CCCCCCCC 		.word	-858993460
+ 393 012c CCCC3C40 		.word	1077726412
+ 394 0130 34333333 		.word	858993460
+ 395 0134 33333340 		.word	1077097267
+ 396 0138 34333333 		.word	858993460
+ 397 013c 33334340 		.word	1078145843
+ 398 0140 00000000 		.word	ADC1_Rx
+ 399 0144 33335340 		.word	1079194419
+ 400 0148 00008039 		.word	964689920
+ 401 014c B0724841 		.word	1095266992
+ 402 0150 00000000 		.word	bb
+ 403 0154 00000000 		.word	ADC2_Rx
+ 404 0158 CDCCCC3D 		.word	1036831949
+ 405              		.cfi_endproc
+ 406              	.LFE158:
+ 408              		.section	.text.Duty_Calculate,"ax",%progbits
+ 409              		.align	1
+ 410              		.global	Duty_Calculate
+ 411              		.syntax unified
+ 412              		.thumb
+ 413              		.thumb_func
+ 415              	Duty_Calculate:
+ 416              	.LFB159:
+  78:Application/bb_control.c **** void Duty_Calculate()
+  79:Application/bb_control.c **** {   
+ 417              		.loc 1 79 1 is_stmt 1 view -0
+ 418              		.cfi_startproc
+ 419              		@ args = 0, pretend = 0, frame = 0
+ 420              		@ frame_needed = 0, uses_anonymous_args = 0
+ 421 0000 10B5     		push	{r4, lr}
+ 422              	.LCFI7:
+ 423              		.cfi_def_cfa_offset 8
+ 424              		.cfi_offset 4, -8
+ 425              		.cfi_offset 14, -4
+ 426 0002 2DED028B 		vpush.64	{d8}
+ 427              	.LCFI8:
+ 428              		.cfi_def_cfa_offset 16
+ 429              		.cfi_offset 80, -16
+ 430              		.cfi_offset 81, -12
+  80:Application/bb_control.c ****     static float duty_voltage_gain_measure;
+ 431              		.loc 1 80 5 view .LVU82
+  81:Application/bb_control.c ****     static float duty_voltage_gain_ref;
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 10
 
 
- 371              		.loc 1 89 1 view .LVU82
- 372 0118 BDEC048B 		vldm	sp!, {d8-d9}
- 373              	.LCFI5:
- 374              		.cfi_restore 82
- 375              		.cfi_restore 83
- 376              		.cfi_restore 80
- 377              		.cfi_restore 81
- 378              		.cfi_def_cfa_offset 16
- 379 011c D0BD     		pop	{r4, r6, r7, pc}
- 380              	.L8:
- 381 011e 00BF     		.align	3
- 382              	.L7:
- 383 0120 34333333 		.word	858993460
- 384 0124 33333340 		.word	1077097267
- 385 0128 CCCCCCCC 		.word	-858993460
- 386 012c CCCC3C40 		.word	1077726412
- 387 0130 00000000 		.word	ADC1_Rx
- 388 0134 33335340 		.word	1079194419
- 389 0138 00008039 		.word	964689920
- 390 013c B0724841 		.word	1095266992
- 391 0140 00000000 		.word	bb
- 392 0144 00000000 		.word	ADC2_Rx
- 393 0148 CDCCCC3D 		.word	1036831949
- 394              		.cfi_endproc
- 395              	.LFE158:
- 397              		.section	.text.Duty_Set,"ax",%progbits
- 398              		.align	1
- 399              		.global	Duty_Set
- 400              		.syntax unified
- 401              		.thumb
- 402              		.thumb_func
- 404              	Duty_Set:
- 405              	.LFB159:
-  90:Application/bb_control.c **** 
-  91:Application/bb_control.c **** void Duty_Set()
-  92:Application/bb_control.c **** {
- 406              		.loc 1 92 1 is_stmt 1 view -0
- 407              		.cfi_startproc
- 408              		@ args = 0, pretend = 0, frame = 0
- 409              		@ frame_needed = 0, uses_anonymous_args = 0
- 410 0000 10B5     		push	{r4, lr}
- 411              	.LCFI6:
- 412              		.cfi_def_cfa_offset 8
- 413              		.cfi_offset 4, -8
- 414              		.cfi_offset 14, -4
-  93:Application/bb_control.c ****     static float duty_cyc1;
- 415              		.loc 1 93 5 view .LVU84
-  94:Application/bb_control.c **** 	static float duty_cyc2;
- 416              		.loc 1 94 2 view .LVU85
-  95:Application/bb_control.c **** 	static float output;
- 417              		.loc 1 95 2 view .LVU86
-  96:Application/bb_control.c ****     static float dutyoutput;
- 418              		.loc 1 96 5 view .LVU87
-  97:Application/bb_control.c ****     static float count_duty_set = 0;
- 419              		.loc 1 97 5 view .LVU88
-  98:Application/bb_control.c **** 
-  99:Application/bb_control.c ****     duty_cyc1 = Inc_PID_Calculate(&bb.voltage_out_PID_, bb.voltage_out_f_, bb.voltage_out_ref_);//1
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 10
+ 432              		.loc 1 81 5 view .LVU83
+  82:Application/bb_control.c ****     static float duty_cyc1;
+ 433              		.loc 1 82 5 view .LVU84
+  83:Application/bb_control.c **** 	static float duty_cyc2;
+ 434              		.loc 1 83 2 view .LVU85
+  84:Application/bb_control.c ****     static uint8_t count_duty_set_current = 0;
+ 435              		.loc 1 84 5 view .LVU86
+  85:Application/bb_control.c **** 
+  86:Application/bb_control.c ****     Inc_PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
+ 436              		.loc 1 86 5 view .LVU87
+ 437 0006 7E4C     		ldr	r4, .L24
+ 438 0008 D4ED0C0A 		vldr.32	s1, [r4, #48]
+ 439 000c 94ED0B0A 		vldr.32	s0, [r4, #44]
+ 440 0010 04F15800 		add	r0, r4, #88
+ 441 0014 FFF7FEFF 		bl	Inc_PID_Calculate
+ 442              	.LVL21:
+  87:Application/bb_control.c **** 
+  88:Application/bb_control.c ****     // dutyoutput = 0.25;
+  89:Application/bb_control.c ****     switch (bb.status_)
+ 443              		.loc 1 89 5 view .LVU88
+ 444              		.loc 1 89 15 is_stmt 0 view .LVU89
+ 445 0018 94F84432 		ldrb	r3, [r4, #580]	@ zero_extendqisi2
+ 446              		.loc 1 89 5 view .LVU90
+ 447 001c 012B     		cmp	r3, #1
+ 448 001e 45D0     		beq	.L19
+ 449 0020 022B     		cmp	r3, #2
+ 450 0022 00F09980 		beq	.L20
+ 451 0026 13B1     		cbz	r3, .L23
+ 452              	.L18:
+  90:Application/bb_control.c ****     {
+  91:Application/bb_control.c ****     case Buck:
+  92:Application/bb_control.c ****         // pid输出
+  93:Application/bb_control.c ****         duty_cyc1 = bb.voltage_gain_PID_.Output;
+  94:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+  95:Application/bb_control.c **** 
+  96:Application/bb_control.c ****         // 前馈输出
+  97:Application/bb_control.c ****         duty_voltage_gain_measure = bb.voltage_gain_measure_;
+  98:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_;
+  99:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 100:Application/bb_control.c **** 
+ 101:Application/bb_control.c ****         // 动态占空比
+ 102:Application/bb_control.c ****         bb.duty_changing_min_ = bb.voltage_gain_min_;
+ 103:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_;
+ 104:Application/bb_control.c **** 
+ 105:Application/bb_control.c ****         // 占空比约束
+ 106:Application/bb_control.c ****         bb.duty_ = bb.duty_PID_output_ + bb.duty_FFB_output_;
+ 107:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 108:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 109:Application/bb_control.c **** 
+ 110:Application/bb_control.c ****         bb.buck_duty_cycle_ = bb.duty_;
+ 111:Application/bb_control.c ****         bb.boost_duty_cycle_ = 0;
+ 112:Application/bb_control.c ****         break;
+ 113:Application/bb_control.c ****     
+ 114:Application/bb_control.c ****     case Boost:
+ 115:Application/bb_control.c ****         
+ 116:Application/bb_control.c ****         duty_cyc1 = 1 - 1.0f/bb.voltage_gain_PID_.Output;
+ 117:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 11
 
 
- 420              		.loc 1 99 5 view .LVU89
- 421              		.loc 1 99 17 is_stmt 0 view .LVU90
- 422 0002 1E48     		ldr	r0, .L15
- 423 0004 D0ED110A 		vldr.32	s1, [r0, #68]
- 424 0008 90ED040A 		vldr.32	s0, [r0, #16]
- 425 000c 5830     		adds	r0, r0, #88
- 426 000e FFF7FEFF 		bl	Inc_PID_Calculate
- 427              	.LVL19:
- 428              		.loc 1 99 15 view .LVU91
- 429 0012 1B4B     		ldr	r3, .L15+4
- 430 0014 83ED000A 		vstr.32	s0, [r3]
- 100:Application/bb_control.c ****     if(count_duty_set >= 10)
- 431              		.loc 1 100 5 is_stmt 1 view .LVU92
- 432              		.loc 1 100 23 is_stmt 0 view .LVU93
- 433 0018 1A4B     		ldr	r3, .L15+8
- 434 001a 93ED007A 		vldr.32	s14, [r3]
- 435              		.loc 1 100 7 view .LVU94
- 436 001e F2EE047A 		vmov.f32	s15, #1.0e+1
- 437 0022 B4EEE77A 		vcmpe.f32	s14, s15
- 438 0026 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 439 002a 17DA     		bge	.L14
- 440              	.L10:
- 101:Application/bb_control.c ****     {
- 102:Application/bb_control.c ****         duty_cyc2 = Inc_PID_Calculate(&bb.current_out_PID_, bb.current_out_f_, bb.current_out_ref_)
- 103:Application/bb_control.c ****         count_duty_set = 0;
- 104:Application/bb_control.c ****     }
- 105:Application/bb_control.c **** 
- 106:Application/bb_control.c ****     bb.duty_PID_output_ = float_constrain(duty_cyc1, 0 ,2.0f * bb.duty_max_);//0 -- 1.2f
- 441              		.loc 1 106 5 is_stmt 1 view .LVU95
- 442              		.loc 1 106 66 is_stmt 0 view .LVU96
- 443 002c 134C     		ldr	r4, .L15
- 444 002e 94ED0A1A 		vldr.32	s2, [r4, #40]
- 445              		.loc 1 106 27 view .LVU97
- 446 0032 31EE011A 		vadd.f32	s2, s2, s2
- 447 0036 DFED140A 		vldr.32	s1, .L15+12
- 448 003a 114B     		ldr	r3, .L15+4
- 449 003c 93ED000A 		vldr.32	s0, [r3]
- 450 0040 FFF7FEFF 		bl	float_constrain
- 451              	.LVL20:
- 452              		.loc 1 106 25 view .LVU98
- 453 0044 84ED150A 		vstr.32	s0, [r4, #84]
- 107:Application/bb_control.c **** 
- 108:Application/bb_control.c ****     count_duty_set++;
- 454              		.loc 1 108 5 is_stmt 1 view .LVU99
- 455              		.loc 1 108 19 is_stmt 0 view .LVU100
- 456 0048 0E4B     		ldr	r3, .L15+8
- 457 004a D3ED007A 		vldr.32	s15, [r3]
- 458 004e B7EE007A 		vmov.f32	s14, #1.0e+0
- 459 0052 77EE877A 		vadd.f32	s15, s15, s14
- 460 0056 C3ED007A 		vstr.32	s15, [r3]
- 109:Application/bb_control.c **** }
- 461              		.loc 1 109 1 view .LVU101
- 462 005a 10BD     		pop	{r4, pc}
- 463              	.L14:
- 102:Application/bb_control.c ****         count_duty_set = 0;
- 464              		.loc 1 102 9 is_stmt 1 view .LVU102
- 102:Application/bb_control.c ****         count_duty_set = 0;
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 11
-
-
- 465              		.loc 1 102 21 is_stmt 0 view .LVU103
- 466 005c 0748     		ldr	r0, .L15
- 467 005e D0ED120A 		vldr.32	s1, [r0, #72]
- 468 0062 90ED060A 		vldr.32	s0, [r0, #24]
- 469 0066 00F59870 		add	r0, r0, #304
- 470 006a FFF7FEFF 		bl	Inc_PID_Calculate
- 471              	.LVL21:
- 102:Application/bb_control.c ****         count_duty_set = 0;
- 472              		.loc 1 102 19 view .LVU104
- 473 006e 074B     		ldr	r3, .L15+16
- 474 0070 83ED000A 		vstr.32	s0, [r3]
- 103:Application/bb_control.c ****     }
- 475              		.loc 1 103 9 is_stmt 1 view .LVU105
- 103:Application/bb_control.c ****     }
- 476              		.loc 1 103 24 is_stmt 0 view .LVU106
- 477 0074 034B     		ldr	r3, .L15+8
- 478 0076 0022     		movs	r2, #0
- 479 0078 1A60     		str	r2, [r3]	@ float
- 480 007a D7E7     		b	.L10
- 481              	.L16:
- 482              		.align	2
- 483              	.L15:
- 484 007c 00000000 		.word	bb
- 485 0080 00000000 		.word	duty_cyc1.5
- 486 0084 00000000 		.word	count_duty_set.4
- 487 0088 00000000 		.word	0
- 488 008c 00000000 		.word	duty_cyc2.3
- 489              		.cfi_endproc
- 490              	.LFE159:
- 492              		.section	.text.Duty_Set_FFB,"ax",%progbits
- 493              		.align	1
- 494              		.global	Duty_Set_FFB
- 495              		.syntax unified
- 496              		.thumb
- 497              		.thumb_func
- 499              	Duty_Set_FFB:
- 500              	.LFB160:
- 110:Application/bb_control.c **** 
- 111:Application/bb_control.c **** void Duty_Set_FFB()
- 112:Application/bb_control.c **** {   
- 501              		.loc 1 112 1 is_stmt 1 view -0
- 502              		.cfi_startproc
- 503              		@ args = 0, pretend = 0, frame = 0
- 504              		@ frame_needed = 0, uses_anonymous_args = 0
- 505 0000 38B5     		push	{r3, r4, r5, lr}
- 506              	.LCFI7:
- 507              		.cfi_def_cfa_offset 16
- 508              		.cfi_offset 3, -16
- 509              		.cfi_offset 4, -12
- 510              		.cfi_offset 5, -8
- 511              		.cfi_offset 14, -4
- 113:Application/bb_control.c ****     static float dutyoutput;
- 512              		.loc 1 113 5 view .LVU108
- 114:Application/bb_control.c ****     static float duty_voltage_gain_measure;
- 513              		.loc 1 114 5 view .LVU109
- 115:Application/bb_control.c ****     static float duty_voltage_gain_ref;
- 514              		.loc 1 115 5 view .LVU110
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 12
-
-
- 116:Application/bb_control.c ****     duty_voltage_gain_measure = bb.voltage_gain_measure_ / (bb.voltage_gain_measure_ + 1.0f);
- 515              		.loc 1 116 5 view .LVU111
- 516              		.loc 1 116 35 is_stmt 0 view .LVU112
- 517 0002 1B4C     		ldr	r4, .L19
- 518 0004 94ED0D7A 		vldr.32	s14, [r4, #52]
- 519              		.loc 1 116 86 view .LVU113
- 520 0008 F7EE007A 		vmov.f32	s15, #1.0e+0
- 521 000c 37EE276A 		vadd.f32	s12, s14, s15
- 522              		.loc 1 116 58 view .LVU114
- 523 0010 C7EE066A 		vdiv.f32	s13, s14, s12
- 524              		.loc 1 116 31 view .LVU115
- 525 0014 174B     		ldr	r3, .L19+4
- 526 0016 C3ED006A 		vstr.32	s13, [r3]
- 117:Application/bb_control.c ****     duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
- 527              		.loc 1 117 5 is_stmt 1 view .LVU116
- 528              		.loc 1 117 31 is_stmt 0 view .LVU117
- 529 001a 94ED0E6A 		vldr.32	s12, [r4, #56]
- 530              		.loc 1 117 74 view .LVU118
- 531 001e 36EE277A 		vadd.f32	s14, s12, s15
- 532              		.loc 1 117 50 view .LVU119
- 533 0022 C6EE077A 		vdiv.f32	s15, s12, s14
- 534              		.loc 1 117 27 view .LVU120
- 535 0026 144B     		ldr	r3, .L19+8
- 536 0028 C3ED007A 		vstr.32	s15, [r3]
- 118:Application/bb_control.c ****     dutyoutput = bb.duty_PID_output_ + (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb
- 537              		.loc 1 118 5 is_stmt 1 view .LVU121
- 538              		.loc 1 118 20 is_stmt 0 view .LVU122
- 539 002c 94ED150A 		vldr.32	s0, [r4, #84]
- 540              		.loc 1 118 63 view .LVU123
- 541 0030 77EEE67A 		vsub.f32	s15, s15, s13
- 542              		.loc 1 118 92 view .LVU124
- 543 0034 114B     		ldr	r3, .L19+12
- 544 0036 93ED007A 		vldr.32	s14, [r3]
- 545 003a 67EE877A 		vmul.f32	s15, s15, s14
- 546              		.loc 1 118 38 view .LVU125
- 547 003e 30EE270A 		vadd.f32	s0, s0, s15
- 548              		.loc 1 118 16 view .LVU126
- 549 0042 0F4D     		ldr	r5, .L19+16
- 550 0044 85ED000A 		vstr.32	s0, [r5]
- 119:Application/bb_control.c ****     dutyoutput = float_constrain(dutyoutput,bb.duty_changing_min_,bb.duty_changing_max_);
- 551              		.loc 1 119 5 is_stmt 1 view .LVU127
- 552              		.loc 1 119 18 is_stmt 0 view .LVU128
- 553 0048 94ED0C1A 		vldr.32	s2, [r4, #48]
- 554 004c D4ED0B0A 		vldr.32	s1, [r4, #44]
- 555 0050 FFF7FEFF 		bl	float_constrain
- 556              	.LVL22:
- 557              		.loc 1 119 16 view .LVU129
- 558 0054 85ED000A 		vstr.32	s0, [r5]
- 120:Application/bb_control.c ****     // dutyoutput = 0.25;
- 121:Application/bb_control.c ****     bb.buck_duty_cycle_ = float_constrain(dutyoutput,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.6f
- 559              		.loc 1 121 5 is_stmt 1 view .LVU130
- 560              		.loc 1 121 27 is_stmt 0 view .LVU131
- 561 0058 94ED0A1A 		vldr.32	s2, [r4, #40]
- 562 005c D4ED090A 		vldr.32	s1, [r4, #36]
- 563 0060 FFF7FEFF 		bl	float_constrain
- 564              	.LVL23:
- 565              		.loc 1 121 25 view .LVU132
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 13
-
-
- 566 0064 84ED130A 		vstr.32	s0, [r4, #76]
- 122:Application/bb_control.c ****     bb.boost_duty_cycle_ = bb.buck_duty_cycle_;
- 567              		.loc 1 122 5 is_stmt 1 view .LVU133
- 568              		.loc 1 122 26 is_stmt 0 view .LVU134
- 569 0068 84ED140A 		vstr.32	s0, [r4, #80]
- 123:Application/bb_control.c **** }
- 570              		.loc 1 123 1 view .LVU135
- 571 006c 38BD     		pop	{r3, r4, r5, pc}
- 572              	.L20:
- 573 006e 00BF     		.align	2
- 574              	.L19:
- 575 0070 00000000 		.word	bb
- 576 0074 00000000 		.word	duty_voltage_gain_measure.2
- 577 0078 00000000 		.word	duty_voltage_gain_ref.1
- 578 007c 00000000 		.word	kp_ffb1
- 579 0080 00000000 		.word	dutyoutput.0
- 580              		.cfi_endproc
- 581              	.LFE160:
- 583              		.section	.text.MOS_PWM_Set,"ax",%progbits
- 584              		.align	1
- 585              		.global	MOS_PWM_Set
- 586              		.syntax unified
- 587              		.thumb
- 588              		.thumb_func
- 590              	MOS_PWM_Set:
- 591              	.LFB161:
- 124:Application/bb_control.c **** 
- 125:Application/bb_control.c **** void MOS_PWM_Set()
- 126:Application/bb_control.c **** {
- 592              		.loc 1 126 1 is_stmt 1 view -0
- 593              		.cfi_startproc
- 594              		@ args = 0, pretend = 0, frame = 0
- 595              		@ frame_needed = 0, uses_anonymous_args = 0
- 596 0000 08B5     		push	{r3, lr}
- 597              	.LCFI8:
- 598              		.cfi_def_cfa_offset 8
- 599              		.cfi_offset 3, -8
- 600              		.cfi_offset 14, -4
- 127:Application/bb_control.c ****     if (bb.voltage_out_f_ > bb.voltage_out_ref_)
- 601              		.loc 1 127 5 view .LVU137
- 602              		.loc 1 127 11 is_stmt 0 view .LVU138
- 603 0002 2B4B     		ldr	r3, .L28
- 604 0004 93ED047A 		vldr.32	s14, [r3, #16]
- 605              		.loc 1 127 31 view .LVU139
- 606 0008 D3ED117A 		vldr.32	s15, [r3, #68]
- 607              		.loc 1 127 8 view .LVU140
- 608 000c B4EEE77A 		vcmpe.f32	s14, s15
- 609 0010 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
- 610 0014 44DD     		ble	.L26
- 128:Application/bb_control.c ****     {
- 129:Application/bb_control.c ****         HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_SET);
- 611              		.loc 1 129 9 is_stmt 1 view .LVU141
- 612 0016 0122     		movs	r2, #1
- 613 0018 4021     		movs	r1, #64
- 614 001a 4FF09040 		mov	r0, #1207959552
- 615 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
- 616              	.LVL24:
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 14
-
-
- 617              	.L24:
- 130:Application/bb_control.c ****     }
- 131:Application/bb_control.c ****     else
- 132:Application/bb_control.c ****     {
- 133:Application/bb_control.c ****         HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_RESET);
- 134:Application/bb_control.c ****     }
+ 118:Application/bb_control.c **** 
+ 119:Application/bb_control.c ****         duty_voltage_gain_measure = 1 - 1.0f/bb.voltage_gain_measure_;
+ 120:Application/bb_control.c ****         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+ 121:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 122:Application/bb_control.c **** 
+ 123:Application/bb_control.c ****         bb.duty_changing_min_ = 1 - 1.0f/bb.voltage_gain_min_;
+ 124:Application/bb_control.c ****         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+ 125:Application/bb_control.c **** 
+ 126:Application/bb_control.c ****         bb.duty_ = bb.duty_PID_output_ + bb.duty_FFB_output_;
+ 127:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 128:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 129:Application/bb_control.c **** 
+ 130:Application/bb_control.c ****         bb.buck_duty_cycle_ = 0;
+ 131:Application/bb_control.c ****         bb.boost_duty_cycle_ = bb.duty_;
+ 132:Application/bb_control.c ****         break;
+ 133:Application/bb_control.c ****     
+ 134:Application/bb_control.c ****     case Buck_Boost:
  135:Application/bb_control.c **** 
- 136:Application/bb_control.c ****     // if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) == GPIO_PIN_RESET)
- 137:Application/bb_control.c ****     // {
- 138:Application/bb_control.c ****         // HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_RESET);
- 139:Application/bb_control.c ****         // HRTIM1->sMasterRegs.MCMP1R = 0;
- 140:Application/bb_control.c ****         // HRTIM1->sMasterRegs.MCMP2R = (1 + 1) / 2 * Hrtim_Period;
- 141:Application/bb_control.c ****         // HRTIM1->sMasterRegs.MCMP3R = 0;
- 142:Application/bb_control.c ****         // HRTIM1->sMasterRegs.MCMP4R = (1 + 1) / 2 * Hrtim_Period;
- 143:Application/bb_control.c ****     // }
- 144:Application/bb_control.c ****     // else if(HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10) == GPIO_PIN_SET)
- 145:Application/bb_control.c ****     // {
- 146:Application/bb_control.c ****         HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_SET);
- 618              		.loc 1 146 9 view .LVU142
- 619 0022 0122     		movs	r2, #1
- 620 0024 4021     		movs	r1, #64
- 621 0026 4FF09040 		mov	r0, #1207959552
- 622 002a FFF7FEFF 		bl	HAL_GPIO_WritePin
- 623              	.LVL25:
- 147:Application/bb_control.c ****         HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;
- 624              		.loc 1 147 9 view .LVU143
- 625              		.loc 1 147 50 is_stmt 0 view .LVU144
- 626 002e 204A     		ldr	r2, .L28
- 627 0030 D2ED137A 		vldr.32	s15, [r2, #76]
- 628              		.loc 1 147 46 view .LVU145
- 629 0034 F7EE006A 		vmov.f32	s13, #1.0e+0
- 630 0038 76EEE77A 		vsub.f32	s15, s13, s15
- 631              		.loc 1 147 41 view .LVU146
- 632 003c 36EEE77A 		vsub.f32	s14, s13, s15
- 633              		.loc 1 147 72 view .LVU147
- 634 0040 F6EE005A 		vmov.f32	s11, #5.0e-1
- 635 0044 27EE257A 		vmul.f32	s14, s14, s11
- 636              		.loc 1 147 76 view .LVU148
- 637 0048 9FED1A6A 		vldr.32	s12, .L28+4
- 638 004c 27EE067A 		vmul.f32	s14, s14, s12
- 639              		.loc 1 147 36 view .LVU149
- 640 0050 BCEEC77A 		vcvt.u32.f32	s14, s14
- 641 0054 184B     		ldr	r3, .L28+8
- 642 0056 83ED077A 		vstr.32	s14, [r3, #28]	@ int
- 148:Application/bb_control.c ****         HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;
- 643              		.loc 1 148 9 is_stmt 1 view .LVU150
- 644              		.loc 1 148 41 is_stmt 0 view .LVU151
- 645 005a 77EEA67A 		vadd.f32	s15, s15, s13
- 646              		.loc 1 148 72 view .LVU152
- 647 005e 67EEA57A 		vmul.f32	s15, s15, s11
- 648              		.loc 1 148 76 view .LVU153
- 649 0062 67EE867A 		vmul.f32	s15, s15, s12
- 650              		.loc 1 148 36 view .LVU154
- 651 0066 FCEEE77A 		vcvt.u32.f32	s15, s15
- 652 006a C3ED097A 		vstr.32	s15, [r3, #36]	@ int
- 149:Application/bb_control.c ****         HRTIM1->sMasterRegs.MCMP3R = (1 - (1 - bb.boost_duty_cycle_ )) / 2 * Hrtim_Period;
- 653              		.loc 1 149 9 is_stmt 1 view .LVU155
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 15
+ 136:Application/bb_control.c ****         duty_cyc1 = bb.voltage_gain_PID_.Output/(1.0f + bb.voltage_gain_PID_.Output);
+ 137:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 138:Application/bb_control.c **** 
+ 139:Application/bb_control.c ****         duty_voltage_gain_measure = bb.voltage_gain_measure_ / (bb.voltage_gain_measure_ + 1.0f);
+ 140:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+ 141:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 142:Application/bb_control.c **** 
+ 143:Application/bb_control.c ****         bb.duty_changing_min_ = bb.voltage_gain_min_ / (bb.voltage_gain_min_ + 1.0f);
+ 144:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+ 145:Application/bb_control.c **** 
+ 146:Application/bb_control.c ****         bb.duty_ = bb.duty_PID_output_ + bb.duty_FFB_output_;
+ 147:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 148:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 149:Application/bb_control.c **** 
+ 150:Application/bb_control.c ****         bb.buck_duty_cycle_ = bb.duty_;
+ 151:Application/bb_control.c ****         bb.boost_duty_cycle_ = bb.duty_;
+ 152:Application/bb_control.c ****         break;
+ 153:Application/bb_control.c ****     
+ 154:Application/bb_control.c ****     default:
+ 155:Application/bb_control.c ****         break;
+ 156:Application/bb_control.c ****     }
+ 157:Application/bb_control.c **** }
+ 453              		.loc 1 157 1 view .LVU91
+ 454 0028 BDEC028B 		vldm	sp!, {d8}
+ 455              	.LCFI9:
+ 456              		.cfi_remember_state
+ 457              		.cfi_restore 80
+ 458              		.cfi_restore 81
+ 459              		.cfi_def_cfa_offset 8
+ 460 002c 10BD     		pop	{r4, pc}
+ 461              	.L23:
+ 462              	.LCFI10:
+ 463              		.cfi_restore_state
+  93:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 464              		.loc 1 93 9 is_stmt 1 view .LVU92
+  93:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 465              		.loc 1 93 41 is_stmt 0 view .LVU93
+ 466 002e 94ED230A 		vldr.32	s0, [r4, #140]
+  93:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 12
 
 
- 654              		.loc 1 149 50 is_stmt 0 view .LVU156
- 655 006e D2ED147A 		vldr.32	s15, [r2, #80]
- 656              		.loc 1 149 46 view .LVU157
- 657 0072 76EEE77A 		vsub.f32	s15, s13, s15
- 658              		.loc 1 149 41 view .LVU158
- 659 0076 36EEE77A 		vsub.f32	s14, s13, s15
- 660              		.loc 1 149 72 view .LVU159
- 661 007a 27EE257A 		vmul.f32	s14, s14, s11
- 662              		.loc 1 149 76 view .LVU160
- 663 007e 27EE067A 		vmul.f32	s14, s14, s12
- 664              		.loc 1 149 36 view .LVU161
- 665 0082 BCEEC77A 		vcvt.u32.f32	s14, s14
- 666 0086 83ED0A7A 		vstr.32	s14, [r3, #40]	@ int
- 150:Application/bb_control.c ****         HRTIM1->sMasterRegs.MCMP4R = (1 + (1 - bb.boost_duty_cycle_ )) / 2 * Hrtim_Period;
- 667              		.loc 1 150 9 is_stmt 1 view .LVU162
- 668              		.loc 1 150 41 is_stmt 0 view .LVU163
- 669 008a 77EEA67A 		vadd.f32	s15, s15, s13
- 670              		.loc 1 150 72 view .LVU164
- 671 008e 67EEA57A 		vmul.f32	s15, s15, s11
- 672              		.loc 1 150 76 view .LVU165
- 673 0092 67EE867A 		vmul.f32	s15, s15, s12
- 674              		.loc 1 150 36 view .LVU166
- 675 0096 FCEEE77A 		vcvt.u32.f32	s15, s15
- 676 009a C3ED0B7A 		vstr.32	s15, [r3, #44]	@ int
- 151:Application/bb_control.c ****     // }
- 152:Application/bb_control.c **** }...
- 677              		.loc 1 152 1 view .LVU167
- 678 009e 08BD     		pop	{r3, pc}
- 679              	.L26:
- 133:Application/bb_control.c ****         HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_RESET);
- 680              		.loc 1 133 9 is_stmt 1 view .LVU168
- 681 00a0 0022     		movs	r2, #0
- 682 00a2 4021     		movs	r1, #64
- 683 00a4 4FF09040 		mov	r0, #1207959552
- 684 00a8 FFF7FEFF 		bl	HAL_GPIO_WritePin
- 685              	.LVL26:
- 686 00ac B9E7     		b	.L24
- 687              	.L29:
- 688 00ae 00BF     		.align	2
- 689              	.L28:
- 690 00b0 00000000 		.word	bb
- 691 00b4 00003447 		.word	1194590208
- 692 00b8 00740140 		.word	1073837056
- 693              		.cfi_endproc
- 694              	.LFE161:
- 696              		.section	.text.Buck_Boost_Task,"ax",%progbits
- 697              		.align	1
- 698              		.global	Buck_Boost_Task
- 699              		.syntax unified
- 700              		.thumb
- 701              		.thumb_func
- 703              	Buck_Boost_Task:
- 704              	.LFB157:
-  47:Application/bb_control.c **** {
- 705              		.loc 1 47 1 view -0
- 706              		.cfi_startproc
- 707              		@ args = 0, pretend = 0, frame = 0
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 16
+ 467              		.loc 1 93 19 view .LVU94
+ 468 0032 744B     		ldr	r3, .L24+4
+ 469 0034 83ED000A 		vstr.32	s0, [r3]
+  94:Application/bb_control.c **** 
+ 470              		.loc 1 94 9 is_stmt 1 view .LVU95
+  94:Application/bb_control.c **** 
+ 471              		.loc 1 94 31 is_stmt 0 view .LVU96
+ 472 0038 9FED738A 		vldr.32	s16, .L24+8
+ 473 003c B7EE001A 		vmov.f32	s2, #1.0e+0
+ 474 0040 F0EE480A 		vmov.f32	s1, s16
+ 475 0044 FFF7FEFF 		bl	float_constrain
+ 476              	.LVL22:
+  94:Application/bb_control.c **** 
+ 477              		.loc 1 94 29 view .LVU97
+ 478 0048 84ED130A 		vstr.32	s0, [r4, #76]
+  97:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_;
+ 479              		.loc 1 97 9 is_stmt 1 view .LVU98
+  97:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_;
+ 480              		.loc 1 97 39 is_stmt 0 view .LVU99
+ 481 004c 94ED0B7A 		vldr.32	s14, [r4, #44]
+  97:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_;
+ 482              		.loc 1 97 35 view .LVU100
+ 483 0050 6E4B     		ldr	r3, .L24+12
+ 484 0052 83ED007A 		vstr.32	s14, [r3]
+  98:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 485              		.loc 1 98 9 is_stmt 1 view .LVU101
+  98:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 486              		.loc 1 98 35 is_stmt 0 view .LVU102
+ 487 0056 D4ED0C7A 		vldr.32	s15, [r4, #48]
+  98:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 488              		.loc 1 98 31 view .LVU103
+ 489 005a 6D4B     		ldr	r3, .L24+16
+ 490 005c C3ED007A 		vstr.32	s15, [r3]
+  99:Application/bb_control.c **** 
+ 491              		.loc 1 99 9 is_stmt 1 view .LVU104
+  99:Application/bb_control.c **** 
+ 492              		.loc 1 99 54 is_stmt 0 view .LVU105
+ 493 0060 77EEC77A 		vsub.f32	s15, s15, s14
+  99:Application/bb_control.c **** 
+ 494              		.loc 1 99 83 view .LVU106
+ 495 0064 6B4B     		ldr	r3, .L24+20
+ 496 0066 93ED007A 		vldr.32	s14, [r3]
+ 497 006a 67EE877A 		vmul.f32	s15, s15, s14
+  99:Application/bb_control.c **** 
+ 498              		.loc 1 99 29 view .LVU107
+ 499 006e C4ED147A 		vstr.32	s15, [r4, #80]
+ 102:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_;
+ 500              		.loc 1 102 9 is_stmt 1 view .LVU108
+ 102:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_;
+ 501              		.loc 1 102 35 is_stmt 0 view .LVU109
+ 502 0072 D4ED0D0A 		vldr.32	s1, [r4, #52]
+ 102:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_;
+ 503              		.loc 1 102 31 view .LVU110
+ 504 0076 C4ED090A 		vstr.32	s1, [r4, #36]
+ 103:Application/bb_control.c **** 
+ 505              		.loc 1 103 9 is_stmt 1 view .LVU111
+ 103:Application/bb_control.c **** 
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 13
 
 
- 708              		@ frame_needed = 0, uses_anonymous_args = 0
- 709 0000 08B5     		push	{r3, lr}
- 710              	.LCFI9:
- 711              		.cfi_def_cfa_offset 8
- 712              		.cfi_offset 3, -8
- 713              		.cfi_offset 14, -4
-  48:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
- 714              		.loc 1 48 5 view .LVU170
-  48:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
- 715              		.loc 1 48 8 is_stmt 0 view .LVU171
- 716 0002 0B48     		ldr	r0, .L32
- 717 0004 FFF7FEFF 		bl	DWT_GetDeltaT
- 718              	.LVL27:
-  48:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
- 719              		.loc 1 48 7 view .LVU172
- 720 0008 0A4B     		ldr	r3, .L32+4
- 721 000a 83ED000A 		vstr.32	s0, [r3]
-  49:Application/bb_control.c ****     t += dt;
- 722              		.loc 1 49 5 is_stmt 1 view .LVU173
-  49:Application/bb_control.c ****     t += dt;
- 723              		.loc 1 49 7 is_stmt 0 view .LVU174
- 724 000e 0A4B     		ldr	r3, .L32+8
- 725 0010 D3ED007A 		vldr.32	s15, [r3]
- 726 0014 77EE807A 		vadd.f32	s15, s15, s0
- 727 0018 C3ED007A 		vstr.32	s15, [r3]
-  50:Application/bb_control.c ****     Data_Handle();
- 728              		.loc 1 50 5 is_stmt 1 view .LVU175
- 729 001c FFF7FEFF 		bl	Data_Handle
- 730              	.LVL28:
-  51:Application/bb_control.c ****     Duty_Set();
- 731              		.loc 1 51 5 view .LVU176
- 732 0020 FFF7FEFF 		bl	Duty_Set
- 733              	.LVL29:
-  52:Application/bb_control.c ****     Duty_Set_FFB();
- 734              		.loc 1 52 5 view .LVU177
- 735 0024 FFF7FEFF 		bl	Duty_Set_FFB
- 736              	.LVL30:
-  53:Application/bb_control.c ****     MOS_PWM_Set();
- 737              		.loc 1 53 5 view .LVU178
- 738 0028 FFF7FEFF 		bl	MOS_PWM_Set
- 739              	.LVL31:
-  54:Application/bb_control.c **** }
- 740              		.loc 1 54 1 is_stmt 0 view .LVU179
- 741 002c 08BD     		pop	{r3, pc}
- 742              	.L33:
- 743 002e 00BF     		.align	2
- 744              	.L32:
- 745 0030 00000000 		.word	DWT_Count
- 746 0034 00000000 		.word	dt
- 747 0038 00000000 		.word	t
- 748              		.cfi_endproc
- 749              	.LFE157:
- 751              		.section	.bss.dutyoutput.0,"aw",%nobits
- 752              		.align	2
- 755              	dutyoutput.0:
- 756 0000 00000000 		.space	4
- 757              		.section	.bss.duty_voltage_gain_ref.1,"aw",%nobits
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 17
+ 506              		.loc 1 103 35 is_stmt 0 view .LVU112
+ 507 007a 94ED0E1A 		vldr.32	s2, [r4, #56]
+ 103:Application/bb_control.c **** 
+ 508              		.loc 1 103 31 view .LVU113
+ 509 007e 84ED0A1A 		vstr.32	s2, [r4, #40]
+ 106:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 510              		.loc 1 106 9 is_stmt 1 view .LVU114
+ 106:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 511              		.loc 1 106 40 is_stmt 0 view .LVU115
+ 512 0082 30EE270A 		vadd.f32	s0, s0, s15
+ 106:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 513              		.loc 1 106 18 view .LVU116
+ 514 0086 84ED060A 		vstr.32	s0, [r4, #24]
+ 107:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 515              		.loc 1 107 9 is_stmt 1 view .LVU117
+ 107:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 516              		.loc 1 107 20 is_stmt 0 view .LVU118
+ 517 008a FFF7FEFF 		bl	float_constrain
+ 518              	.LVL23:
+ 107:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 519              		.loc 1 107 18 view .LVU119
+ 520 008e 84ED060A 		vstr.32	s0, [r4, #24]
+ 108:Application/bb_control.c **** 
+ 521              		.loc 1 108 9 is_stmt 1 view .LVU120
+ 108:Application/bb_control.c **** 
+ 522              		.loc 1 108 20 is_stmt 0 view .LVU121
+ 523 0092 94ED081A 		vldr.32	s2, [r4, #32]
+ 524 0096 D4ED070A 		vldr.32	s1, [r4, #28]
+ 525 009a FFF7FEFF 		bl	float_constrain
+ 526              	.LVL24:
+ 108:Application/bb_control.c **** 
+ 527              		.loc 1 108 18 view .LVU122
+ 528 009e 84ED060A 		vstr.32	s0, [r4, #24]
+ 110:Application/bb_control.c ****         bb.boost_duty_cycle_ = 0;
+ 529              		.loc 1 110 9 is_stmt 1 view .LVU123
+ 110:Application/bb_control.c ****         bb.boost_duty_cycle_ = 0;
+ 530              		.loc 1 110 29 is_stmt 0 view .LVU124
+ 531 00a2 84ED110A 		vstr.32	s0, [r4, #68]
+ 111:Application/bb_control.c ****         break;
+ 532              		.loc 1 111 9 is_stmt 1 view .LVU125
+ 111:Application/bb_control.c ****         break;
+ 533              		.loc 1 111 30 is_stmt 0 view .LVU126
+ 534 00a6 84ED128A 		vstr.32	s16, [r4, #72]
+ 112:Application/bb_control.c ****     
+ 535              		.loc 1 112 9 is_stmt 1 view .LVU127
+ 536 00aa BDE7     		b	.L18
+ 537              	.L19:
+ 116:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 538              		.loc 1 116 9 view .LVU128
+ 116:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 539              		.loc 1 116 50 is_stmt 0 view .LVU129
+ 540 00ac 544C     		ldr	r4, .L24
+ 541 00ae D4ED237A 		vldr.32	s15, [r4, #140]
+ 116:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 542              		.loc 1 116 29 view .LVU130
+ 543 00b2 B7EE008A 		vmov.f32	s16, #1.0e+0
+ 544 00b6 88EE270A 		vdiv.f32	s0, s16, s15
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 14
 
 
- 758              		.align	2
- 761              	duty_voltage_gain_ref.1:
- 762 0000 00000000 		.space	4
- 763              		.section	.bss.duty_voltage_gain_measure.2,"aw",%nobits
- 764              		.align	2
- 767              	duty_voltage_gain_measure.2:
- 768 0000 00000000 		.space	4
- 769              		.section	.bss.duty_cyc2.3,"aw",%nobits
- 770              		.align	2
- 773              	duty_cyc2.3:
- 774 0000 00000000 		.space	4
- 775              		.section	.bss.count_duty_set.4,"aw",%nobits
- 776              		.align	2
- 779              	count_duty_set.4:
- 780 0000 00000000 		.space	4
- 781              		.section	.bss.duty_cyc1.5,"aw",%nobits
- 782              		.align	2
- 785              	duty_cyc1.5:
- 786 0000 00000000 		.space	4
- 787              		.global	bb
- 788              		.section	.bss.bb,"aw",%nobits
- 789              		.align	3
- 792              	bb:
- 793 0000 00000000 		.space	584
- 793      00000000 
- 793      00000000 
- 793      00000000 
- 793      00000000 
- 794              		.global	ADC2_Rx
- 795              		.section	.bss.ADC2_Rx,"aw",%nobits
- 796              		.align	2
- 799              	ADC2_Rx:
- 800 0000 00000000 		.space	4
- 801              		.global	ADC1_Rx
- 802              		.section	.bss.ADC1_Rx,"aw",%nobits
- 803              		.align	2
- 806              	ADC1_Rx:
- 807 0000 00000000 		.space	8
- 807      00000000 
- 808              		.global	DWT_Count
- 809              		.section	.bss.DWT_Count,"aw",%nobits
- 810              		.align	2
- 813              	DWT_Count:
- 814 0000 00000000 		.space	4
- 815              		.global	kp_ffb1
- 816              		.section	.bss.kp_ffb1,"aw",%nobits
- 817              		.align	2
- 820              	kp_ffb1:
- 821 0000 00000000 		.space	4
- 822              		.section	.bss.t,"aw",%nobits
- 823              		.align	2
- 826              	t:
- 827 0000 00000000 		.space	4
- 828              		.section	.bss.dt,"aw",%nobits
- 829              		.align	2
- 832              	dt:
- 833 0000 00000000 		.space	4
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 18
+ 116:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 545              		.loc 1 116 23 view .LVU131
+ 546 00ba 38EE400A 		vsub.f32	s0, s16, s0
+ 116:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 547              		.loc 1 116 19 view .LVU132
+ 548 00be 514B     		ldr	r3, .L24+4
+ 549 00c0 83ED000A 		vstr.32	s0, [r3]
+ 117:Application/bb_control.c **** 
+ 550              		.loc 1 117 9 is_stmt 1 view .LVU133
+ 117:Application/bb_control.c **** 
+ 551              		.loc 1 117 31 is_stmt 0 view .LVU134
+ 552 00c4 DFED508A 		vldr.32	s17, .L24+8
+ 553 00c8 B0EE481A 		vmov.f32	s2, s16
+ 554 00cc F0EE680A 		vmov.f32	s1, s17
+ 555 00d0 FFF7FEFF 		bl	float_constrain
+ 556              	.LVL25:
+ 117:Application/bb_control.c **** 
+ 557              		.loc 1 117 29 view .LVU135
+ 558 00d4 84ED130A 		vstr.32	s0, [r4, #76]
+ 119:Application/bb_control.c ****         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+ 559              		.loc 1 119 9 is_stmt 1 view .LVU136
+ 119:Application/bb_control.c ****         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+ 560              		.loc 1 119 48 is_stmt 0 view .LVU137
+ 561 00d8 D4ED0B7A 		vldr.32	s15, [r4, #44]
+ 119:Application/bb_control.c ****         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+ 562              		.loc 1 119 45 view .LVU138
+ 563 00dc 88EE277A 		vdiv.f32	s14, s16, s15
+ 119:Application/bb_control.c ****         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+ 564              		.loc 1 119 39 view .LVU139
+ 565 00e0 38EE477A 		vsub.f32	s14, s16, s14
+ 119:Application/bb_control.c ****         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+ 566              		.loc 1 119 35 view .LVU140
+ 567 00e4 494B     		ldr	r3, .L24+12
+ 568 00e6 83ED007A 		vstr.32	s14, [r3]
+ 120:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 569              		.loc 1 120 9 is_stmt 1 view .LVU141
+ 120:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 570              		.loc 1 120 44 is_stmt 0 view .LVU142
+ 571 00ea D4ED0C6A 		vldr.32	s13, [r4, #48]
+ 120:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 572              		.loc 1 120 41 view .LVU143
+ 573 00ee C8EE267A 		vdiv.f32	s15, s16, s13
+ 120:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 574              		.loc 1 120 35 view .LVU144
+ 575 00f2 78EE677A 		vsub.f32	s15, s16, s15
+ 120:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 576              		.loc 1 120 31 view .LVU145
+ 577 00f6 464B     		ldr	r3, .L24+16
+ 578 00f8 C3ED007A 		vstr.32	s15, [r3]
+ 121:Application/bb_control.c **** 
+ 579              		.loc 1 121 9 is_stmt 1 view .LVU146
+ 121:Application/bb_control.c **** 
+ 580              		.loc 1 121 54 is_stmt 0 view .LVU147
+ 581 00fc 77EEC77A 		vsub.f32	s15, s15, s14
+ 121:Application/bb_control.c **** 
+ 582              		.loc 1 121 83 view .LVU148
+ 583 0100 444B     		ldr	r3, .L24+20
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 15
 
 
- 834              		.text
- 835              	.Letext0:
- 836              		.file 2 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
- 837              		.file 3 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
- 838              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f334x8.h"
- 839              		.file 5 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f3xx.h"
- 840              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
- 841              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_gpio.h"
- 842              		.file 8 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
- 843              		.file 9 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc_ex.h"
- 844              		.file 10 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc.h"
- 845              		.file 11 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_hrtim.h"
- 846              		.file 12 "Core/Inc/adc.h"
- 847              		.file 13 "Core/Inc/hrtim.h"
- 848              		.file 14 "Commponents/user_lib.h"
- 849              		.file 15 "Commponents/filter32.h"
- 850              		.file 16 "Commponents/Controller/controller.h"
- 851              		.file 17 "Application/bb_control.h"
- 852              		.file 18 "Bsp/bsp_dwt.h"
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 19
+ 584 0102 93ED007A 		vldr.32	s14, [r3]
+ 585 0106 67EE877A 		vmul.f32	s15, s15, s14
+ 121:Application/bb_control.c **** 
+ 586              		.loc 1 121 29 view .LVU149
+ 587 010a C4ED147A 		vstr.32	s15, [r4, #80]
+ 123:Application/bb_control.c ****         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+ 588              		.loc 1 123 9 is_stmt 1 view .LVU150
+ 123:Application/bb_control.c ****         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+ 589              		.loc 1 123 44 is_stmt 0 view .LVU151
+ 590 010e 94ED0D7A 		vldr.32	s14, [r4, #52]
+ 123:Application/bb_control.c ****         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+ 591              		.loc 1 123 41 view .LVU152
+ 592 0112 C8EE070A 		vdiv.f32	s1, s16, s14
+ 123:Application/bb_control.c ****         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+ 593              		.loc 1 123 35 view .LVU153
+ 594 0116 78EE600A 		vsub.f32	s1, s16, s1
+ 123:Application/bb_control.c ****         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+ 595              		.loc 1 123 31 view .LVU154
+ 596 011a C4ED090A 		vstr.32	s1, [r4, #36]
+ 124:Application/bb_control.c **** 
+ 597              		.loc 1 124 9 is_stmt 1 view .LVU155
+ 124:Application/bb_control.c **** 
+ 598              		.loc 1 124 44 is_stmt 0 view .LVU156
+ 599 011e D4ED0E6A 		vldr.32	s13, [r4, #56]
+ 124:Application/bb_control.c **** 
+ 600              		.loc 1 124 41 view .LVU157
+ 601 0122 88EE267A 		vdiv.f32	s14, s16, s13
+ 124:Application/bb_control.c **** 
+ 602              		.loc 1 124 35 view .LVU158
+ 603 0126 38EE471A 		vsub.f32	s2, s16, s14
+ 124:Application/bb_control.c **** 
+ 604              		.loc 1 124 31 view .LVU159
+ 605 012a 84ED0A1A 		vstr.32	s2, [r4, #40]
+ 126:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 606              		.loc 1 126 9 is_stmt 1 view .LVU160
+ 126:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 607              		.loc 1 126 40 is_stmt 0 view .LVU161
+ 608 012e 30EE270A 		vadd.f32	s0, s0, s15
+ 126:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 609              		.loc 1 126 18 view .LVU162
+ 610 0132 84ED060A 		vstr.32	s0, [r4, #24]
+ 127:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 611              		.loc 1 127 9 is_stmt 1 view .LVU163
+ 127:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 612              		.loc 1 127 20 is_stmt 0 view .LVU164
+ 613 0136 FFF7FEFF 		bl	float_constrain
+ 614              	.LVL26:
+ 127:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 615              		.loc 1 127 18 view .LVU165
+ 616 013a 84ED060A 		vstr.32	s0, [r4, #24]
+ 128:Application/bb_control.c **** 
+ 617              		.loc 1 128 9 is_stmt 1 view .LVU166
+ 128:Application/bb_control.c **** 
+ 618              		.loc 1 128 20 is_stmt 0 view .LVU167
+ 619 013e 94ED081A 		vldr.32	s2, [r4, #32]
+ 620 0142 D4ED070A 		vldr.32	s1, [r4, #28]
+ 621 0146 FFF7FEFF 		bl	float_constrain
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 16
+
+
+ 622              	.LVL27:
+ 128:Application/bb_control.c **** 
+ 623              		.loc 1 128 18 view .LVU168
+ 624 014a 84ED060A 		vstr.32	s0, [r4, #24]
+ 130:Application/bb_control.c ****         bb.boost_duty_cycle_ = bb.duty_;
+ 625              		.loc 1 130 9 is_stmt 1 view .LVU169
+ 130:Application/bb_control.c ****         bb.boost_duty_cycle_ = bb.duty_;
+ 626              		.loc 1 130 29 is_stmt 0 view .LVU170
+ 627 014e C4ED118A 		vstr.32	s17, [r4, #68]
+ 131:Application/bb_control.c ****         break;
+ 628              		.loc 1 131 9 is_stmt 1 view .LVU171
+ 131:Application/bb_control.c ****         break;
+ 629              		.loc 1 131 30 is_stmt 0 view .LVU172
+ 630 0152 84ED120A 		vstr.32	s0, [r4, #72]
+ 132:Application/bb_control.c ****     
+ 631              		.loc 1 132 9 is_stmt 1 view .LVU173
+ 632 0156 67E7     		b	.L18
+ 633              	.L20:
+ 136:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 634              		.loc 1 136 9 view .LVU174
+ 136:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 635              		.loc 1 136 41 is_stmt 0 view .LVU175
+ 636 0158 294C     		ldr	r4, .L24
+ 637 015a D4ED237A 		vldr.32	s15, [r4, #140]
+ 136:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 638              		.loc 1 136 55 view .LVU176
+ 639 015e B7EE008A 		vmov.f32	s16, #1.0e+0
+ 640 0162 37EE887A 		vadd.f32	s14, s15, s16
+ 136:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 641              		.loc 1 136 48 view .LVU177
+ 642 0166 87EE870A 		vdiv.f32	s0, s15, s14
+ 136:Application/bb_control.c ****         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
+ 643              		.loc 1 136 19 view .LVU178
+ 644 016a 264B     		ldr	r3, .L24+4
+ 645 016c 83ED000A 		vstr.32	s0, [r3]
+ 137:Application/bb_control.c **** 
+ 646              		.loc 1 137 9 is_stmt 1 view .LVU179
+ 137:Application/bb_control.c **** 
+ 647              		.loc 1 137 31 is_stmt 0 view .LVU180
+ 648 0170 B0EE481A 		vmov.f32	s2, s16
+ 649 0174 DFED240A 		vldr.32	s1, .L24+8
+ 650 0178 FFF7FEFF 		bl	float_constrain
+ 651              	.LVL28:
+ 137:Application/bb_control.c **** 
+ 652              		.loc 1 137 29 view .LVU181
+ 653 017c 84ED130A 		vstr.32	s0, [r4, #76]
+ 139:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+ 654              		.loc 1 139 9 is_stmt 1 view .LVU182
+ 139:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+ 655              		.loc 1 139 39 is_stmt 0 view .LVU183
+ 656 0180 D4ED0B7A 		vldr.32	s15, [r4, #44]
+ 139:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+ 657              		.loc 1 139 90 view .LVU184
+ 658 0184 77EE886A 		vadd.f32	s13, s15, s16
+ 139:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+ 659              		.loc 1 139 62 view .LVU185
+ 660 0188 87EEA67A 		vdiv.f32	s14, s15, s13
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 17
+
+
+ 139:Application/bb_control.c ****         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
+ 661              		.loc 1 139 35 view .LVU186
+ 662 018c 1F4B     		ldr	r3, .L24+12
+ 663 018e 83ED007A 		vstr.32	s14, [r3]
+ 140:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 664              		.loc 1 140 9 is_stmt 1 view .LVU187
+ 140:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 665              		.loc 1 140 35 is_stmt 0 view .LVU188
+ 666 0192 D4ED0C6A 		vldr.32	s13, [r4, #48]
+ 140:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 667              		.loc 1 140 78 view .LVU189
+ 668 0196 36EE886A 		vadd.f32	s12, s13, s16
+ 140:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 669              		.loc 1 140 54 view .LVU190
+ 670 019a C6EE867A 		vdiv.f32	s15, s13, s12
+ 140:Application/bb_control.c ****         bb.duty_FFB_output_ = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+ 671              		.loc 1 140 31 view .LVU191
+ 672 019e 1C4B     		ldr	r3, .L24+16
+ 673 01a0 C3ED007A 		vstr.32	s15, [r3]
+ 141:Application/bb_control.c **** 
+ 674              		.loc 1 141 9 is_stmt 1 view .LVU192
+ 141:Application/bb_control.c **** 
+ 675              		.loc 1 141 54 is_stmt 0 view .LVU193
+ 676 01a4 77EEC77A 		vsub.f32	s15, s15, s14
+ 141:Application/bb_control.c **** 
+ 677              		.loc 1 141 83 view .LVU194
+ 678 01a8 1A4B     		ldr	r3, .L24+20
+ 679 01aa 93ED007A 		vldr.32	s14, [r3]
+ 680 01ae 67EE877A 		vmul.f32	s15, s15, s14
+ 141:Application/bb_control.c **** 
+ 681              		.loc 1 141 29 view .LVU195
+ 682 01b2 C4ED147A 		vstr.32	s15, [r4, #80]
+ 143:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+ 683              		.loc 1 143 9 is_stmt 1 view .LVU196
+ 143:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+ 684              		.loc 1 143 35 is_stmt 0 view .LVU197
+ 685 01b6 94ED0D7A 		vldr.32	s14, [r4, #52]
+ 143:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+ 686              		.loc 1 143 78 view .LVU198
+ 687 01ba 77EE086A 		vadd.f32	s13, s14, s16
+ 143:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+ 688              		.loc 1 143 54 view .LVU199
+ 689 01be C7EE260A 		vdiv.f32	s1, s14, s13
+ 143:Application/bb_control.c ****         bb.duty_changing_max_ = bb.voltage_gain_max_ / (bb.voltage_gain_max_ + 1.0f);
+ 690              		.loc 1 143 31 view .LVU200
+ 691 01c2 C4ED090A 		vstr.32	s1, [r4, #36]
+ 144:Application/bb_control.c **** 
+ 692              		.loc 1 144 9 is_stmt 1 view .LVU201
+ 144:Application/bb_control.c **** 
+ 693              		.loc 1 144 35 is_stmt 0 view .LVU202
+ 694 01c6 94ED0E7A 		vldr.32	s14, [r4, #56]
+ 144:Application/bb_control.c **** 
+ 695              		.loc 1 144 78 view .LVU203
+ 696 01ca 37EE088A 		vadd.f32	s16, s14, s16
+ 144:Application/bb_control.c **** 
+ 697              		.loc 1 144 54 view .LVU204
+ 698 01ce 87EE081A 		vdiv.f32	s2, s14, s16
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 18
+
+
+ 144:Application/bb_control.c **** 
+ 699              		.loc 1 144 31 view .LVU205
+ 700 01d2 84ED0A1A 		vstr.32	s2, [r4, #40]
+ 146:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 701              		.loc 1 146 9 is_stmt 1 view .LVU206
+ 146:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 702              		.loc 1 146 40 is_stmt 0 view .LVU207
+ 703 01d6 30EE270A 		vadd.f32	s0, s0, s15
+ 146:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_changing_min_,bb.duty_changing_max_);
+ 704              		.loc 1 146 18 view .LVU208
+ 705 01da 84ED060A 		vstr.32	s0, [r4, #24]
+ 147:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 706              		.loc 1 147 9 is_stmt 1 view .LVU209
+ 147:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 707              		.loc 1 147 20 is_stmt 0 view .LVU210
+ 708 01de FFF7FEFF 		bl	float_constrain
+ 709              	.LVL29:
+ 147:Application/bb_control.c ****         bb.duty_ = float_constrain(bb.duty_,bb.duty_min_,bb.duty_max_);// 0.2f -- 0.83f
+ 710              		.loc 1 147 18 view .LVU211
+ 711 01e2 84ED060A 		vstr.32	s0, [r4, #24]
+ 148:Application/bb_control.c **** 
+ 712              		.loc 1 148 9 is_stmt 1 view .LVU212
+ 148:Application/bb_control.c **** 
+ 713              		.loc 1 148 20 is_stmt 0 view .LVU213
+ 714 01e6 94ED081A 		vldr.32	s2, [r4, #32]
+ 715 01ea D4ED070A 		vldr.32	s1, [r4, #28]
+ 716 01ee FFF7FEFF 		bl	float_constrain
+ 717              	.LVL30:
+ 148:Application/bb_control.c **** 
+ 718              		.loc 1 148 18 view .LVU214
+ 719 01f2 84ED060A 		vstr.32	s0, [r4, #24]
+ 150:Application/bb_control.c ****         bb.boost_duty_cycle_ = bb.duty_;
+ 720              		.loc 1 150 9 is_stmt 1 view .LVU215
+ 150:Application/bb_control.c ****         bb.boost_duty_cycle_ = bb.duty_;
+ 721              		.loc 1 150 29 is_stmt 0 view .LVU216
+ 722 01f6 84ED110A 		vstr.32	s0, [r4, #68]
+ 151:Application/bb_control.c ****         break;
+ 723              		.loc 1 151 9 is_stmt 1 view .LVU217
+ 151:Application/bb_control.c ****         break;
+ 724              		.loc 1 151 30 is_stmt 0 view .LVU218
+ 725 01fa 84ED120A 		vstr.32	s0, [r4, #72]
+ 152:Application/bb_control.c ****     
+ 726              		.loc 1 152 9 is_stmt 1 view .LVU219
+ 727              		.loc 1 157 1 is_stmt 0 view .LVU220
+ 728 01fe 13E7     		b	.L18
+ 729              	.L25:
+ 730              		.align	2
+ 731              	.L24:
+ 732 0200 00000000 		.word	bb
+ 733 0204 00000000 		.word	duty_cyc1.2
+ 734 0208 00000000 		.word	0
+ 735 020c 00000000 		.word	duty_voltage_gain_measure.1
+ 736 0210 00000000 		.word	duty_voltage_gain_ref.0
+ 737 0214 00000000 		.word	kp_ffb1
+ 738              		.cfi_endproc
+ 739              	.LFE159:
+ 741              		.section	.text.MOS_PWM_Set,"ax",%progbits
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 19
+
+
+ 742              		.align	1
+ 743              		.global	MOS_PWM_Set
+ 744              		.syntax unified
+ 745              		.thumb
+ 746              		.thumb_func
+ 748              	MOS_PWM_Set:
+ 749              	.LFB160:
+ 158:Application/bb_control.c **** 
+ 159:Application/bb_control.c **** void MOS_PWM_Set()
+ 160:Application/bb_control.c **** {
+ 750              		.loc 1 160 1 is_stmt 1 view -0
+ 751              		.cfi_startproc
+ 752              		@ args = 0, pretend = 0, frame = 0
+ 753              		@ frame_needed = 0, uses_anonymous_args = 0
+ 754 0000 08B5     		push	{r3, lr}
+ 755              	.LCFI11:
+ 756              		.cfi_def_cfa_offset 8
+ 757              		.cfi_offset 3, -8
+ 758              		.cfi_offset 14, -4
+ 161:Application/bb_control.c ****     if (bb.voltage_out_f_ > bb.voltage_out_ref_)
+ 759              		.loc 1 161 5 view .LVU222
+ 760              		.loc 1 161 11 is_stmt 0 view .LVU223
+ 761 0002 2A4B     		ldr	r3, .L33
+ 762 0004 93ED037A 		vldr.32	s14, [r3, #12]
+ 763              		.loc 1 161 31 view .LVU224
+ 764 0008 D3ED0F7A 		vldr.32	s15, [r3, #60]
+ 765              		.loc 1 161 8 view .LVU225
+ 766 000c B4EEE77A 		vcmpe.f32	s14, s15
+ 767 0010 F1EE10FA 		vmrs	APSR_nzcv, FPSCR
+ 768 0014 42DD     		ble	.L31
+ 162:Application/bb_control.c ****     {
+ 163:Application/bb_control.c ****         HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_SET);
+ 769              		.loc 1 163 9 is_stmt 1 view .LVU226
+ 770 0016 0122     		movs	r2, #1
+ 771 0018 4021     		movs	r1, #64
+ 772 001a 4FF09040 		mov	r0, #1207959552
+ 773 001e FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 774              	.LVL31:
+ 775              	.L29:
+ 164:Application/bb_control.c ****     }
+ 165:Application/bb_control.c ****     else
+ 166:Application/bb_control.c ****     {
+ 167:Application/bb_control.c ****         HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_RESET);
+ 168:Application/bb_control.c ****     }
+ 169:Application/bb_control.c ****     HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_SET);
+ 776              		.loc 1 169 5 view .LVU227
+ 777 0022 0122     		movs	r2, #1
+ 778 0024 4021     		movs	r1, #64
+ 779 0026 4FF09040 		mov	r0, #1207959552
+ 780 002a FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 781              	.LVL32:
+ 170:Application/bb_control.c **** 
+ 171:Application/bb_control.c ****     HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low
+ 782              		.loc 1 171 5 view .LVU228
+ 783              		.loc 1 171 46 is_stmt 0 view .LVU229
+ 784 002e 1F4A     		ldr	r2, .L33
+ 785 0030 D2ED117A 		vldr.32	s15, [r2, #68]
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 20
+
+
+ 786              		.loc 1 171 42 view .LVU230
+ 787 0034 F7EE006A 		vmov.f32	s13, #1.0e+0
+ 788 0038 76EEE77A 		vsub.f32	s15, s13, s15
+ 789              		.loc 1 171 37 view .LVU231
+ 790 003c 36EEE77A 		vsub.f32	s14, s13, s15
+ 791              		.loc 1 171 68 view .LVU232
+ 792 0040 F6EE005A 		vmov.f32	s11, #5.0e-1
+ 793 0044 27EE257A 		vmul.f32	s14, s14, s11
+ 794              		.loc 1 171 72 view .LVU233
+ 795 0048 9FED196A 		vldr.32	s12, .L33+4
+ 796 004c 27EE067A 		vmul.f32	s14, s14, s12
+ 797              		.loc 1 171 32 view .LVU234
+ 798 0050 BCEEC77A 		vcvt.u32.f32	s14, s14
+ 799 0054 174B     		ldr	r3, .L33+8
+ 800 0056 83ED077A 		vstr.32	s14, [r3, #28]	@ int
+ 172:Application/bb_control.c ****     HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck hig
+ 801              		.loc 1 172 5 is_stmt 1 view .LVU235
+ 802              		.loc 1 172 37 is_stmt 0 view .LVU236
+ 803 005a 77EEA67A 		vadd.f32	s15, s15, s13
+ 804              		.loc 1 172 68 view .LVU237
+ 805 005e 67EEA57A 		vmul.f32	s15, s15, s11
+ 806              		.loc 1 172 72 view .LVU238
+ 807 0062 67EE867A 		vmul.f32	s15, s15, s12
+ 808              		.loc 1 172 32 view .LVU239
+ 809 0066 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 810 006a C3ED097A 		vstr.32	s15, [r3, #36]	@ int
+ 173:Application/bb_control.c ****     HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
+ 811              		.loc 1 173 5 is_stmt 1 view .LVU240
+ 812              		.loc 1 173 41 is_stmt 0 view .LVU241
+ 813 006e D2ED127A 		vldr.32	s15, [r2, #72]
+ 814              		.loc 1 173 37 view .LVU242
+ 815 0072 36EEE77A 		vsub.f32	s14, s13, s15
+ 816              		.loc 1 173 62 view .LVU243
+ 817 0076 27EE257A 		vmul.f32	s14, s14, s11
+ 818              		.loc 1 173 66 view .LVU244
+ 819 007a 27EE067A 		vmul.f32	s14, s14, s12
+ 820              		.loc 1 173 32 view .LVU245
+ 821 007e BCEEC77A 		vcvt.u32.f32	s14, s14
+ 822 0082 83ED0A7A 		vstr.32	s14, [r3, #40]	@ int
+ 174:Application/bb_control.c ****     HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
+ 823              		.loc 1 174 5 is_stmt 1 view .LVU246
+ 824              		.loc 1 174 37 is_stmt 0 view .LVU247
+ 825 0086 77EEA67A 		vadd.f32	s15, s15, s13
+ 826              		.loc 1 174 62 view .LVU248
+ 827 008a 67EEA57A 		vmul.f32	s15, s15, s11
+ 828              		.loc 1 174 66 view .LVU249
+ 829 008e 67EE867A 		vmul.f32	s15, s15, s12
+ 830              		.loc 1 174 32 view .LVU250
+ 831 0092 FCEEE77A 		vcvt.u32.f32	s15, s15
+ 832 0096 C3ED0B7A 		vstr.32	s15, [r3, #44]	@ int
+ 175:Application/bb_control.c **** 
+ 176:Application/bb_control.c **** }...
+ 833              		.loc 1 176 1 view .LVU251
+ 834 009a 08BD     		pop	{r3, pc}
+ 835              	.L31:
+ 167:Application/bb_control.c ****         HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_RESET);
+ 836              		.loc 1 167 9 is_stmt 1 view .LVU252
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 21
+
+
+ 837 009c 0022     		movs	r2, #0
+ 838 009e 4021     		movs	r1, #64
+ 839 00a0 4FF09040 		mov	r0, #1207959552
+ 840 00a4 FFF7FEFF 		bl	HAL_GPIO_WritePin
+ 841              	.LVL33:
+ 842 00a8 BBE7     		b	.L29
+ 843              	.L34:
+ 844 00aa 00BF     		.align	2
+ 845              	.L33:
+ 846 00ac 00000000 		.word	bb
+ 847 00b0 00003447 		.word	1194590208
+ 848 00b4 00740140 		.word	1073837056
+ 849              		.cfi_endproc
+ 850              	.LFE160:
+ 852              		.section	.text.Buck_Boost_Task,"ax",%progbits
+ 853              		.align	1
+ 854              		.global	Buck_Boost_Task
+ 855              		.syntax unified
+ 856              		.thumb
+ 857              		.thumb_func
+ 859              	Buck_Boost_Task:
+ 860              	.LFB157:
+  40:Application/bb_control.c **** {
+ 861              		.loc 1 40 1 view -0
+ 862              		.cfi_startproc
+ 863              		@ args = 0, pretend = 0, frame = 0
+ 864              		@ frame_needed = 0, uses_anonymous_args = 0
+ 865 0000 08B5     		push	{r3, lr}
+ 866              	.LCFI12:
+ 867              		.cfi_def_cfa_offset 8
+ 868              		.cfi_offset 3, -8
+ 869              		.cfi_offset 14, -4
+  41:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
+ 870              		.loc 1 41 5 view .LVU254
+  41:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
+ 871              		.loc 1 41 8 is_stmt 0 view .LVU255
+ 872 0002 0A48     		ldr	r0, .L37
+ 873 0004 FFF7FEFF 		bl	DWT_GetDeltaT
+ 874              	.LVL34:
+  41:Application/bb_control.c ****     dt=DWT_GetDeltaT(&DWT_Count);
+ 875              		.loc 1 41 7 view .LVU256
+ 876 0008 094B     		ldr	r3, .L37+4
+ 877 000a 83ED000A 		vstr.32	s0, [r3]
+  42:Application/bb_control.c ****     t += dt;
+ 878              		.loc 1 42 5 is_stmt 1 view .LVU257
+  42:Application/bb_control.c ****     t += dt;
+ 879              		.loc 1 42 7 is_stmt 0 view .LVU258
+ 880 000e 094B     		ldr	r3, .L37+8
+ 881 0010 D3ED007A 		vldr.32	s15, [r3]
+ 882 0014 77EE807A 		vadd.f32	s15, s15, s0
+ 883 0018 C3ED007A 		vstr.32	s15, [r3]
+  43:Application/bb_control.c ****     Data_Handle();
+ 884              		.loc 1 43 5 is_stmt 1 view .LVU259
+ 885 001c FFF7FEFF 		bl	Data_Handle
+ 886              	.LVL35:
+  44:Application/bb_control.c ****     Duty_Calculate();
+ 887              		.loc 1 44 5 view .LVU260
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 22
+
+
+ 888 0020 FFF7FEFF 		bl	Duty_Calculate
+ 889              	.LVL36:
+  45:Application/bb_control.c ****     MOS_PWM_Set();
+ 890              		.loc 1 45 5 view .LVU261
+ 891 0024 FFF7FEFF 		bl	MOS_PWM_Set
+ 892              	.LVL37:
+  46:Application/bb_control.c **** }
+ 893              		.loc 1 46 1 is_stmt 0 view .LVU262
+ 894 0028 08BD     		pop	{r3, pc}
+ 895              	.L38:
+ 896 002a 00BF     		.align	2
+ 897              	.L37:
+ 898 002c 00000000 		.word	DWT_Count
+ 899 0030 00000000 		.word	dt
+ 900 0034 00000000 		.word	t
+ 901              		.cfi_endproc
+ 902              	.LFE157:
+ 904              		.section	.bss.duty_voltage_gain_ref.0,"aw",%nobits
+ 905              		.align	2
+ 908              	duty_voltage_gain_ref.0:
+ 909 0000 00000000 		.space	4
+ 910              		.section	.bss.duty_voltage_gain_measure.1,"aw",%nobits
+ 911              		.align	2
+ 914              	duty_voltage_gain_measure.1:
+ 915 0000 00000000 		.space	4
+ 916              		.section	.bss.duty_cyc1.2,"aw",%nobits
+ 917              		.align	2
+ 920              	duty_cyc1.2:
+ 921 0000 00000000 		.space	4
+ 922              		.global	bb
+ 923              		.section	.bss.bb,"aw",%nobits
+ 924              		.align	3
+ 927              	bb:
+ 928 0000 00000000 		.space	584
+ 928      00000000 
+ 928      00000000 
+ 928      00000000 
+ 928      00000000 
+ 929              		.global	ADC2_Rx
+ 930              		.section	.bss.ADC2_Rx,"aw",%nobits
+ 931              		.align	2
+ 934              	ADC2_Rx:
+ 935 0000 00000000 		.space	4
+ 936              		.global	ADC1_Rx
+ 937              		.section	.bss.ADC1_Rx,"aw",%nobits
+ 938              		.align	2
+ 941              	ADC1_Rx:
+ 942 0000 00000000 		.space	8
+ 942      00000000 
+ 943              		.global	DWT_Count
+ 944              		.section	.bss.DWT_Count,"aw",%nobits
+ 945              		.align	2
+ 948              	DWT_Count:
+ 949 0000 00000000 		.space	4
+ 950              		.global	kp_ffb1
+ 951              		.section	.bss.kp_ffb1,"aw",%nobits
+ 952              		.align	2
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 23
+
+
+ 955              	kp_ffb1:
+ 956 0000 00000000 		.space	4
+ 957              		.section	.bss.t,"aw",%nobits
+ 958              		.align	2
+ 961              	t:
+ 962 0000 00000000 		.space	4
+ 963              		.section	.bss.dt,"aw",%nobits
+ 964              		.align	2
+ 967              	dt:
+ 968 0000 00000000 		.space	4
+ 969              		.text
+ 970              	.Letext0:
+ 971              		.file 2 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\machine\\_default_types.h"
+ 972              		.file 3 "e:\\vscode\\msys2\\mingw64\\arm-none-eabi\\include\\sys\\_stdint.h"
+ 973              		.file 4 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f334x8.h"
+ 974              		.file 5 "Drivers/CMSIS/Device/ST/STM32F3xx/Include/stm32f3xx.h"
+ 975              		.file 6 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_def.h"
+ 976              		.file 7 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_gpio.h"
+ 977              		.file 8 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_dma.h"
+ 978              		.file 9 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc_ex.h"
+ 979              		.file 10 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc.h"
+ 980              		.file 11 "Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_hrtim.h"
+ 981              		.file 12 "Core/Inc/adc.h"
+ 982              		.file 13 "Core/Inc/hrtim.h"
+ 983              		.file 14 "Commponents/user_lib.h"
+ 984              		.file 15 "Commponents/filter32.h"
+ 985              		.file 16 "Commponents/Controller/controller.h"
+ 986              		.file 17 "Application/bb_control.h"
+ 987              		.file 18 "Bsp/bsp_dwt.h"
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 24
 
 
 DEFINED SYMBOLS
                             *ABS*:00000000 bb_control.c
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:21     .text.BB_Control_Init:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:27     .text.BB_Control_Init:00000000 BB_Control_Init
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:182    .text.BB_Control_Init:00000128 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:792    .bss.bb:00000000 bb
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:820    .bss.kp_ffb1:00000000 kp_ffb1
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:806    .bss.ADC1_Rx:00000000 ADC1_Rx
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:799    .bss.ADC2_Rx:00000000 ADC2_Rx
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:206    .text.Data_Handle:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:212    .text.Data_Handle:00000000 Data_Handle
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:383    .text.Data_Handle:00000120 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:398    .text.Duty_Set:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:404    .text.Duty_Set:00000000 Duty_Set
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:484    .text.Duty_Set:0000007c $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:785    .bss.duty_cyc1.5:00000000 duty_cyc1.5
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:779    .bss.count_duty_set.4:00000000 count_duty_set.4
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:773    .bss.duty_cyc2.3:00000000 duty_cyc2.3
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:493    .text.Duty_Set_FFB:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:499    .text.Duty_Set_FFB:00000000 Duty_Set_FFB
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:575    .text.Duty_Set_FFB:00000070 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:767    .bss.duty_voltage_gain_measure.2:00000000 duty_voltage_gain_measure.2
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:761    .bss.duty_voltage_gain_ref.1:00000000 duty_voltage_gain_ref.1
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:755    .bss.dutyoutput.0:00000000 dutyoutput.0
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:584    .text.MOS_PWM_Set:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:590    .text.MOS_PWM_Set:00000000 MOS_PWM_Set
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:690    .text.MOS_PWM_Set:000000b0 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:697    .text.Buck_Boost_Task:00000000 $t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:703    .text.Buck_Boost_Task:00000000 Buck_Boost_Task
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:745    .text.Buck_Boost_Task:00000030 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:813    .bss.DWT_Count:00000000 DWT_Count
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:832    .bss.dt:00000000 dt
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:826    .bss.t:00000000 t
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:752    .bss.dutyoutput.0:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:758    .bss.duty_voltage_gain_ref.1:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:764    .bss.duty_voltage_gain_measure.2:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:770    .bss.duty_cyc2.3:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:776    .bss.count_duty_set.4:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:782    .bss.duty_cyc1.5:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:789    .bss.bb:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:796    .bss.ADC2_Rx:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:803    .bss.ADC1_Rx:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:810    .bss.DWT_Count:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:817    .bss.kp_ffb1:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:823    .bss.t:00000000 $d
-C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s:829    .bss.dt:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:21     .text.BB_Control_Init:00000000 $t
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:27     .text.BB_Control_Init:00000000 BB_Control_Init
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:176    .text.BB_Control_Init:00000120 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:927    .bss.bb:00000000 bb
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:955    .bss.kp_ffb1:00000000 kp_ffb1
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:941    .bss.ADC1_Rx:00000000 ADC1_Rx
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:934    .bss.ADC2_Rx:00000000 ADC2_Rx
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:204    .text.Data_Handle:00000000 $t
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:210    .text.Data_Handle:00000000 Data_Handle
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:392    .text.Data_Handle:00000128 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:409    .text.Duty_Calculate:00000000 $t
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:415    .text.Duty_Calculate:00000000 Duty_Calculate
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:732    .text.Duty_Calculate:00000200 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:920    .bss.duty_cyc1.2:00000000 duty_cyc1.2
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:914    .bss.duty_voltage_gain_measure.1:00000000 duty_voltage_gain_measure.1
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:908    .bss.duty_voltage_gain_ref.0:00000000 duty_voltage_gain_ref.0
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:742    .text.MOS_PWM_Set:00000000 $t
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:748    .text.MOS_PWM_Set:00000000 MOS_PWM_Set
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:846    .text.MOS_PWM_Set:000000ac $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:853    .text.Buck_Boost_Task:00000000 $t
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:859    .text.Buck_Boost_Task:00000000 Buck_Boost_Task
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:898    .text.Buck_Boost_Task:0000002c $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:948    .bss.DWT_Count:00000000 DWT_Count
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:967    .bss.dt:00000000 dt
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:961    .bss.t:00000000 t
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:905    .bss.duty_voltage_gain_ref.0:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:911    .bss.duty_voltage_gain_measure.1:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:917    .bss.duty_cyc1.2:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:924    .bss.bb:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:931    .bss.ADC2_Rx:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:938    .bss.ADC1_Rx:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:945    .bss.DWT_Count:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:952    .bss.kp_ffb1:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:958    .bss.t:00000000 $d
+C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s:964    .bss.dt:00000000 $d
 
 UNDEFINED SYMBOLS
 PID_Init
@@ -1100,14 +1401,16 @@ HAL_HRTIM_WaveformCountStart
 hadc1
 hadc2
 hhrtim1
-ARM GAS  C:\Users\31005\AppData\Local\Temp\ccBP2jnL.s 			page 20
-
-
 __aeabi_f2d
+__aeabi_dcmpgt
+__aeabi_dcmplt
 __aeabi_ddiv
 __aeabi_d2f
 First_Order_Filter_Calculate
 Inc_PID_Calculate
 float_constrain
 HAL_GPIO_WritePin
+ARM GAS  C:\Users\31005\AppData\Local\Temp\cc2iQmlM.s 			page 25
+
+
 DWT_GetDeltaT
