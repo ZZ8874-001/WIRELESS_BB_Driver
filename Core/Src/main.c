@@ -173,6 +173,7 @@ void SystemClock_Config(void)
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
     static uint32_t count = 0;
+    // 10kHz
     if (htim->Instance == TIM2)
     {
         count++;

@@ -9,15 +9,14 @@
 #include "filter32.h"
 #include "usart.h"
 
-// #define Frequency 75000.0f
-#define ADC_Ratio 3.3f/4096.0f
-#define Current_Out_Offset 0.1f
+#define ADC_Ratio 3.251f/4096.0f
+#define Current_Out_Offset 1.65554738f//6.753255f
 #define Voltage_Out_Offset 0.0f
 #define Kp_FFB 12.0f     //前馈增量系数
-#define Voltage_Ratio 12.528f
-#define Current_Ratio 10.0f
+#define Voltage_Ratio 19.967254f
+#define Current_Ratio 1.0f/0.235911906f//4.052521f
 #define Voltage_Out_Ref 24.0f
-#define Current_Out_Max 1.0f
+#define Current_Out_Max 2.0f
 #define Power_Out_Limit 88.0f
 
 enum Buck_Boost_State

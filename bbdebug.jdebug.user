@@ -1,23 +1,20 @@
 
 GraphedExpression="(bb).voltage_out_f_", Color=#a00909
-GraphedExpression="(bb).voltage_in_f_", Color=#09a01b
-GraphedExpression="duty_cyc1", Color=#09a087
-GraphedExpression="duty_cyc2", Color=#0984a0
-GraphedExpression="((bb).voltage_out_PID_).Dout", Color=#0964a0
-GraphedExpression="(bb).voltage_out_", Color=#094fa0
-GraphedExpression="(bb).voltage_in_", Color=#0940a0
+GraphedExpression="(bb).duty_", Color=#9ea011
+GraphedExpression="((bb).current_out_PID_).Output", Color=#09a087
+GraphedExpression="((bb).voltage_gain_PID_).Output", Color=#a00c3b
 OpenDocument="bb_control.h", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.h", Line=0
 OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=6
 OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=44
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=626, h=458, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=626, h=574, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=626, h=464, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=626, h=568, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=973, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=591, h=1033, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="94;216", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="70;-71", CodeGraphLegendShown=0, CodeGraphLegendPosition="80;20"
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=1460, h=1033, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="200 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="97;39", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="70;-71", CodeGraphLegendShown=0, CodeGraphLegendPosition="80;20"
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=1586, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;774]
-TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).voltage_in_f_";" duty_cyc1";" duty_cyc2";" ((bb).voltage_out_PID_).Dout";" (bb).voltage_out_";" (bb).voltage_in_"], ColWidths=[100;100;100;100;100;100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;134;154;124;134;164;110;144;134]
+TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).duty_";" ((bb).current_out_PID_).Output";" ((bb).voltage_gain_PID_).Output"], ColWidths=[100;100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;100;124;100;124;114;110;144;126]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[232;497;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
