@@ -16,7 +16,7 @@
 #define Voltage_Ratio 19.967254f
 #define Current_Ratio 1.0f/0.235911906f//4.052521f
 #define Voltage_Out_Ref 24.0f
-#define Current_Out_Max 2.0f
+#define Current_Out_Max 1.6f
 #define Power_Out_Limit 88.0f
 
 enum Buck_Boost_State
@@ -64,7 +64,7 @@ typedef struct
     First_Order_Filter_t voltage_in_filter_;
     First_Order_Filter_t current_out_filter_;
 
-    enum Buck_Boost_State status_;
+    // enum Buck_Boost_State status_;
 
 }Buck_Boost_Str;
 

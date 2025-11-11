@@ -6,6 +6,9 @@ uint32_t DWT_Count;
 uint32_t ADC1_Rx[2];
 uint32_t ADC2_Rx;
 Buck_Boost_Str bb = {0};
+float square_ratio_a = 3;
+enum Buck_Boost_State state = Boost;
+enum Buck_Boost_State last_state = Boost;
 
 
 void BB_Control_Init(void)
@@ -18,12 +21,12 @@ void BB_Control_Init(void)
     kp_ffb1 = Kp_FFB;
 
     PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,1000.0f,2000.0f,-0.1f,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);
-    PID_Init(&bb.current_out_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,0,100.0f,1.0f,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);//0.5  0.2
+    PID_Init(&bb.current_out_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,0.3f,1.6f,0,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);//0.5  0.2
 
     
     // 滤波器初始化
     First_Order_Filter_Init(&bb.voltage_in_filter_,1/Frequency,30);
-    First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,5);
+    First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,20);
     First_Order_Filter_Init(&bb.current_out_filter_,1/Frequency,20);
     
     // 开启ADC
@@ -59,17 +62,40 @@ void Data_Handle()
     bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,bb.voltage_in_);
     bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,bb.current_out_);
 
-    if(bb.voltage_in_f_ > 1.2*Voltage_Out_Ref)
+    switch(last_state)
     {
-        bb.status_ = Buck;
-    }
-    else if(bb.voltage_in_f_ < 0.8*Voltage_Out_Ref)
-    {
-        bb.status_ = Boost;
-    }
-    else
-    {
-        bb.status_ = Buck_Boost;
+    case Buck:
+        if(bb.voltage_in_f_ < 1.1*Voltage_Out_Ref)
+        {
+            last_state = state;
+            state = Buck_Boost;
+        }
+        break;
+    case Boost:
+        if(bb.voltage_in_f_ > 0.9*Voltage_Out_Ref)
+        {
+            last_state = state;
+            state = Buck_Boost;
+        }
+        break;
+    case Buck_Boost:
+        if(bb.voltage_in_f_ > 1.3*Voltage_Out_Ref)
+        {
+            last_state = state;
+            state = Buck;
+        }
+        else if(bb.voltage_in_f_ < 0.7*Voltage_Out_Ref)
+        {
+            last_state = state;
+            state = Boost;
+        }
+        break;
+    case None:
+        last_state = Boost;
+        state = Boost;
+        break;
+    default:
+        break;
     }
 
     // buck连vin,boost连vout
@@ -85,39 +111,22 @@ void Duty_Calculate()
     static float duty_voltage_gain_ref;
     static float duty_cyc1;
 	static float duty;
+    static float k_current;
+    static float k_voltage;
     static float voltage_gain_PID_compete;
     static float duty_FFB_output_noconstrain;
-    static uint8_t count_duty_set_current = 0;
-    static uint8_t flag_shi = 0;
 
     Inc_PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
     Inc_PID_Calculate(&bb.current_out_PID_,bb.current_out_f_,bb.current_out_ref_);
+
+    k_current = pow(bb.current_out_f_/bb.current_out_ref_,square_ratio_a);
+    k_current = float_constrain(k_current,0,1.0f);
+    
+    k_voltage = 1 - k_current;
     // voltage_gain_PID_compete = bb.voltage_gain_PID_.Output > bb.current_out_PID_.Output ? bb.current_out_PID_.Output : bb.voltage_gain_PID_.Output;
-    if(bb.voltage_gain_PID_.Output - bb.current_out_PID_.Output > 0.01f)
-    {
-        voltage_gain_PID_compete = bb.current_out_PID_.Output;
-        kp_ffb1 = 0;
-        flag_shi = 0;
-    }
-    else if(bb.voltage_gain_PID_.Output - bb.current_out_PID_.Output < -0.01f)
-    {
-        voltage_gain_PID_compete = bb.voltage_gain_PID_.Output;
-        kp_ffb1 = Kp_FFB;
-        flag_shi = 1;
-    }
-    else
-    {
-        if(flag_shi)
-        {
-            voltage_gain_PID_compete = bb.voltage_gain_PID_.Output;
-        }
-        else
-        {
-            voltage_gain_PID_compete = bb.current_out_PID_.Output;
-        }
-    }
+    voltage_gain_PID_compete = k_current * bb.current_out_PID_.Output + k_voltage * bb.voltage_gain_PID_.Output;
     // dutyoutput = 0.25;
-    switch (bb.status_)
+    switch (state)
     {
     case Buck:
         // pid输出
@@ -127,7 +136,7 @@ void Duty_Calculate()
         // 前馈输出
         duty_voltage_gain_measure = bb.voltage_gain_measure_;
         duty_voltage_gain_ref = bb.voltage_gain_ref_;
-        duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+        duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * k_voltage;
         bb.duty_FFB_output_ = float_constrain(duty_FFB_output_noconstrain,0,1.0f);
         
 
@@ -151,7 +160,7 @@ void Duty_Calculate()
 
         duty_voltage_gain_measure = 1 - 1.0f/bb.voltage_gain_measure_;
         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
-        duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+        duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * k_voltage;
         bb.duty_FFB_output_ = float_constrain(duty_FFB_output_noconstrain,0,1.0f);
 
         bb.duty_changing_min_ = 1 - 1.0f/bb.voltage_gain_min_;
@@ -172,7 +181,7 @@ void Duty_Calculate()
 
         duty_voltage_gain_measure = bb.voltage_gain_measure_ / (bb.voltage_gain_measure_ + 1.0f);
         duty_voltage_gain_ref = bb.voltage_gain_ref_ / (bb.voltage_gain_ref_ + 1.0f);
-        duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * kp_ffb1;
+        duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * k_voltage;
         bb.duty_FFB_output_ = float_constrain(duty_FFB_output_noconstrain,0,1.0f);
 
         bb.duty_changing_min_ = bb.voltage_gain_min_ / (bb.voltage_gain_min_ + 1.0f);
