@@ -4,26 +4,23 @@ GraphedExpression="(bb).current_out_f_", DisplayFormat=DISPLAY_FORMAT_DEC, Color
 GraphedExpression="(bb).duty_", Color=#09a087
 GraphedExpression="(bb).duty_PID_output_", Color=#0984a0
 GraphedExpression="(bb).duty_FFB_output_", Color=#0964a0
-GraphedExpression="voltage_gain_PID_compete", Color=#094fa0
-GraphedExpression="(bb).voltage_in_f_", Color=#0940a0
+GraphedExpression="(bb).voltage_in_f_", Color=#094fa0
 OpenDocument="bb_control.h", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.h", Line=0
 OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=6
 OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=44
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=893, h=476, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=893, h=556, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=893, h=480, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=893, h=552, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=973, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
 OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=883, h=1033, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="500 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="97;39", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="70;-71", CodeGraphLegendShown=0, CodeGraphLegendPosition="80;20"
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=1586, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;774]
-TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).current_out_f_";" (bb).duty_";" (bb).duty_PID_output_";" (bb).duty_FFB_output_";" voltage_gain_PID_compete";" (bb).voltage_in_f_"], ColWidths=[100;100;100;100;100;100;100;100;100]
+TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).current_out_f_";" (bb).duty_";" (bb).duty_PID_output_";" (bb).duty_FFB_output_";" (bb).voltage_in_f_"], ColWidths=[100;100;100;100;100;100;100;100]
 TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;134;144;134;124;154;110;164;126]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[232;497;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 WatchedExpression="duty_cyc1", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="duty_cyc2", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="dutyoutput", RefreshRate=5, Window=Watched Data 1
 WatchedExpression="bb", RefreshRate=5, Window=Watched Data 1
 WatchedExpression="k_current", RefreshRate=5, Window=Watched Data 1
 WatchedExpression="square_ratio_a", RefreshRate=5, Window=Watched Data 1
