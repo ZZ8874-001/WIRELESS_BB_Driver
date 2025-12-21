@@ -5,6 +5,8 @@ float kp_ffb1;
 uint32_t DWT_Count;
 uint32_t ADC1_Rx[2];
 uint32_t ADC2_Rx;
+uint32_t Last_VoltProt_Time = 0;
+char Prot_Delay_Flag = 0;
 Buck_Boost_Str bb = {0};
 float square_ratio_a = 3;
 enum Buck_Boost_State state = Boost;
@@ -45,6 +47,7 @@ void BB_Control_Init(void)
 
 void Buck_Boost_Task()
 {
+    BB_Error_Handler();
     dt=DWT_GetDeltaT(&DWT_Count);
     t += dt;
     Data_Handle();
@@ -79,12 +82,12 @@ void Data_Handle()
         }
         break;
     case Buck_Boost:
-        if(bb.voltage_in_f_ > 1.3*Voltage_Out_Ref)
+        if(bb.voltage_in_f_ > 1.2*Voltage_Out_Ref)
         {
             last_state = state;
             state = Buck;
         }
-        else if(bb.voltage_in_f_ < 0.7*Voltage_Out_Ref)
+        else if(bb.voltage_in_f_ < 0.8*Voltage_Out_Ref)
         {
             last_state = state;
             state = Boost;
@@ -93,6 +96,31 @@ void Data_Handle()
     case None:
         last_state = Boost;
         state = Boost;
+        break;
+    case VoltIpt_Error:
+        if(! Prot_Delay_Flag)
+        {
+            last_state = state;
+        }
+
+        else if(bb.voltage_in_f_ < 0.9*Voltage_Out_Ref)
+        {
+            state = Boost;
+        }
+        else if (bb.voltage_in_f_ > 1.1*Voltage_Out_Ref)
+        {
+            state = Buck;
+        }
+        else
+        {
+            state = Buck_Boost;
+        }
+        break;
+    case Ext_Err:
+        if(0)
+        {
+            last_state = state;
+        }
         break;
     default:
         break;
@@ -194,6 +222,9 @@ void Duty_Calculate()
         bb.buck_duty_cycle_ = bb.duty_;
         bb.boost_duty_cycle_ = bb.duty_;
         break;
+    case VoltIpt_Error:
+
+    break;
     
     default:
         break;
@@ -202,19 +233,48 @@ void Duty_Calculate()
 
 void MOS_PWM_Set()
 {
-    if (bb.voltage_out_f_ > bb.voltage_out_ref_)
+    if(Prot_Delay_Flag == 0)
     {
-        HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_SET);
-    }
-    else
-    {
-        HAL_GPIO_WritePin(VCC_Indicator_GPIO_Port,VCC_Indicator_Pin,GPIO_PIN_RESET);
-    }
-    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_SET);
-
     HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low
     HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
     HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
     HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
-
+    }
+    else
+    {
+        HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+        HRTIM1->sMasterRegs.MCMP2R = 0;
+        HRTIM1->sMasterRegs.MCMP3R = Hrtim_Period;
+        HRTIM1->sMasterRegs.MCMP4R = 0;
+    }
 }
+
+void BB_Error_Handler()
+{
+    if(bb.voltage_in_f_ > Voltage_In_Max || bb.voltage_in_f_ < Voltage_In_Min)
+    {
+        state = VoltIpt_Error;
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7|GPIO_PIN_6,GPIO_PIN_RESET);
+        Last_VoltProt_Time = DWT_Count;
+        Prot_Delay_Flag = 1;
+    }
+    else if(bb.voltage_in_f_ <= Voltage_In_Max && bb.voltage_in_f_ >= Voltage_In_Min)
+    {
+        if(DWT_Count - Last_VoltProt_Time >= VoltProt_Delay)
+        {
+            Prot_Delay_Flag = 0;
+            HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,GPIO_PIN_SET);
+        }
+        
+    }
+    if(bb.current_out_f_ > 0.2f*Current_Out_Max && Prot_Delay_Flag == 0)
+    {
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7|GPIO_PIN_6,GPIO_PIN_SET);
+    }
+    else if(Prot_Delay_Flag == 0)   
+    {
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,GPIO_PIN_SET);
+        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_RESET);
+    }
+}
+    

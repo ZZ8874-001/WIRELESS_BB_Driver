@@ -18,12 +18,17 @@
 #define Voltage_Out_Ref 24.1f
 #define Current_Out_Max 5.1f
 #define Power_Out_Limit 122.4f
+#define Voltage_In_Max 48.0f
+#define Voltage_In_Min 16.0f
+#define VoltProt_Delay 2.5f
 
 enum Buck_Boost_State
 {
     Buck = 0,
     Boost,
     Buck_Boost,
+    VoltIpt_Error,
+    Ext_Err,
     None,
 };
 
@@ -75,5 +80,6 @@ void Buck_Boost_Task();
 void Data_Handle();
 void Duty_Calculate();
 void MOS_PWM_Set();
+void BB_Error_Handler();
 
 #endif

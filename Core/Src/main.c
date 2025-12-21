@@ -101,6 +101,7 @@ int main(void)
   MX_USART2_UART_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init(72);
+  DWT_Delay(1.024f);
   BB_Control_Init();
   HAL_TIM_Base_Start_IT(&htim2);
   // HAL_TIM_Base_Start_IT(&htim15);
@@ -117,7 +118,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_Delay(1);
+    //HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }
