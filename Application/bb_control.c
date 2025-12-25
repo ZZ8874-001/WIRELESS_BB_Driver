@@ -1,14 +1,28 @@
 #include "bb_control.h"
 
+#include <stdbool.h>
+#include "stdint.h"
+#include "adc.h"
+#include "hrtim.h"
+#include "usart.h"
+
+#include "bsp_dwt.h"
+
+#include "filter32.h"
+
+
+static void Data_Handle();
+static void Duty_Calculate();
+static void MOS_PWM_Set();
+static void BB_Error_Handler();
+
 static float dt = 0, t = 0;
-float kp_ffb1;
-uint32_t DWT_Count;
-uint32_t ADC1_Rx[2];
-uint32_t ADC2_Rx;
-uint32_t Last_VoltProt_Time = 0;
-char Prot_Delay_Flag = 0;
+static float kp_ffb1;
+static uint32_t DWT_Count;
+static uint32_t Last_VoltProt_Time = 0;
+static bool Prot_Delay_Flag = 0;
 Buck_Boost_Str bb = {0};
-float square_ratio_a = 3;
+static float square_ratio_a = 3;
 enum Buck_Boost_State state = Boost;
 enum Buck_Boost_State last_state = Boost;
 
@@ -24,18 +38,6 @@ void BB_Control_Init(void)
 
     PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,1000.0f,2000.0f,-0.1f,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);
     PID_Init(&bb.current_out_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,0.3f,1.6f,0,0,0,0,0.5,0,Integral_Limit | OutputFilter | DerivativeFilter);//0.5  0.2
-
-    
-    // 滤波器初始化
-    First_Order_Filter_Init(&bb.voltage_in_filter_,1/Frequency,30);
-    First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,20);
-    First_Order_Filter_Init(&bb.current_out_filter_,1/Frequency,20);
-    
-    // 开启ADC
-    HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED);
-    HAL_ADCEx_Calibration_Start(&hadc2,ADC_SINGLE_ENDED);
-    HAL_ADC_Start_DMA(&hadc1,ADC1_Rx,2);
-    HAL_ADC_Start_DMA(&hadc2,&ADC2_Rx,1);
 
     // 开启hrtim
     HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2 | HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2);
@@ -54,17 +56,8 @@ void Buck_Boost_Task()
     Duty_Calculate();
     MOS_PWM_Set();
 }
-void Data_Handle()
+static void Data_Handle()
 {
-
-    bb.voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
-    bb.voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
-    bb.current_out_ = (float)(ADC2_Rx * ADC_Ratio - Current_Out_Offset) * Current_Ratio;
-    
-    bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,bb.voltage_out_);
-    bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,bb.voltage_in_);
-    bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,bb.current_out_);
-
     switch(last_state)
     {
     case Buck:
@@ -75,14 +68,14 @@ void Data_Handle()
         }
         break;
     case Boost:
-        if(bb.voltage_in_f_ > 0.9*Voltage_Out_Ref)
+        if(0.9*Voltage_Out_Ref < bb.voltage_in_f_)
         {
             last_state = state;
             state = Buck_Boost;
         }
         break;
     case Buck_Boost:
-        if(bb.voltage_in_f_ > 1.2*Voltage_Out_Ref)
+        if(1.2*Voltage_Out_Ref < bb.voltage_in_f_ )
         {
             last_state = state;
             state = Buck;
@@ -98,16 +91,15 @@ void Data_Handle()
         state = Boost;
         break;
     case VoltIpt_Error:
-        if(! Prot_Delay_Flag)
+        if(Prot_Delay_Flag)
         {
             last_state = state;
         }
-
         else if(bb.voltage_in_f_ < 0.9*Voltage_Out_Ref)
         {
             state = Boost;
         }
-        else if (bb.voltage_in_f_ > 1.1*Voltage_Out_Ref)
+        else if (1.1*Voltage_Out_Ref < bb.voltage_in_f_)
         {
             state = Buck;
         }
@@ -133,7 +125,7 @@ void Data_Handle()
     bb.voltage_gain_max_ = 1.6 * Voltage_Out_Ref / bb.voltage_in_f_;
     
 }
-void Duty_Calculate()
+static void Duty_Calculate()
 {   
     static float duty_voltage_gain_measure;
     static float duty_voltage_gain_ref;
@@ -231,50 +223,51 @@ void Duty_Calculate()
     }
 }
 
-void MOS_PWM_Set()
+static void MOS_PWM_Set()
 {
-    if(Prot_Delay_Flag == 0)
-    {
-    HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low
-    HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
-    HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
-    HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
-    }
-    else
+    if(Prot_Delay_Flag)
     {
         HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
         HRTIM1->sMasterRegs.MCMP2R = 0;
         HRTIM1->sMasterRegs.MCMP3R = Hrtim_Period;
         HRTIM1->sMasterRegs.MCMP4R = 0;
     }
+    else
+    {
+        HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low
+        HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
+        HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
+        HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
+    }
 }
 
-void BB_Error_Handler()
+static void BB_Error_Handler()
 {
-    if(bb.voltage_in_f_ > Voltage_In_Max || bb.voltage_in_f_ < Voltage_In_Min)
+    if(bb.voltage_in_f_ < Voltage_In_Min || Voltage_In_Max < bb.voltage_in_f_ )
     {
+        last_state = state;
         state = VoltIpt_Error;
-        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7|GPIO_PIN_6,GPIO_PIN_RESET);
+        GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
         Last_VoltProt_Time = DWT_Count;
         Prot_Delay_Flag = 1;
     }
-    else if(bb.voltage_in_f_ <= Voltage_In_Max && bb.voltage_in_f_ >= Voltage_In_Min)
+    else if(Voltage_In_Min <= bb.voltage_in_f_ && bb.voltage_in_f_ <= Voltage_In_Max)
     {
         if(DWT_Count - Last_VoltProt_Time >= VoltProt_Delay)
         {
             Prot_Delay_Flag = 0;
-            HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,GPIO_PIN_SET);
+            GPIOA->BSRR = GPIO_PIN_7;
         }
         
     }
-    if(bb.current_out_f_ > 0.2f*Current_Out_Max && Prot_Delay_Flag == 0)
+    if(0.2f*Current_Out_Max < bb.current_out_f_ && Prot_Delay_Flag == 0)
     {
-        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7|GPIO_PIN_6,GPIO_PIN_SET);
+        GPIOA->BSRR = GPIO_PIN_7|GPIO_PIN_6;
     }
     else if(Prot_Delay_Flag == 0)   
     {
-        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,GPIO_PIN_SET);
-        HAL_GPIO_WritePin(GPIOA,GPIO_PIN_6,GPIO_PIN_RESET);
+        GPIOA->BSRR = GPIO_PIN_7;
+        GPIOA->BRR = GPIO_PIN_6;
     }
 }
     

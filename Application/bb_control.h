@@ -1,13 +1,7 @@
 #ifndef BB_CONTROL_H
 #define BB_CONTROL_H
 
-#include "stdint.h"
-#include "adc.h"
-#include "bsp_dwt.h"
-#include "hrtim.h"
 #include "controller.h"
-#include "filter32.h"
-#include "usart.h"
 
 #define ADC_Ratio 3.251f/4096.0f
 #define Current_Out_Offset 1.65554738f//6.753255f
@@ -20,7 +14,7 @@
 #define Power_Out_Limit 122.4f
 #define Voltage_In_Max 48.0f
 #define Voltage_In_Min 16.0f
-#define VoltProt_Delay 2.5f
+#define VoltProt_Delay 180000000.0f // 2.5*72mHz
 
 enum Buck_Boost_State
 {
@@ -34,10 +28,6 @@ enum Buck_Boost_State
 
 typedef struct
 {
-    float voltage_out_;
-    float voltage_in_;
-    float current_out_;
-
     float voltage_out_f_;
     float voltage_in_f_;
     float current_out_f_;
@@ -77,9 +67,5 @@ extern Buck_Boost_Str bb;
 
 void BB_Control_Init(void);
 void Buck_Boost_Task();
-void Data_Handle();
-void Duty_Calculate();
-void MOS_PWM_Set();
-void BB_Error_Handler();
 
 #endif

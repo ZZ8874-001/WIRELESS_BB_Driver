@@ -27,7 +27,9 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "bsp_adc.h"
 #include "bsp_dwt.h"
+#include "bsp_uart.h"
 #include "bb_control.h"
 /* USER CODE END Includes */
 
@@ -68,7 +70,6 @@ void SystemClock_Config(void);
   * @retval int
   */
 int main(void)
-
 {
 
   /* USER CODE BEGIN 1 */
@@ -98,13 +99,17 @@ int main(void)
   MX_HRTIM1_Init();
   MX_TIM2_Init();
   MX_ADC2_Init();
-  MX_USART2_UART_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
   DWT_Init(72);
-  DWT_Delay(1.024f);
+  // DWT_Delay(1.024f);
+  Bsp_ADC_Init();
+  Bsp_UART_Init();
   BB_Control_Init();
   HAL_TIM_Base_Start_IT(&htim2);
   // HAL_TIM_Base_Start_IT(&htim15);
+  HAL_NVIC_SetPriority(USART3_IRQn, 1, 0);
+  HAL_NVIC_EnableIRQ(USART3_IRQn);
 
   /* USER CODE END 2 */
 
