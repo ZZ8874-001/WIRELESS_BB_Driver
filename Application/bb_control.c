@@ -7,6 +7,7 @@
 #include "usart.h"
 
 #include "bsp_dwt.h"
+#include "bsp_uart.h"
 
 #include "filter32.h"
 
@@ -23,8 +24,9 @@ static uint32_t Last_VoltProt_Time = 0;
 static bool Prot_Delay_Flag = 0;
 Buck_Boost_Str bb = {0};
 static float square_ratio_a = 3;
-enum Buck_Boost_State state = Boost;
-enum Buck_Boost_State last_state = Boost;
+enum Buck_Boost_State bb_state = Boost;
+enum Buck_Boost_State last_bb_state = Boost;
+uint8_t USART_Debug_Flag = 0;
 
 
 void BB_Control_Init(void)
@@ -58,60 +60,63 @@ void Buck_Boost_Task()
 }
 static void Data_Handle()
 {
-    switch(last_state)
+    switch(last_bb_state)
     {
     case Buck:
         if(bb.voltage_in_f_ < 1.1*Voltage_Out_Ref)
         {
-            last_state = state;
-            state = Buck_Boost;
+            last_bb_state = bb_state;
+            bb_state = Buck_Boost;
         }
         break;
     case Boost:
         if(0.9*Voltage_Out_Ref < bb.voltage_in_f_)
         {
-            last_state = state;
-            state = Buck_Boost;
+            last_bb_state = bb_state;
+            bb_state = Buck_Boost;
         }
         break;
     case Buck_Boost:
         if(1.2*Voltage_Out_Ref < bb.voltage_in_f_ )
         {
-            last_state = state;
-            state = Buck;
+            last_bb_state = bb_state;
+            bb_state = Buck;
         }
         else if(bb.voltage_in_f_ < 0.8*Voltage_Out_Ref)
         {
-            last_state = state;
-            state = Boost;
+            last_bb_state = bb_state;
+            bb_state = Boost;
         }
         break;
     case None:
-        last_state = Boost;
-        state = Boost;
+        last_bb_state = Boost;
+        bb_state = Boost;
         break;
     case VoltIpt_Error:
         if(Prot_Delay_Flag)
         {
-            last_state = state;
+            last_bb_state = bb_state;
         }
         else if(bb.voltage_in_f_ < 0.9*Voltage_Out_Ref)
         {
-            state = Boost;
+            last_bb_state = bb_state;
+            bb_state = Boost;
         }
         else if (1.1*Voltage_Out_Ref < bb.voltage_in_f_)
         {
-            state = Buck;
+            last_bb_state = bb_state;
+            bb_state = Buck;
         }
         else
         {
-            state = Buck_Boost;
+            last_bb_state = bb_state;
+            bb_state = Buck_Boost;
         }
         break;
     case Ext_Err:
         if(0)
         {
-            last_state = state;
+            last_bb_state = bb_state;
         }
         break;
     default:
@@ -146,7 +151,7 @@ static void Duty_Calculate()
     // voltage_gain_PID_compete = bb.voltage_gain_PID_.Output > bb.current_out_PID_.Output ? bb.current_out_PID_.Output : bb.voltage_gain_PID_.Output;
     voltage_gain_PID_compete = k_current * bb.current_out_PID_.Output + k_voltage * bb.voltage_gain_PID_.Output;
     // dutyoutput = 0.25;
-    switch (state)
+    switch (bb_state)
     {
     case Buck:
         // pid输出
@@ -225,6 +230,13 @@ static void Duty_Calculate()
 
 static void MOS_PWM_Set()
 {
+    if(USART_Debug_Flag)
+    {
+        Tx_Buf.duty1.data[0] = (uint8_t)(bb.buck_duty_cycle_ * 10) + '0';
+        Tx_Buf.duty1.data[1] = (uint8_t)(bb.buck_duty_cycle_ * 100) % 10 + '0';
+        Tx_Buf.duty2.data[0] = (uint8_t)(bb.boost_duty_cycle_ * 10) + '0';
+        Tx_Buf.duty2.data[1] = (uint8_t)(bb.boost_duty_cycle_ * 100) % 10 + '0';
+    }
     if(Prot_Delay_Flag)
     {
         HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
@@ -239,14 +251,15 @@ static void MOS_PWM_Set()
         HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
         HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
     }
+
 }
 
 static void BB_Error_Handler()
 {
     if(bb.voltage_in_f_ < Voltage_In_Min || Voltage_In_Max < bb.voltage_in_f_ )
     {
-        last_state = state;
-        state = VoltIpt_Error;
+        last_bb_state = bb_state;
+        bb_state = VoltIpt_Error;
         GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
         Last_VoltProt_Time = DWT_Count;
         Prot_Delay_Flag = 1;

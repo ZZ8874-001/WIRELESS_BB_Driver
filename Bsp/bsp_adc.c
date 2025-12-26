@@ -1,6 +1,8 @@
 #include "bsp_adc.h"
+#include "bsp_uart.h"
 
 #include "adc.h"
+#include <stdlib.h>
 
 #include "bb_control.h"
 
@@ -27,7 +29,7 @@ void Bsp_ADC_Init(void)
     while(HAL_ADC_Start_DMA(&hadc2,&ADC2_Rx,1) != HAL_OK)
     {
     }
-    ADC1->AWD2CR = 1<<1;
+    ADC1->AWD2CR = ADC_AWD2CR_AWD2CH_2;
     ADC1->IER |= ADC_IER_AWD2IE;
 
 }
@@ -36,11 +38,24 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
     if(hadc->Instance == ADC1)
     {
-        float voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
-        float voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
+        float voltage_out_;
+        float voltage_in_;
+        if(USART_Debug_Flag)
+        {
+            voltage_out_ = (float)(atoi(Rx_Buf.adc1)) * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
+            voltage_in_ = (float)(atoi(Rx_Buf.adc2)) * ADC_Ratio * Voltage_Ratio;
+        }
+        else
+        {
+            voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
+            voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
+        }
+        
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
         bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,voltage_in_);
+        bb.voltage_out_f_ = float_deadband(bb.voltage_out_f_,-1e-5,1e-5);
+        bb.voltage_in_f_ = float_deadband(bb.voltage_in_f_,-1e-5,1e-5);
     }
     else if(hadc->Instance == ADC2)
     {

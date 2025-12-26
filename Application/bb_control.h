@@ -64,6 +64,8 @@ typedef struct
 }Buck_Boost_Str;
 
 extern Buck_Boost_Str bb;
+extern enum Buck_Boost_State bb_state;
+extern uint8_t USART_Debug_Flag;
 
 void BB_Control_Init(void);
 void Buck_Boost_Task();

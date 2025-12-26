@@ -108,8 +108,6 @@ int main(void)
   BB_Control_Init();
   HAL_TIM_Base_Start_IT(&htim2);
   // HAL_TIM_Base_Start_IT(&htim15);
-  HAL_NVIC_SetPriority(USART3_IRQn, 1, 0);
-  HAL_NVIC_EnableIRQ(USART3_IRQn);
 
   /* USER CODE END 2 */
 
