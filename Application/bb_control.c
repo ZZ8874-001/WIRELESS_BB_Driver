@@ -21,7 +21,6 @@ static void BB_Error_Handler();
 static float dt = 0, t = 0;
 static float kp_ffb1;
 static uint32_t DWT_Count;
-static uint32_t Last_VoltProt_Time = 0;
 static bool Prot_Delay_Flag = 0;
 Buck_Boost_Str bb = {0};
 static float square_ratio_a = 3;
@@ -299,7 +298,6 @@ static void BB_Error_Handler()
         last_bb_state = bb_state;
         bb_state = VoltIpt_Error;
         GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
-        Last_VoltProt_Time = DWT_Count;
         Prot_Delay_Flag = 1;
         Detect_Hook(VoltIpt_Error_TOE);
     }
