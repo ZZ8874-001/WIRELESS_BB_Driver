@@ -5,9 +5,12 @@
 #include <stdlib.h>
 
 #include "bb_control.h"
+#include "detect_task.h"
 
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
+
+static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t high_threshold,uint16_t low_threshold);
 
 void Bsp_ADC_Init(void)
 {
@@ -29,9 +32,16 @@ void Bsp_ADC_Init(void)
     while(HAL_ADC_Start_DMA(&hadc2,&ADC2_Rx,1) != HAL_OK)
     {
     }
-    ADC1->AWD2CR = ADC_AWD2CR_AWD2CH_2;
+    ADC1->AWD2CR = 1 << 2;
+    // 1020-3000
+    Change_ADC_AWD_Threshold(&ADC1->TR2,64,187);
     ADC1->IER |= ADC_IER_AWD2IE;
 
+}
+
+static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t low_threshold,uint16_t high_threshold)
+{
+    *ADCx_TRx = (high_threshold << 16) | low_threshold;
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
@@ -68,9 +78,11 @@ void HAL_ADC_LevelOutOfWindowCallback(ADC_HandleTypeDef* hadc)
     // __ASM("bx lr");
     if(hadc->Instance == ADC1)
     {
+        Detect_Hook(ADC1_WATCHDOG1_TOE);
     }
     else if(hadc->Instance == ADC2)
     {
+        Detect_Hook(ADC2_WATCHDOG1_TOE);
     }
 }
 
@@ -78,5 +90,7 @@ void HAL_ADCEx_LevelOutOfWindow2Callback(ADC_HandleTypeDef* hadc)
 {
     if(hadc->Instance == ADC1)
     {
+        HRTIM1->sCommonRegs.ODISR = 0xFFFF;
+        Detect_Hook(ADC1_WATCHDOG2_TOE);
     }
 }

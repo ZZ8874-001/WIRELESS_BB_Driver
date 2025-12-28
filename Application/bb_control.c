@@ -55,9 +55,17 @@ void Buck_Boost_Task()
     BB_Error_Handler();
     dt=DWT_GetDeltaT(&DWT_Count);
     t += dt;
-    Data_Handle();
-    Duty_Calculate();
-    MOS_PWM_Set();
+    if(!is_TOE_Overtime(ADC1_WATCHDOG1_TOE) || !is_TOE_Overtime(ADC1_WATCHDOG2_TOE) || !is_TOE_Overtime(ADC2_WATCHDOG1_TOE))
+    {
+
+    }
+    else
+    {
+        Data_Handle();
+        Duty_Calculate();
+        MOS_PWM_Set();
+    }
+    
 }
 static void Data_Handle()
 {
@@ -262,21 +270,26 @@ static void MOS_PWM_Set()
         Tx_Buf.duty2.data[0] = (uint8_t)(bb.boost_duty_cycle_ * 10) + '0';
         Tx_Buf.duty2.data[1] = (uint8_t)(bb.boost_duty_cycle_ * 100) % 10 + '0';
     }
-    if(Prot_Delay_Flag)
+    if(is_TOE_Overtime(ADC1_WATCHDOG2_TOE))
     {
-        HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
-        HRTIM1->sMasterRegs.MCMP2R = 0;
-        HRTIM1->sMasterRegs.MCMP3R = Hrtim_Period;
-        HRTIM1->sMasterRegs.MCMP4R = 0;
+        if(Prot_Delay_Flag)
+        {
+            HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+            HRTIM1->sMasterRegs.MCMP2R = 0;
+            HRTIM1->sMasterRegs.MCMP3R = Hrtim_Period;
+            HRTIM1->sMasterRegs.MCMP4R = 0;
+        }
+        else
+        {
+            HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low
+            HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
+            HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
+            HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
+        }
+        
+        HRTIM1->sCommonRegs.OENR = 0xF;
     }
-    else
-    {
-        HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low
-        HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
-        HRTIM1->sMasterRegs.MCMP3R = (1 - bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost low d3
-        HRTIM1->sMasterRegs.MCMP4R = (1 + bb.boost_duty_cycle_ ) / 2 * Hrtim_Period;  // boost high
-    }
-
+  
 }
 
 static void BB_Error_Handler()
