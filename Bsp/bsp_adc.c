@@ -42,8 +42,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         float voltage_in_;
         if(USART_Debug_Flag)
         {
-            voltage_out_ = (float)(atoi(Rx_Buf.adc1)) * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
-            voltage_in_ = (float)(atoi(Rx_Buf.adc2)) * ADC_Ratio * Voltage_Ratio;
+            voltage_in_ = (float)(atoi(Rx_Buf.adc1)) * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
+            voltage_out_ = (float)(atoi(Rx_Buf.adc2)) * ADC_Ratio * Voltage_Ratio;
         }
         else
         {
@@ -54,8 +54,6 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
         bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,voltage_in_);
-        bb.voltage_out_f_ = float_deadband(bb.voltage_out_f_,-1e-5,1e-5);
-        bb.voltage_in_f_ = float_deadband(bb.voltage_in_f_,-1e-5,1e-5);
     }
     else if(hadc->Instance == ADC2)
     {

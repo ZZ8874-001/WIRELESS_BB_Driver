@@ -1,4 +1,5 @@
 #include "bb_control.h"
+#include "detect_task.h"
 
 #include <stdbool.h>
 #include "stdint.h"
@@ -124,10 +125,21 @@ static void Data_Handle()
     }
 
     // buck连vin,boost连vout
-    bb.voltage_gain_measure_ = bb.voltage_out_f_ / bb.voltage_in_f_;
-    bb.voltage_gain_ref_ = Voltage_Out_Ref / bb.voltage_in_f_;
-    bb.voltage_gain_min_ = 0.8 * Voltage_Out_Ref / bb.voltage_in_f_;
-    bb.voltage_gain_max_ = 1.6 * Voltage_Out_Ref / bb.voltage_in_f_;
+    if(!bb.voltage_in_f_)
+    {
+        bb.voltage_gain_measure_ = 0;
+        bb.voltage_gain_ref_ = 0;
+        bb.voltage_gain_min_ = 0;
+        bb.voltage_gain_max_ = 0;
+    }
+    else
+    {
+        bb.voltage_gain_measure_ = bb.voltage_out_f_ / bb.voltage_in_f_;
+        bb.voltage_gain_ref_ = Voltage_Out_Ref / bb.voltage_in_f_;
+        bb.voltage_gain_min_ = 0.8 * Voltage_Out_Ref / bb.voltage_in_f_;
+        bb.voltage_gain_max_ = 1.6 * Voltage_Out_Ref / bb.voltage_in_f_;
+    }
+
     
 }
 static void Duty_Calculate()
@@ -184,12 +196,25 @@ static void Duty_Calculate()
         bb.duty_PID_output_ = float_constrain(duty_cyc1,0,1.0f);//0 -- 1.0f
 
         duty_voltage_gain_measure = 1 - 1.0f/bb.voltage_gain_measure_;
+        if(isnan(duty_voltage_gain_measure))
+        {
+            duty_voltage_gain_measure = 0;
+        }
         duty_voltage_gain_ref = 1 - 1.0f/bb.voltage_gain_ref_;
+        if(isnan(duty_voltage_gain_ref))
+        {
+            duty_voltage_gain_ref = 0;
+        }
         duty_FFB_output_noconstrain = (duty_voltage_gain_ref - duty_voltage_gain_measure) * k_voltage;
         bb.duty_FFB_output_ = float_constrain(duty_FFB_output_noconstrain,0,1.0f);
 
         bb.duty_changing_min_ = 1 - 1.0f/bb.voltage_gain_min_;
         bb.duty_changing_max_ = 1 - 1.0f/bb.voltage_gain_max_;
+        if(isnan(bb.duty_changing_min_) || isnan(bb.duty_changing_max_))
+        {
+            bb.duty_changing_min_ = 0;
+            bb.duty_changing_max_ = 0;
+        }
 
         duty = bb.duty_PID_output_ + bb.duty_FFB_output_;
         bb.duty_ = float_constrain(duty,bb.duty_changing_min_,bb.duty_changing_max_);
@@ -263,10 +288,11 @@ static void BB_Error_Handler()
         GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
         Last_VoltProt_Time = DWT_Count;
         Prot_Delay_Flag = 1;
+        Detect_Hook(VoltIpt_Error_TOE);
     }
     else if(Voltage_In_Min <= bb.voltage_in_f_ && bb.voltage_in_f_ <= Voltage_In_Max)
     {
-        if(DWT_Count - Last_VoltProt_Time >= VoltProt_Delay)
+        if(is_TOE_Overtime(VoltIpt_Error_TOE))
         {
             Prot_Delay_Flag = 0;
             GPIOA->BSRR = GPIO_PIN_7;

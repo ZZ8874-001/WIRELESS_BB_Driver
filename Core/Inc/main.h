@@ -58,7 +58,7 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 #define L_duty 0.05f
-#define deadtime 0.16f
+#define deadtime 100
 #define Frequency 100000.0f
 #define H_duty 0.95f
 #define Hrtim_Period 46080

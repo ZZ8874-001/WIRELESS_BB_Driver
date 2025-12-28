@@ -31,6 +31,7 @@
 #include "bsp_dwt.h"
 #include "bsp_uart.h"
 #include "bb_control.h"
+#include "detect_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -103,6 +104,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   DWT_Init(72);
   // DWT_Delay(1.024f);
+  Detect_Init();
   Bsp_ADC_Init();
   Bsp_UART_Init();
   BB_Control_Init();
@@ -174,22 +176,40 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM17 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    static uint32_t count = 0;
-    // 10kHz
-    if (htim->Instance == TIM2)
-    {
-        count++;
-        Buck_Boost_Task();
-        if (count >= 100)
-        {
-            Detect_Task();
-            count = 0;
-        }
-    }
+  /* USER CODE BEGIN Callback 0 */
+  static uint32_t count = 0;
+  // 10kHz
+  if (htim->Instance == TIM2)
+  {
+      count++;
+      Buck_Boost_Task();
+      if (count >= 10)
+      {
+          Detect_Task();
+          count = 0;
+      }
+  }
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM17) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
-/* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.
