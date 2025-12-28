@@ -1,5 +1,5 @@
-#ifndef __DETECT_H
-#define __DETECT_H
+#ifndef __DETECT_TASK_H__
+#define __DETECT_TASK_H__
 
 #include "controller.h"
 #include <stdbool.h>
