@@ -25,8 +25,9 @@ typedef struct
 
 enum errorlist
 {
-    ADC_WATCHDOG1_TOE,
-    ADC_WATCHDOG2_TOE,
+    ADC1_WATCHDOG1_TOE,
+    ADC1_WATCHDOG2_TOE,
+    ADC2_WATCHDOG1_TOE,
     VoltIpt_Error_TOE,
     DETECT_LIST_LENGTH,
 };

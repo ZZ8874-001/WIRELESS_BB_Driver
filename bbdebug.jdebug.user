@@ -1,20 +1,19 @@
 
 
 Breakpoint=E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c:2864:1, State=BP_STATE_DISABLED
-Breakpoint=E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c:117:3, State=BP_STATE_ON
+Breakpoint=E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c:96, State=BP_STATE_ON
 GraphedExpression="(bb).voltage_out_f_", Color=#a00909
-GraphedExpression="(bb).voltage_in_f_", Color=#09a01b
-OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=58
-OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=101
+GraphedExpression="(bb).voltage_in_f_", Color=#a00909
+OpenDocument="bsp_adc.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Bsp/bsp_adc.c", Line=44
+OpenDocument="stm32f3xx_it.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c", Line=81
+OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=272
 OpenDocument="stm32f3xx_hal_uart.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c", Line=2378
-OpenDocument="startup_stm32f334x8.s", FilePath="E:/new folder/WIRELESS_BB_Driver/startup_stm32f334x8.s", Line=48
-OpenDocument="stm32f3xx_hal_tim.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.c", Line=472
-OpenDocument="bsp_adc.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Bsp/bsp_adc.c", Line=0
+OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=60
 OpenDocument="controller.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Commponents/Controller/controller.c", Line=216
 OpenDocument="bsp_uart.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Bsp/bsp_uart.c", Line=0
 OpenDocument="stm32f3xx_hal_adc.h", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc.h", Line=0
 OpenDocument="bb_control.h", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.h", Line=0
-OpenDocument="stm32f3xx_it.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c", Line=221
+OpenDocument="stm32f3xx_hal_tim.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.c", Line=472
 OpenDocument="stm32f3xx_hal_adc_ex.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc_ex.c", Line=2918
 OpenToolbar="Debug", Floating=0, x=0, y=0
 OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=493, h=437, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
@@ -26,7 +25,7 @@ TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=[
 TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).voltage_in_f_"], ColWidths=[100;100;100;100]
 TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;100;124;100;114;124;110;144;134]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[201;462;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[201;462;100;104]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
 WatchedExpression="bb", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
@@ -41,3 +40,5 @@ WatchedExpression="hadc1", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Wind
 WatchedExpression="huart3", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="Rx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="Tx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="Detect_List", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="hhrtim1", RefreshRate=2, Window=Watched Data 1
