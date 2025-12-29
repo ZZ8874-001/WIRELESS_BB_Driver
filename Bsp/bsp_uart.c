@@ -15,7 +15,6 @@ USART_Tx_Buf_t Tx_Buf = {
     .duty2.data = "00",
     .duty2.space = '\n',
 };
-static uint8_t aaa[16] = {0};
 static DMA_TypeDef *dma1 = DMA1; 
 
 void Bsp_UART_Init(void)

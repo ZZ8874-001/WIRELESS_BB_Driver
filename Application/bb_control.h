@@ -3,12 +3,7 @@
 
 #include "controller.h"
 
-#define ADC_Ratio 3.251f/4096.0f
-#define Current_Out_Offset 1.65554738f//6.753255f
-#define Voltage_Out_Offset 0.0f
 #define Kp_FFB 12.0f     //前馈增量系数
-#define Voltage_Ratio 19.967254f
-#define Current_Ratio 1.0f/0.235911906f//4.052521f
 #define Voltage_Out_Ref 24.1f
 #define Current_Out_Max 5.1f
 #define Power_Out_Limit 122.4f

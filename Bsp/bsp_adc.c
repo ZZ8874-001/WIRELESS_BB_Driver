@@ -7,6 +7,12 @@
 #include "bb_control.h"
 #include "detect_task.h"
 
+#define ADC_RATIO 3.251f/4096.0f
+#define CURRENT_OUT_OFFSET 1.65554738f//6.753255f
+#define VOLTAGE_OUT_OFFSET 0.0f
+#define VOLTAGE_RATIO 19.967254f
+#define CURRENT_RATIO 1.0f/0.235911906f//4.052521f
+
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
 
@@ -44,22 +50,20 @@ static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t low_threshold,u
     *ADCx_TRx = (high_threshold << 16) | low_threshold;
 }
 
+static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t low_threshold,uint16_t high_threshold)
+{
+    *ADCx_TRx = (high_threshold << 16) | low_threshold;
+}
+
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
     if(hadc->Instance == ADC1)
     {
         float voltage_out_;
         float voltage_in_;
-        if(USART_Debug_Flag)
-        {
-            voltage_in_ = (float)(atoi(Rx_Buf.adc1)) * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
-            voltage_out_ = (float)(atoi(Rx_Buf.adc2)) * ADC_Ratio * Voltage_Ratio;
-        }
-        else
-        {
-            voltage_out_ = (float)ADC1_Rx[0] * ADC_Ratio * Voltage_Ratio - Voltage_Out_Offset;
-            voltage_in_ = (float)ADC1_Rx[1] * ADC_Ratio * Voltage_Ratio;
-        }
+
+        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO - VOLTAGE_OUT_OFFSET;
+        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO;
         
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
@@ -67,7 +71,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     }
     else if(hadc->Instance == ADC2)
     {
-        float current_out_ = (float)(ADC2_Rx * ADC_Ratio - Current_Out_Offset) * Current_Ratio;
+        float current_out_ = (float)(ADC2_Rx * ADC_RATIO - CURRENT_OUT_OFFSET) * CURRENT_RATIO;
 
         bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,current_out_);
     }

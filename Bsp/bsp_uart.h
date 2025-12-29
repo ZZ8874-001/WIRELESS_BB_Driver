@@ -17,9 +17,9 @@ typedef struct{
 }USART_Tx_Buf_t;
 
 typedef struct{
-    uint8_t adc1[4];
+    uint8_t voltage_in[4];
     uint8_t space;
-    uint8_t adc2[4];
+    uint8_t voltage_out[4];
 }USART_Rx_Buf_t;
 
 extern USART_Rx_Buf_t Rx_Buf;
