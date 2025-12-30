@@ -12,6 +12,8 @@
 #define VOLTAGE_OUT_OFFSET 0.0f
 #define VOLTAGE_RATIO 19.967254f
 #define CURRENT_RATIO 1.0f/0.235911906f//4.052521f
+#define adc_volt_watchdog_min (Voltage_In_Min * 3.896f)
+#define adc_volt_watchdog_max (Voltage_In_Max * 3.896f)
 
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
@@ -40,7 +42,7 @@ void Bsp_ADC_Init(void)
     }
     ADC1->AWD2CR = 1 << 2;
     // 1020-3000
-    Change_ADC_AWD_Threshold(&ADC1->TR2,64,187);
+    Change_ADC_AWD_Threshold(&ADC1->TR2,adc_volt_watchdog_min,adc_volt_watchdog_max);//ADC1_WATCHDOG1_TOE
     ADC1->IER |= ADC_IER_AWD2IE;
 
 }
@@ -68,8 +70,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         float voltage_out_;
         float voltage_in_;
 
-        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO - VOLTAGE_OUT_OFFSET;
-        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO;
+        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO - VOLTAGE_OUT_OFFSET;
+        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO;
         
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);

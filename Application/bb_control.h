@@ -8,7 +8,7 @@
 #define Current_Out_Max 5.1f
 #define Power_Out_Limit 122.4f
 #define Voltage_In_Max 48.0f
-#define Voltage_In_Min 16.0f
+#define Voltage_In_Min 14.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
 
 enum Buck_Boost_State

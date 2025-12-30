@@ -75,7 +75,7 @@ void MX_HRTIM1_Init(void)
   pTimerCfg.StartOnSync = HRTIM_SYNCSTART_DISABLED;
   pTimerCfg.ResetOnSync = HRTIM_SYNCRESET_DISABLED;
   pTimerCfg.DACSynchro = HRTIM_DACSYNC_NONE;
-  pTimerCfg.PreloadEnable = HRTIM_PRELOAD_ENABLED;
+  pTimerCfg.PreloadEnable = HRTIM_PRELOAD_DISABLED;
   pTimerCfg.UpdateGating = HRTIM_UPDATEGATING_DMABURST;
   pTimerCfg.BurstMode = HRTIM_TIMERBURSTMODE_MAINTAINCLOCK;
   pTimerCfg.RepetitionUpdate = HRTIM_UPDATEONREPETITION_ENABLED;
@@ -114,7 +114,7 @@ void MX_HRTIM1_Init(void)
   pTimerCfg.FaultLock = HRTIM_TIMFAULTLOCK_READWRITE;
   pTimerCfg.DeadTimeInsertion = HRTIM_TIMDEADTIMEINSERTION_ENABLED;
   pTimerCfg.DelayedProtectionMode = HRTIM_TIMER_A_B_C_DELAYEDPROTECTION_DISABLED;
-  pTimerCfg.UpdateTrigger = HRTIM_TIMUPDATETRIGGER_MASTER;
+  pTimerCfg.UpdateTrigger = HRTIM_TIMUPDATETRIGGER_NONE;
   pTimerCfg.ResetTrigger = HRTIM_TIMRESETTRIGGER_MASTER_PER;
   pTimerCfg.ResetUpdate = HRTIM_TIMUPDATEONRESET_DISABLED;
   if (HAL_HRTIM_WaveformTimerConfig(&hhrtim1, HRTIM_TIMERINDEX_TIMER_A, &pTimerCfg) != HAL_OK)

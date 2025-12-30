@@ -1,33 +1,24 @@
 
 
-Breakpoint=E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c:2864:1, State=BP_STATE_DISABLED
-Breakpoint=E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c:96, State=BP_STATE_ON
+Breakpoint=C:/Users/Shuchen Tao/Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c:2864:1, State=BP_STATE_DISABLED
+Breakpoint=C:/Users/Shuchen Tao/Documents/BB_Driver/Core/Src/stm32f3xx_it.c:102:3, State=BP_STATE_ON
 GraphedExpression="(bb).voltage_out_f_", Color=#a00909
-GraphedExpression="(bb).voltage_in_f_", Color=#a00909
-OpenDocument="bsp_adc.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Bsp/bsp_adc.c", Line=44
-OpenDocument="stm32f3xx_it.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c", Line=81
-OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=272
-OpenDocument="stm32f3xx_hal_uart.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c", Line=2378
-OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=60
-OpenDocument="controller.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Commponents/Controller/controller.c", Line=216
-OpenDocument="bsp_uart.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Bsp/bsp_uart.c", Line=0
-OpenDocument="stm32f3xx_hal_adc.h", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Inc/stm32f3xx_hal_adc.h", Line=0
-OpenDocument="bb_control.h", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.h", Line=0
-OpenDocument="stm32f3xx_hal_tim.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_tim.c", Line=472
-OpenDocument="stm32f3xx_hal_adc_ex.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc_ex.c", Line=2918
+GraphedExpression="(bb).voltage_in_f_", Color=#98a005
+GraphedExpression="(bb).current_out_f_", Color=#09a087
+OpenDocument="main.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Core/Src/main.c", Line=0
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=493, h=437, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=493, h=750, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1076, h=267, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=591, h=1188, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="70;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="364;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="380;0"
-OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=477, h=267, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;774]
-TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).voltage_in_f_"], ColWidths=[100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;100;124;100;114;124;110;144;134]
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=493, h=426, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=493, h=717, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1773, h=267, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=709, h=1144, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="70;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="436;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="457;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=786, h=267, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;1024]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).voltage_in_f_";" (bb).current_out_f_"], ColWidths=[100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;100;157;157;124;135;130;150;512]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[201;462;100;104]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[201;462;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[26;26;26;26]
 WatchedExpression="bb", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="k_current", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="Prot_Delay_Flag", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
