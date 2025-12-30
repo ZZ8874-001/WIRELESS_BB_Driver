@@ -50,9 +50,15 @@ static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t low_threshold,u
     *ADCx_TRx = (high_threshold << 16) | low_threshold;
 }
 
-static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t low_threshold,uint16_t high_threshold)
+static uint16_t Char_To_Uint16(uint8_t *buf,uint8_t size)
 {
-    *ADCx_TRx = (high_threshold << 16) | low_threshold;
+    uint16_t ret = 0;
+    for(uint8_t i = 0;i<size;i++)
+    {
+        ret *= 10;
+        ret += (buf[i]-'0')>0?(buf[i]-'0'):0;
+    }
+    return ret;
 }
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
