@@ -43,10 +43,9 @@ float First_Order_Filter_Calculate(First_Order_Filter_t *first_order_filter, flo
     first_order_filter->Input = input;
 
     first_order_filter->Output +=
-        (first_order_filter->Input - first_order_filter->Output) * first_order_filter->aphha;
+        float_deadband(first_order_filter->Input - first_order_filter->Output, -1e-5,1e-5) * first_order_filter->aphha;
 
-    first_order_filter->Output = float_deadband(first_order_filter->Output, -1e-5,1e-5);
-    return first_order_filter->Output;
+    return float_deadband(first_order_filter->Output, -1e-5,1e-5);
 }
 
 /**

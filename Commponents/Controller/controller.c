@@ -229,6 +229,23 @@ void PID_Init(
 
 }
 
+void PID_Reset(PID_t *pid)
+{
+    pid->Measure = 0;
+    pid->Ref = 0;
+    pid->dt = 0;
+    pid->Pout = 0;
+    pid->Iout = 0;
+    pid->Dout = 0;
+    pid->ITerm = 0;
+    pid->dOutput = 0;
+    pid->Output = 0;
+    pid->Err = 0;
+    pid->Err0 = 0;
+    pid->Err1 = 0;
+    pid->Err2 = 0;
+}
+
 float Inc_PID_Calculate(PID_t *pid,float measure,float ref)
 {
     if(pid->Improve & ErrorHandle)
@@ -253,19 +270,19 @@ float Inc_PID_Calculate(PID_t *pid,float measure,float ref)
             f_Integral_Limit(pid);
         if (pid->Improve & DerivativeFilter)
             f_Derivative_Filter(pid);
-            // f_Derivative_IIR_Filter(pid);
 
         pid->dOutput = pid->Pout + pid->Iout + pid->Dout;
         pid->Output += pid->dOutput;
+
+        if(pid->Improve & OutputFilter)
+            f_Output_Filter(pid);
 
         f_Output_Limit(pid);
 
     }
     
-    pid->Last_Measure = pid->Measure;
     pid->Last_Output = pid->Output;
     pid->Last_Dout = pid->Dout;
-    pid->Last_Err = pid->Err;
     pid->Last_ITerm = pid->ITerm;
 
     pid->Err2 = pid->Err1;

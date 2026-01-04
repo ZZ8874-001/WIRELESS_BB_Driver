@@ -4,11 +4,10 @@
 #include "controller.h"
 
 #define Kp_FFB 1.0f     //前馈增量系数
-#define Voltage_Out_Ref 24.1f
-#define Current_Out_Max 5.1f
-#define Power_Out_Limit 122.4f
-#define Voltage_In_Max 48.0f
-#define Voltage_In_Min 14.0f
+#define VOLTAGE_OUT_REF 24.1f
+#define CURRENT_OUT_MAX 5.1f
+#define VOLTAGE_IN_MAX 48.0f
+#define VOLTAGE_IN_MIN 14.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
 
 enum Buck_Boost_State
@@ -17,7 +16,7 @@ enum Buck_Boost_State
     Boost,
     Buck_Boost,
     VoltIpt_Error,
-    Ext_Err,
+    Slow_Start,
     None,
 };
 

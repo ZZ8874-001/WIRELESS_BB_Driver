@@ -23,7 +23,7 @@ void OnProjectLoad (void) {
   // Dialog-generated settings
   //
   Project.SetDevice ("STM32F334C8");
-  Project.SetHostIF ("USB", "602712986");
+  Project.SetHostIF ("USB", "20724778");
   Project.SetTargetIF ("SWD");
   Project.SetTIFSpeed ("4 MHz");
   Project.AddPathSubstitute ("E:/new folder/WireLess_BB_Driver", "$(ProjectDir)");
@@ -32,7 +32,7 @@ void OnProjectLoad (void) {
   //
   // User settings
   //
-  Edit.SysVar (VAR_HSS_SPEED, BP_STATE_OFF);
+  Edit.SysVar (VAR_HSS_SPEED, 1000000);
   File.Open ("$(ProjectDir)/build/WireLess_BB_Driver.elf");
 }
 

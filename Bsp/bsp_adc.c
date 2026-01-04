@@ -12,8 +12,8 @@
 #define VOLTAGE_OUT_OFFSET 0.0f
 #define VOLTAGE_RATIO 19.967254f
 #define CURRENT_RATIO 1.0f/0.235911906f//4.052521f
-#define adc_volt_watchdog_min (Voltage_In_Min * 3.896f)
-#define adc_volt_watchdog_max (Voltage_In_Max * 3.896f)
+#define adc_volt_watchdog_min (VOLTAGE_IN_MIN * 3.896f)
+#define adc_volt_watchdog_max (VOLTAGE_IN_MAX * 3.896f)
 
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
