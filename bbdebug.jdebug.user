@@ -4,19 +4,25 @@ Breakpoint=C:/Users/Shuchen Tao/Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver
 Breakpoint=C:/Users/Shuchen Tao/Documents/BB_Driver/Core/Src/stm32f3xx_it.c:102:3, State=BP_STATE_ON
 GraphedExpression="(bb).voltage_out_f_", Color=#a00909
 GraphedExpression="(bb).voltage_in_f_", Color=#98a005
-GraphedExpression="(bb).current_out_f_", Color=#09a087
+GraphedExpression="(bb).boost_duty_cycle_", Color=#09a087
+GraphedExpression="bb_control.c::Duty_Calculate::voltage_gain_final_output", Color=#0984a0
+GraphedExpression="voltage_gain_PID_output", Color=#fc0404
+GraphedExpression="voltage_gain_boost_output", Color=#094fa0
+GraphedExpression="bb_state", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#0940a0
 OpenDocument="main.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Core/Src/main.c", Line=0
+OpenDocument="bb_control.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Application/bb_control.c", Line=171
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=493, h=426, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=493, h=717, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1773, h=267, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=709, h=1144, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="70;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="436;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="457;0"
-OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=786, h=267, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=609, h=438, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=1014, h=235, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=609, h=708, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1773, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=1, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=1014, h=911, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="100 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=1, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="285;113", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="436;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="457;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=786, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;1024]
-TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).voltage_in_f_";" (bb).current_out_f_"], ColWidths=[100;100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;100;157;157;124;135;130;150;512]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[308;245;124;100;135;135;130;157;409]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).voltage_out_f_";" (bb).voltage_in_f_";" (bb).boost_duty_cycle_";" bb_control.c::Duty_Calculate::voltage_gain_final_output";" voltage_gain_PID_output";" voltage_gain_boost_output";" bb_state"], ColWidths=[100;100;100;100;100;100;100;100;943]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[201;462;100;100]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[267;253;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[26;26;26;26]
 WatchedExpression="bb", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
@@ -33,3 +39,10 @@ WatchedExpression="Rx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Win
 WatchedExpression="Tx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="Detect_List", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="hhrtim1", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="bb.buck_duty_cycle_", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="bb.boost_duty_cycle_", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="voltage_gain_boost_output", Window=Watched Data 1
+WatchedExpression="voltage_gain_final_output", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="voltage_gain_PID_output", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="k_current", Window=Watched Data 1
+WatchedExpression="k_voltage", Window=Watched Data 1

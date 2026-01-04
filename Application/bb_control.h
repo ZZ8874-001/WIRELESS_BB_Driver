@@ -3,7 +3,7 @@
 
 #include "controller.h"
 
-#define Kp_FFB 12.0f     //前馈增量系数
+#define Kp_FFB 1.0f     //前馈增量系数
 #define Voltage_Out_Ref 24.1f
 #define Current_Out_Max 5.1f
 #define Power_Out_Limit 122.4f
@@ -26,17 +26,9 @@ typedef struct
     float voltage_out_f_;
     float voltage_in_f_;
     float current_out_f_;
-
-    float duty_;
-    float duty_min_;
-    float duty_max_;
-    float duty_changing_min_;   // 动态占空比防止输出电压过高
-    float duty_changing_max_;   
-
+    
     float voltage_gain_measure_;
     float voltage_gain_ref_;
-    float voltage_gain_min_;
-    float voltage_gain_max_;
 
     float voltage_out_ref_;
     float current_out_ref_;
@@ -44,8 +36,8 @@ typedef struct
     float buck_duty_cycle_;
     float boost_duty_cycle_;
 
-    float duty_PID_output_;
-    float duty_FFB_output_;
+    float gain_PID_output_;
+    float gain_FFB_output_;
 
     PID_t voltage_gain_PID_;
     PID_t current_out_PID_;

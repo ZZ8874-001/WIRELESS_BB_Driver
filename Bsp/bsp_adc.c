@@ -23,9 +23,9 @@ static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t high_threshold,
 void Bsp_ADC_Init(void)
 {
     // 滤波器初始化
-    First_Order_Filter_Init(&bb.voltage_in_filter_,1/Frequency,30);
-    First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,20);
-    First_Order_Filter_Init(&bb.current_out_filter_,1/Frequency,20);
+    First_Order_Filter_Init(&bb.voltage_in_filter_,1/Frequency,300);
+    First_Order_Filter_Init(&bb.voltage_out_filter_,1/Frequency,200);
+    First_Order_Filter_Init(&bb.current_out_filter_,1/Frequency,200);
     
     // 开启ADC
     while(HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED) != HAL_OK)
