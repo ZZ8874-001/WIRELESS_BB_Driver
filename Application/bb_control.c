@@ -12,7 +12,6 @@
 
 #include "filter32.h"
 
-
 static void Data_Handle();
 static void Duty_Calculate();
 static void MOS_PWM_Set();
@@ -195,7 +194,6 @@ static void Duty_Calculate()
         break;
     
     case Buck_Boost:
-
         //本地限幅
         voltage_gain_bb_output = float_constrain(voltage_gain_final_output,0.50f,1.50f);
 
@@ -206,7 +204,7 @@ static void Duty_Calculate()
     case VoltIpt_Error:
         bb.buck_duty_cycle_ = 0;
         bb.boost_duty_cycle_ = 0;
-    break;
+        break;
 
     case Slow_Start:
         if(last_bb_state != Slow_Start)
@@ -223,19 +221,7 @@ static void Duty_Calculate()
         {
             slow_start_new_time = 0;
             last_bb_state = bb_state;
-            if(bb.voltage_in_f_ < 0.8*VOLTAGE_OUT_REF)
-            {
-                bb_state = Boost;
-            }
-            else if(bb.voltage_in_f_ > 1.2*VOLTAGE_OUT_REF)
-            {
-                bb_state = Buck;
-            }
-            else
-            {
-                bb_state = Buck_Boost;
-            }
-            
+            bb_state = (bb.voltage_in_f_<0.8*VOLTAGE_OUT_REF) ? Boost:((bb.voltage_in_f_>1.2*VOLTAGE_OUT_REF) ? Buck:Buck_Boost);
         }
         break;
     

@@ -18,7 +18,7 @@ typedef struct{
 
 typedef struct{
     uint8_t voltage_in[4];
-    uint8_t space;
+    uint8_t space1;
     uint8_t voltage_out[4];
 }USART_Rx_Buf_t;
 
