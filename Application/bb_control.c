@@ -20,7 +20,7 @@ static void BB_Error_Handler();
 static float dt = 0, t = 0;
 static float kp_ffb1;
 static uint32_t DWT_Count;
-static bool Prot_Delay_Flag = 0;
+static bool Prot_Delay_Flag = 1;
 static bool Debug_Mode = 0;
 Buck_Boost_Str bb = {0};
 static float square_ratio_a = 3;
@@ -36,7 +36,7 @@ void BB_Control_Init(void)
     kp_ffb1 = Kp_FFB;
     Debug_Mode = 0;
 
-    PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,1.0f,2.0f,-0.1f,0,0,0,0.5,0,Integral_Limit | DerivativeFilter);
+    PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,2.0f,1.0f,-0.1f,0,0,0,0.5,0,Integral_Limit | DerivativeFilter);
     PID_Init(&bb.current_out_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,0.3f,1.6f,0,0,0,0,0.5,0,Integral_Limit | DerivativeFilter);//0.5  0.2
 
     // 开启hrtim
@@ -54,6 +54,8 @@ void BB_Control_Init(void)
 void Buck_Boost_Task()
 {
     BB_Error_Handler();
+    Data_Handle();
+    Duty_Calculate();
     dt=DWT_GetDeltaT(&DWT_Count);
     t += dt;
     if((!is_TOE_Overtime(ADC1_WATCHDOG1_TOE) 
@@ -63,17 +65,8 @@ void Buck_Boost_Task()
     {
         bb.buck_duty_cycle_ = 0;
     }
-    else if(Debug_Mode)
-    {
-        Prot_Delay_Flag = 0;
-        Data_Handle();
-        Duty_Calculate();
-        MOS_PWM_Set();
-    }
     else
     {
-        Data_Handle();
-        Duty_Calculate();
         MOS_PWM_Set();
     }
     
@@ -86,8 +79,6 @@ static void Data_Handle()
         last_bb_state = bb_state;
         break;
     case None:
-        last_bb_state = Boost;
-        bb_state = Boost;
         break;
     case VoltIpt_Error:
         if(Prot_Delay_Flag)
@@ -162,7 +153,7 @@ static void Duty_Calculate()
         else if(soft_start_new_time < 5000)
         {
             soft_start_new_time = USER_GetTick() - enter_soft_start_time;
-            soft_start_gain = float_constrain(voltage_gain_final_output,0.05f,0.95f) * soft_start_new_time / 5000.0f;
+            soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * soft_start_new_time / 5000.0f + 0.026f;
         }
         else
         {

@@ -1,6 +1,5 @@
 #MicroXplorer Configuration settings - do not modify
 ADC1.AWD1HighThreshold=4095
-ADC1.AWD1ITMode=ENABLE
 ADC1.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_1
 ADC1.Channel-1\#ChannelRegularConversion=ADC_CHANNEL_2
 ADC1.ClockPrescaler=ADC_CLOCK_ASYNC_DIV1
@@ -8,8 +7,9 @@ ADC1.ContinuousConvMode=ENABLE
 ADC1.DMAContinuousRequests=ENABLE
 ADC1.EnableAnalogWatchDog1=true
 ADC1.EnableAnalogWatchDog2=false
+ADC1.EnableInjectedConversion=DISABLE
 ADC1.ExternalTrigConv=ADC_SOFTWARE_START
-ADC1.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,Offset-0\#ChannelRegularConversion,NbrOfConversionFlag,ContinuousConvMode,DMAContinuousRequests,Rank-1\#ChannelRegularConversion,Channel-1\#ChannelRegularConversion,SamplingTime-1\#ChannelRegularConversion,OffsetNumber-1\#ChannelRegularConversion,Offset-1\#ChannelRegularConversion,NbrOfConversion,ExternalTrigConv,ClockPrescaler,master,SubFamily,EnableAnalogWatchDog1,WatchdogChannel,AWD1ITMode,AWD1HighThreshold,EnableAnalogWatchDog2
+ADC1.IPParameters=Rank-0\#ChannelRegularConversion,Channel-0\#ChannelRegularConversion,SamplingTime-0\#ChannelRegularConversion,OffsetNumber-0\#ChannelRegularConversion,Offset-0\#ChannelRegularConversion,NbrOfConversionFlag,ContinuousConvMode,DMAContinuousRequests,Rank-1\#ChannelRegularConversion,Channel-1\#ChannelRegularConversion,SamplingTime-1\#ChannelRegularConversion,OffsetNumber-1\#ChannelRegularConversion,Offset-1\#ChannelRegularConversion,NbrOfConversion,ExternalTrigConv,ClockPrescaler,master,SubFamily,EnableAnalogWatchDog1,EnableAnalogWatchDog2,EnableInjectedConversion,AWD1HighThreshold
 ADC1.NbrOfConversion=2
 ADC1.NbrOfConversionFlag=1
 ADC1.Offset-0\#ChannelRegularConversion=0
@@ -21,7 +21,6 @@ ADC1.Rank-1\#ChannelRegularConversion=2
 ADC1.SamplingTime-0\#ChannelRegularConversion=ADC_SAMPLETIME_61CYCLES_5
 ADC1.SamplingTime-1\#ChannelRegularConversion=ADC_SAMPLETIME_61CYCLES_5
 ADC1.SubFamily=STM32F334x8
-ADC1.WatchdogChannel=ADC_CHANNEL_2
 ADC1.master=1
 ADC2.Channel-0\#ChannelRegularConversion=ADC_CHANNEL_1
 ADC2.ContinuousConvMode=ENABLE

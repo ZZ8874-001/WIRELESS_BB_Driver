@@ -70,8 +70,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         float voltage_out_;
         float voltage_in_;
 
-        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO - VOLTAGE_OUT_OFFSET;
-        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO;
+        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO - VOLTAGE_OUT_OFFSET;
+        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO;
         
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
