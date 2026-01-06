@@ -16,7 +16,7 @@ enum Buck_Boost_State
     Boost,
     Buck_Boost,
     VoltIpt_Error,
-    Slow_Start,
+    Soft_Start,
     None,
 };
 

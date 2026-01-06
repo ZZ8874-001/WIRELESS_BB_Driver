@@ -24,8 +24,8 @@ static bool Prot_Delay_Flag = 0;
 static bool Debug_Mode = 0;
 Buck_Boost_Str bb = {0};
 static float square_ratio_a = 3;
-enum Buck_Boost_State bb_state = Boost;
-enum Buck_Boost_State last_bb_state = Boost;
+enum Buck_Boost_State bb_state = VoltIpt_Error;
+enum Buck_Boost_State last_bb_state = VoltIpt_Error;
 uint8_t USART_Debug_Flag = 0;
 
 
@@ -97,10 +97,10 @@ static void Data_Handle()
         else
         {
             last_bb_state = bb_state;
-            bb_state = Slow_Start;
+            bb_state = Soft_Start;
         }
         break;
-    case Slow_Start:
+    case Soft_Start:
         last_bb_state = bb_state;
         break;
     default:
@@ -127,7 +127,7 @@ static void Duty_Calculate()
     static float k_current,k_voltage = 0;
     static float voltage_gain_PID_output,voltage_gain_FFB_output,voltage_gain_final_output = 0;
     static float voltage_gain_boost_output,voltage_gain_buck_output,voltage_gain_bb_output = 0;
-    static float enter_slow_start_time,slow_start_new_time = 0;
+    static float enter_soft_start_time,soft_start_new_time,soft_start_gain = 0;
     
     if(bb_state == VoltIpt_Error)
     {
@@ -153,6 +153,24 @@ static void Duty_Calculate()
         //前馈赋值
         voltage_gain_FFB_output = (bb.voltage_gain_ref_ - bb.voltage_gain_measure_) * k_voltage;
         voltage_gain_final_output = float_constrain(voltage_gain_FFB_output * Kp_FFB + voltage_gain_PID_output,0.8f * bb.voltage_gain_ref_,1.2f * bb.voltage_gain_ref_);
+
+        //缓启动赋值
+        if(last_bb_state != Soft_Start)
+        {
+            enter_soft_start_time = USER_GetTick();
+        }
+        else if(soft_start_new_time < 5000)
+        {
+            soft_start_new_time = USER_GetTick() - enter_soft_start_time;
+            soft_start_gain = float_constrain(voltage_gain_final_output,0.05f,0.95f) * soft_start_new_time / 5000.0f;
+        }
+        else
+        {
+            soft_start_new_time = 0;
+            last_bb_state = bb_state;
+            // bb_state = (bb.voltage_in_f_<0.8*VOLTAGE_OUT_REF) ? Boost:((bb.voltage_in_f_>1.2*VOLTAGE_OUT_REF) ? Buck:Buck_Boost);
+            bb_state = Buck;
+        }
     }
 
     switch (bb_state)
@@ -167,23 +185,11 @@ static void Duty_Calculate()
         bb.buck_duty_cycle_ = 0;
         break;
 
-    case Slow_Start:
-        if(last_bb_state != Slow_Start)
-        {
-            enter_slow_start_time = USER_GetTick();
-        }
-        else if(slow_start_new_time < 5000)
-        {
-            slow_start_new_time = USER_GetTick() - enter_slow_start_time;
-            bb.buck_duty_cycle_ = 0.5f * slow_start_new_time / 5000.0f;
-        }
-        else
-        {
-            slow_start_new_time = 0;
-            last_bb_state = bb_state;
-            // bb_state = (bb.voltage_in_f_<0.8*VOLTAGE_OUT_REF) ? Boost:((bb.voltage_in_f_>1.2*VOLTAGE_OUT_REF) ? Buck:Buck_Boost);
-            bb_state = Buck;
-        }
+    case Soft_Start:
+        //本地限幅
+        voltage_gain_buck_output = float_constrain(soft_start_gain,0.05f,0.95f);
+        //电压增益->占空比
+        bb.buck_duty_cycle_ = voltage_gain_buck_output;
         break;
     
     default:
