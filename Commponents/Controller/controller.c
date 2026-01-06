@@ -229,23 +229,6 @@ void PID_Init(
 
 }
 
-void PID_Reset(PID_t *pid)
-{
-    pid->Measure = 0;
-    pid->Ref = 0;
-    pid->dt = 0;
-    pid->Pout = 0;
-    pid->Iout = 0;
-    pid->Dout = 0;
-    pid->ITerm = 0;
-    pid->dOutput = 0;
-    pid->Output = 0;
-    pid->Err = 0;
-    pid->Err0 = 0;
-    pid->Err1 = 0;
-    pid->Err2 = 0;
-}
-
 float Inc_PID_Calculate(PID_t *pid,float measure,float ref)
 {
     if(pid->Improve & ErrorHandle)

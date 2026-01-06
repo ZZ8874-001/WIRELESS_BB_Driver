@@ -1,21 +1,31 @@
 
-OpenDocument="bb_control.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Application/bb_control.c", Line=48
+GraphedExpression="ADC1_Rx[0]", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#a00909
+GraphedExpression="ADC1_Rx[1]", Color=#09a01b
+GraphedExpression="(bb).voltage_out_f_", Color=#a00a2b
+GraphedExpression="(bb).voltage_in_f_", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#12a017
+GraphedExpression="bb.buck_duty_cycle_", Color=#3a11a0
+GraphedExpression="bb_state", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#a01244
+GraphedExpression="((bb).voltage_gain_PID_).Iout", Color=#0940a0
+OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=58
+OpenDocument="stm32f3xx_it.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c", Line=86
+OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=75
+OpenDocument="startup_stm32f334x8.s", FilePath="E:/new folder/WIRELESS_BB_Driver/startup_stm32f334x8.s", Line=46
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=794, h=490, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=1014, h=362, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=794, h=656, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=794, h=507, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=1139, h=398, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=794, h=649, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1773, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=1014, h=784, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="2 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="34;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="741;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="762;0"
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=1139, h=758, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="2 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="741;-69", CodeGraphLegendShown=0, CodeGraphLegendPosition="762;0"
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=786, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;100]
-TableHeader="Data Sampling Table", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time"], ColWidths=[100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;100;100;100;100;110;130;150;529]
+TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;774]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ADC1_Rx[0]";" ADC1_Rx[1]";" (bb).voltage_out_f_";" (bb).voltage_in_f_";" bb.buck_duty_cycle_";" bb_state";" ((bb).voltage_gain_PID_).Iout"], ColWidths=[100;100;100;100;100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;224;144;100;144;144;110;144;309]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[267;253;100;144]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[267;253;100;148]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
 WatchedExpression="bb", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="k_current", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="Prot_Delay_Flag", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="USART_Debug_Flag", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="bb_state", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
 WatchedExpression="last_bb_state", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
@@ -28,12 +38,8 @@ WatchedExpression="Tx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Win
 WatchedExpression="Detect_List", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="hhrtim1", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="bb.buck_duty_cycle_", RefreshRate=2, Window=Watched Data 1
-WatchedExpression="bb.boost_duty_cycle_", RefreshRate=2, Window=Watched Data 1
-WatchedExpression="voltage_gain_boost_output", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="voltage_gain_final_output", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="voltage_gain_PID_output", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="k_current", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="k_voltage", RefreshRate=2, Window=Watched Data 1
-WatchedExpression="enter_slow_start_time", RefreshRate=2, Window=Watched Data 1
-WatchedExpression="slow_start_new_time", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="soft_start_gain", RefreshRate=2, Window=Watched Data 1
