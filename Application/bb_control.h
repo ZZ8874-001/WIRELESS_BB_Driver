@@ -33,7 +33,7 @@ typedef struct
     float current_out_ref_;
     
     float buck_duty_cycle_;
-    float boost_duty_cycle_;
+    // float boost_duty_cycle_;
 
     float gain_PID_output_;
     float gain_FFB_output_;

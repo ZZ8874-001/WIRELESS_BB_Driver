@@ -32,13 +32,13 @@ void Bsp_UART_Init(void)
     DMA1_Channel3->CMAR = (uint32_t)&Rx_Buf;
 
     USART3->CR1 = 0;
-    USART3->CR1 |= USART_CR1_RE|USART_CR1_TE;
-    USART3->CR1 |= USART_CR1_UE;
+    // USART3->CR1 |= USART_CR1_RE|USART_CR1_TE;
+    // USART3->CR1 |= USART_CR1_UE;
 
     USART3->CR3 = 0;
     USART3->CR3 |= USART_CR3_DMAR|USART_CR3_DMAT;
 
-    DMA1_Channel2->CCR |= DMA_CCR_EN;
-    DMA1_Channel3->CCR |= DMA_CCR_EN;
+    // DMA1_Channel2->CCR |= DMA_CCR_EN;
+    // DMA1_Channel3->CCR |= DMA_CCR_EN;
     
 }

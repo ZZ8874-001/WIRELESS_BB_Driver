@@ -40,11 +40,15 @@ void BB_Control_Init(void)
     PID_Init(&bb.current_out_PID_,1.5f,0.5f,1.0f,-1.0f,0.001f,0.3f,1.6f,0,0,0,0,0.5,0,Integral_Limit | DerivativeFilter);//0.5  0.2
 
     // 开启hrtim
-    HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2 | HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2);
-    HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B);
+    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2) != HAL_OK)
+    {
+    }
+    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A) != HAL_OK)
+    {
+    }
 
     // 初始化bben指示灯
-    HAL_GPIO_WritePin(BBEN_Indicator_GPIO_Port, BBEN_Indicator_Pin, GPIO_PIN_SET);
+    BBEN_Indicator_GPIO_Port->BSRR = BBEN_Indicator_Pin;
 }
 
 void Buck_Boost_Task()
@@ -57,6 +61,7 @@ void Buck_Boost_Task()
     || !is_TOE_Overtime(ADC2_WATCHDOG1_TOE)) 
     && USART_Debug_Flag == 0)
     {
+        bb.buck_duty_cycle_ = 0;
     }
     else if(Debug_Mode)
     {
@@ -78,30 +83,7 @@ static void Data_Handle()
     switch(last_bb_state)
     {
     case Buck:
-        if(bb.voltage_in_f_ < 1.1*VOLTAGE_OUT_REF)
-        {
-            last_bb_state = bb_state;
-            bb_state = Buck_Boost;
-        }
-        break;
-    case Boost:
-        if(0.9*VOLTAGE_OUT_REF < bb.voltage_in_f_)
-        {
-            last_bb_state = bb_state;
-            bb_state = Buck_Boost;
-        }
-        break;
-    case Buck_Boost:
-        if(1.2*VOLTAGE_OUT_REF < bb.voltage_in_f_ )
-        {
-            last_bb_state = bb_state;
-            bb_state = Buck;
-        }
-        else if(bb.voltage_in_f_ < 0.8*VOLTAGE_OUT_REF)
-        {
-            last_bb_state = bb_state;
-            bb_state = Boost;
-        }
+        last_bb_state = bb_state;
         break;
     case None:
         last_bb_state = Boost;
@@ -146,9 +128,7 @@ static void Duty_Calculate()
     static float voltage_gain_PID_output,voltage_gain_FFB_output,voltage_gain_final_output = 0;
     static float voltage_gain_boost_output,voltage_gain_buck_output,voltage_gain_bb_output = 0;
     static float enter_slow_start_time,slow_start_new_time = 0;
-
-    Inc_PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
-    Inc_PID_Calculate(&bb.current_out_PID_,bb.current_out_f_, bb.current_out_ref_);//10k
+    
     if(bb_state == VoltIpt_Error)
     {
         PID_Reset(&bb.voltage_gain_PID_);
@@ -161,6 +141,8 @@ static void Duty_Calculate()
     }
     else
     {
+        Inc_PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
+        Inc_PID_Calculate(&bb.current_out_PID_,bb.current_out_f_, bb.current_out_ref_);//10k
         k_current = pow(bb.current_out_f_/bb.current_out_ref_,square_ratio_a);
         k_current = float_constrain(k_current,0,1.0f);
         
@@ -173,8 +155,6 @@ static void Duty_Calculate()
         voltage_gain_final_output = float_constrain(voltage_gain_FFB_output * Kp_FFB + voltage_gain_PID_output,0.8f * bb.voltage_gain_ref_,1.2f * bb.voltage_gain_ref_);
     }
 
-    
-
     switch (bb_state)
     {
     case Buck:
@@ -182,28 +162,9 @@ static void Duty_Calculate()
         voltage_gain_buck_output = float_constrain(voltage_gain_final_output,0.05f,0.95f);
         //电压增益->占空比
         bb.buck_duty_cycle_ = voltage_gain_buck_output;
-        bb.boost_duty_cycle_ = 0.95f;
-        break;
-    
-    case Boost:
-        //本地限幅
-        voltage_gain_boost_output = float_constrain(voltage_gain_final_output,1.05f,2.45f);
-        //电压增益->占空比&反占空比转换
-        bb.boost_duty_cycle_ = 1.0f - 1.0f / voltage_gain_boost_output;
-        bb.buck_duty_cycle_ = 0.95f;
-        break;
-    
-    case Buck_Boost:
-        //本地限幅
-        voltage_gain_bb_output = float_constrain(voltage_gain_final_output,0.50f,1.50f);
-
-        //电压增益->占空比    
-        bb.buck_duty_cycle_ = voltage_gain_bb_output / (1.0f + voltage_gain_bb_output);
-        bb.boost_duty_cycle_ = 1.0f - bb.buck_duty_cycle_;
         break;
     case VoltIpt_Error:
         bb.buck_duty_cycle_ = 0;
-        bb.boost_duty_cycle_ = 0;
         break;
 
     case Slow_Start:
@@ -215,13 +176,13 @@ static void Duty_Calculate()
         {
             slow_start_new_time = USER_GetTick() - enter_slow_start_time;
             bb.buck_duty_cycle_ = 0.5f * slow_start_new_time / 5000.0f;
-            bb.boost_duty_cycle_ = 1 - bb.buck_duty_cycle_;
         }
         else
         {
             slow_start_new_time = 0;
             last_bb_state = bb_state;
-            bb_state = (bb.voltage_in_f_<0.8*VOLTAGE_OUT_REF) ? Boost:((bb.voltage_in_f_>1.2*VOLTAGE_OUT_REF) ? Buck:Buck_Boost);
+            // bb_state = (bb.voltage_in_f_<0.8*VOLTAGE_OUT_REF) ? Boost:((bb.voltage_in_f_>1.2*VOLTAGE_OUT_REF) ? Buck:Buck_Boost);
+            bb_state = Buck;
         }
         break;
     
@@ -232,42 +193,36 @@ static void Duty_Calculate()
 
 static void MOS_PWM_Set()
 {
-    if(USART_Debug_Flag)
-    {
-        Tx_Buf.duty1.data[0] = (uint8_t)(bb.buck_duty_cycle_ * 10) + '0';
-        Tx_Buf.duty1.data[1] = (uint8_t)(bb.buck_duty_cycle_ * 100) % 10 + '0';
-        Tx_Buf.duty2.data[0] = (uint8_t)(bb.boost_duty_cycle_ * 10) + '0';
-        Tx_Buf.duty2.data[1] = (uint8_t)(bb.boost_duty_cycle_ * 100) % 10 + '0';
-    }
+    // if(USART_Debug_Flag)
+    // {
+    //     Tx_Buf.duty1.data[0] = (uint8_t)(bb.buck_duty_cycle_ * 10) + '0';
+    //     Tx_Buf.duty1.data[1] = (uint8_t)(bb.buck_duty_cycle_ * 100) % 10 + '0';
+    //     // Tx_Buf.duty2.data[0] = (uint8_t)(bb.boost_duty_cycle_ * 10) + '0';
+    //     // Tx_Buf.duty2.data[1] = (uint8_t)(bb.boost_duty_cycle_ * 100) % 10 + '0';
+    // }
     if(is_TOE_Overtime(ADC1_WATCHDOG2_TOE))
     {
         if(Prot_Delay_Flag)
         {
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
-            HRTIM1->sMasterRegs.MCMP2R = 0;
-            HRTIM1->sMasterRegs.MCMP3R = Hrtim_Period;
-            HRTIM1->sMasterRegs.MCMP4R = 0;
+            HRTIM1->sMasterRegs.MCMP2R = 96;
         }
         else if(bb_state == Buck_Boost)
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 + bb.buck_duty_cycle_  ) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 - bb.buck_duty_cycle_  ) / 2 * Hrtim_Period;  // buck high d1
-            HRTIM1->sMasterRegs.MCMP3R = (1 - (1 - bb.boost_duty_cycle_  )) / 2 * Hrtim_Period;;  // boost low d3
-            HRTIM1->sMasterRegs.MCMP4R = (1 + (1 - bb.boost_duty_cycle_  )) / 2 * Hrtim_Period;  // boost high d4
         }
         else
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
-            HRTIM1->sMasterRegs.MCMP3R = (1 - (1 - bb.boost_duty_cycle_  )) / 2 * Hrtim_Period;;  // boost low d3
-            HRTIM1->sMasterRegs.MCMP4R = (1 + (1 - bb.boost_duty_cycle_  )) / 2 * Hrtim_Period;  // boost high d4
         }
         
         HRTIM1->sCommonRegs.OENR = 0xF;
     }
   
 }
-
+ 
 static void BB_Error_Handler()
 {
     if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ )

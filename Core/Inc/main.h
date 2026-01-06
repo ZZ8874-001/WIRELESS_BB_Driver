@@ -66,12 +66,18 @@ void Error_Handler(void);
 #define ADC1_VOUT_GPIO_Port GPIOA
 #define ADC1_VIN_Pin GPIO_PIN_1
 #define ADC1_VIN_GPIO_Port GPIOA
-#define ADC2_Current_Pin GPIO_PIN_5
-#define ADC2_Current_GPIO_Port GPIOA
+#define ADC_CURR_P_Pin GPIO_PIN_4
+#define ADC_CURR_P_GPIO_Port GPIOA
+#define ADC_CURR_N_Pin GPIO_PIN_5
+#define ADC_CURR_N_GPIO_Port GPIOA
 #define VCC_Indicator_Pin GPIO_PIN_6
 #define VCC_Indicator_GPIO_Port GPIOA
 #define BBEN_Indicator_Pin GPIO_PIN_7
 #define BBEN_Indicator_GPIO_Port GPIOA
+#define BUCK_L_IN_Pin GPIO_PIN_8
+#define BUCK_L_IN_GPIO_Port GPIOA
+#define BUCK_H_IN_Pin GPIO_PIN_9
+#define BUCK_H_IN_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

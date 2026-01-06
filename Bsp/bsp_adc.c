@@ -79,7 +79,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     }
     else if(hadc->Instance == ADC2)
     {
-        float current_out_ = (float)(ADC2_Rx * ADC_RATIO - CURRENT_OUT_OFFSET) * CURRENT_RATIO;
+        float current_out_ = (float)((2048 - ADC2_Rx) * ADC_RATIO - CURRENT_OUT_OFFSET) * CURRENT_RATIO;
 
         bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,current_out_);
     }
