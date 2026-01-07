@@ -39,10 +39,12 @@ void BB_Control_Init(void)
     PID_Init(&bb.current_out_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  0.3f,1.6f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );//0.5  0.2
 
     // 开启hrtim
-    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2) != HAL_OK)
+    
+    
+    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A) != HAL_OK)
     {
     }
-    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A) != HAL_OK)
+    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2) != HAL_OK)
     {
     }
 
@@ -168,16 +170,20 @@ static void Duty_Calculate()
         bb.buck_duty_cycle_ = float_constrain(voltage_gain_final_output,0.05f,0.95f) ;
         break;
     case VoltIpt_Error:
+
         bb.buck_duty_cycle_ = 0;
         break;
 
     case Soft_Start:
         //电压增益->占空比
+        
         soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 5000.0f + 0.026f;
         bb.buck_duty_cycle_ = float_constrain(soft_start_gain,0.05f,0.95f);
+       
         break;
     
     default:
+
         break;
     }
 }
@@ -196,17 +202,21 @@ static void MOS_PWM_Set()
         if(!is_TOE_Overtime(VoltIpt_Error))
         {
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
-            HRTIM1->sMasterRegs.MCMP2R = 96;
+            HRTIM1->sMasterRegs.MCMP2R = 0;
         }
-        else if(bb_state == Buck_Boost)
+        else if(bb_state == Soft_Start && USER_GetTick() - enter_soft_start_time < 1)
         {
-            HRTIM1->sMasterRegs.MCMP1R = (1 + bb.buck_duty_cycle_  ) / 2 * Hrtim_Period;  // buck low d2
-            HRTIM1->sMasterRegs.MCMP2R = (1 - bb.buck_duty_cycle_  ) / 2 * Hrtim_Period;  // buck high d1
+            HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+            HRTIM1->sMasterRegs.MCMP2R = 0;
         }
-        else
+        else if(last_bb_state == Buck || last_bb_state == Soft_Start)
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
+        }
+        else
+        {
+            
         }
         
         HRTIM1->sCommonRegs.OENR = 0xF;

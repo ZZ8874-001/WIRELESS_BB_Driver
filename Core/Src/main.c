@@ -97,11 +97,13 @@ int main(void)
   MX_GPIO_Init();
   MX_DMA_Init();
   MX_ADC1_Init();
-  MX_HRTIM1_Init();
   MX_TIM2_Init();
   MX_ADC2_Init();
   MX_USART3_UART_Init();
+  MX_HRTIM1_Init();
   /* USER CODE BEGIN 2 */
+  HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+  HRTIM1->sMasterRegs.MCMP2R = 0;
   DWT_Init(72);
   // DWT_Delay(1.024f);
   Detect_Init();
