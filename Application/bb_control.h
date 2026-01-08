@@ -9,6 +9,8 @@
 #define VOLTAGE_IN_MAX 48.0f
 #define VOLTAGE_IN_MIN 14.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
+#define CURRENT_TO_VOLTAGE_DELAY 1  //ms
+
 enum Buck_Boost_State
 {
     Buck = 0,

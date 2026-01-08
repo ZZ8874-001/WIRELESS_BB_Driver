@@ -1,4 +1,5 @@
 #include "detect_task.h"
+#include "bb_control.h"
 
 static Detect_t Detect_List[DETECT_LIST_LENGTH + 1]={0};
 
@@ -10,6 +11,7 @@ void Detect_Init()
         1000,
         1000,
         2500,
+        CURRENT_TO_VOLTAGE_DELAY,
     };
 
     for(uint8_t i = 0;i<DETECT_LIST_LENGTH;i++)

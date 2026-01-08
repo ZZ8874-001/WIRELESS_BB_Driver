@@ -156,13 +156,15 @@ static void Data_Handle(void)
 
     NFB_Calculate();//10k
 
-    if(bb.current_gain_NFB_ > bb.voltage_gain_NFB_ * 1.05f)
+    if(bb.current_gain_NFB_ > bb.voltage_gain_NFB_ * 1.05f && is_TOE_Overtime(CURRENT_TO_VOLTAGE_TOE))
     {
         voltage_gain_PID_output = bb.voltage_gain_NFB_;
+        
     }
     else if(bb.current_gain_NFB_ < bb.voltage_gain_NFB_ * 0.95f)
     {
         voltage_gain_PID_output = bb.current_gain_NFB_;
+        Detect_Hook(CURRENT_TO_VOLTAGE_TOE);
     }
     else
     {

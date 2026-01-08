@@ -29,6 +29,7 @@ enum errorlist
     ADC1_WATCHDOG2_TOE,
     ADC2_WATCHDOG1_TOE,
     VoltIpt_Error_TOE,
+    CURRENT_TO_VOLTAGE_TOE,
     DETECT_LIST_LENGTH,
 };
 
