@@ -16,8 +16,12 @@ static void Choose_State(void);
 static void Data_Handle(void);
 static void Duty_Calculate();
 static void MOS_PWM_Set();
+static void NFB_Calculate();
 
 static float kp_ffb1;
+static float Kp_Volt_NFB = -0.1f;
+static float Kp_Curr_NFB = -0.2f;
+
 static bool Debug_Mode = 0;
 Buck_Boost_Str bb = {0};
 static float square_ratio_a = 3;
@@ -32,12 +36,16 @@ void BB_Control_Init(void)
 {
     bb.current_out_ref_ = 0;
     bb.voltage_out_ref_ = VOLTAGE_OUT_REF;
+    bb.current_out_ref_ = CURRENT_OUT_MAX;
     kp_ffb1 = Kp_FFB;
     Debug_Mode = 0;
 
-    PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  2.0f,1.0f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );
-    PID_Init(&bb.current_out_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  0.3f,1.6f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );//0.5  0.2
+    float_constrain(Kp_Volt_NFB,-0.4f,-0.001f);
+    float_constrain(Kp_Curr_NFB,-0.8f,-0.001f);
 
+    //PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  2.0f,1.0f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );
+    //PID_Init(&bb.current_out_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  0.3f,1.6f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );//0.5  0.2
+    
     // 开启hrtim
     
     
@@ -47,6 +55,8 @@ void BB_Control_Init(void)
     while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2) != HAL_OK)
     {
     }
+
+    
 
     // 初始化bben指示灯
     BBEN_Indicator_GPIO_Port->BSRR = BBEN_Indicator_Pin;
@@ -138,25 +148,38 @@ static void Choose_State(void)
    
 static void Data_Handle(void)
 {
-    static float k_current,k_voltage = 0;
+    //static float k_current,k_voltage = 0;
     static float voltage_gain_PID_output,voltage_gain_FFB_output = 0;
     
-    bb.voltage_gain_measure_ = bb.voltage_out_f_ / bb.voltage_in_f_;
-    bb.voltage_gain_ref_ = float_constrain(VOLTAGE_OUT_REF / bb.voltage_in_f_,0.0f,5.0f);
+    bb.voltage_gain_measure_ = float_constrain(bb.voltage_out_f_ / bb.voltage_in_f_,0.05f,0.95f);
+    bb.voltage_gain_ref_ = float_constrain(VOLTAGE_OUT_REF / bb.voltage_in_f_,0.05f,0.95f);
 
-    PID_Calculate(&bb.voltage_gain_PID_, bb.voltage_gain_measure_, bb.voltage_gain_ref_);//10k
-    PID_Calculate(&bb.current_out_PID_,bb.current_out_f_, bb.current_out_ref_);//10k
+    NFB_Calculate();//10k
 
-    k_current = pow(bb.current_out_f_/bb.current_out_ref_,square_ratio_a);
-    k_current = float_constrain(k_current,0,1.0f);
+    if(bb.current_gain_NFB_ > bb.voltage_gain_NFB_ * 1.05f)
+    {
+        voltage_gain_PID_output = bb.voltage_gain_NFB_;
+    }
+    else if(bb.current_gain_NFB_ < bb.voltage_gain_NFB_ * 0.95f)
+    {
+        voltage_gain_PID_output = bb.current_gain_NFB_;
+    }
+    else
+    {
+        voltage_gain_PID_output = (bb.voltage_gain_NFB_ + bb.current_gain_NFB_) / 2.0f;
+    }
+
+    //k_current = pow(bb.current_out_f_/bb.current_out_ref_,square_ratio_a);
+    //k_current = float_constrain(k_current,0,1.0f);
     
-    k_voltage = 1 - k_current;
+    //k_voltage = 1 - k_current;
 
-    voltage_gain_PID_output = k_current * bb.current_out_PID_.Output + k_voltage * bb.voltage_gain_PID_.Output;
+    //voltage_gain_PID_output = k_current * bb.current_gain_NFB_ + k_voltage * bb.voltage_gain_NFB_;
         
     //前馈赋值
-    voltage_gain_FFB_output = (bb.voltage_gain_ref_ - bb.voltage_gain_measure_) * k_voltage;
-    voltage_gain_final_output = float_constrain(voltage_gain_FFB_output * Kp_FFB + voltage_gain_PID_output,0.8f * bb.voltage_gain_ref_,1.2f * bb.voltage_gain_ref_);
+    //voltage_gain_FFB_output = (bb.voltage_gain_ref_ - bb.voltage_gain_measure_) * k_voltage;
+    //voltage_gain_final_output = float_constrain(voltage_gain_FFB_output * Kp_FFB + voltage_gain_PID_output,0.8f * bb.voltage_gain_ref_,1.2f * bb.voltage_gain_ref_);
+    voltage_gain_final_output = voltage_gain_PID_output;
 }
 
 static void Duty_Calculate()
@@ -176,7 +199,6 @@ static void Duty_Calculate()
 
     case Soft_Start:
         //电压增益->占空比
-        
         soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 5000.0f + 0.026f;
         bb.buck_duty_cycle_ = float_constrain(soft_start_gain,0.05f,0.95f);
        
@@ -204,6 +226,11 @@ static void MOS_PWM_Set()
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
             HRTIM1->sMasterRegs.MCMP2R = 0;
         }
+        else if(last_bb_state != VoltIpt_Error && bb_state == VoltIpt_Error)
+        {
+            HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+            HRTIM1->sMasterRegs.MCMP2R = 0;
+        }
         else if(bb_state == Soft_Start && USER_GetTick() - enter_soft_start_time < 1)
         {
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
@@ -224,4 +251,15 @@ static void MOS_PWM_Set()
   
 }
  
+static void NFB_Calculate()
+{
+    
+    float Gain_Limit = fmaxf(0.95f - bb.voltage_gain_ref_,bb.voltage_gain_ref_ - 0.05f);
+
+    //电压部分
+    bb.voltage_gain_NFB_ = float_constrain(bb.voltage_gain_ref_ + Kp_Volt_NFB * sinf((bb.voltage_gain_measure_ - bb.voltage_gain_ref_)/Gain_Limit * PI * 0.5f),0.05f,0.95f);
+
+    //电流部分
+    bb.current_gain_NFB_ = float_constrain(bb.voltage_gain_ref_ + Kp_Curr_NFB * sinf((bb.current_out_f_ - bb.current_out_ref_) / bb.current_out_ref_ / Gain_Limit * PI * 0.5f),0.05f,0.95f);
+}
  

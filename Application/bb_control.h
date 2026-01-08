@@ -1,11 +1,11 @@
-#ifndef BB_CONTROL_H
+//#ifndef BB_CONTROL_H
 #define BB_CONTROL_H
 
 #include "controller.h"
 
 #define Kp_FFB 0.1f     //前馈增量系数
 #define VOLTAGE_OUT_REF 24.1f
-#define CURRENT_OUT_MAX 5.1f
+#define CURRENT_OUT_MAX 1.1f
 #define VOLTAGE_IN_MAX 48.0f
 #define VOLTAGE_IN_MIN 14.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
@@ -40,6 +40,9 @@ typedef struct
     PID_t voltage_gain_PID_;
     PID_t current_out_PID_;
 
+    float voltage_gain_NFB_;
+    float current_gain_NFB_;
+
     First_Order_Filter_t voltage_out_filter_;
     First_Order_Filter_t voltage_in_filter_;
     First_Order_Filter_t current_out_filter_;
@@ -55,4 +58,4 @@ extern uint8_t USART_Debug_Flag;
 void BB_Control_Init(void);
 void Buck_Boost_Task();
 
-#endif
+//#endif

@@ -7,11 +7,11 @@
 #include "bb_control.h"
 #include "detect_task.h"
 
-#define ADC_RATIO 3.251f/4096.0f
-#define CURRENT_OUT_OFFSET 1.65554738f//6.753255f
-#define VOLTAGE_OUT_OFFSET 0.0f
-#define VOLTAGE_RATIO 19.967254f
-#define CURRENT_RATIO 1.0f/0.235911906f//4.052521f
+#define ADC_RATIO 2.9832f/4096.0f
+#define CURRENT_OUT_OFFSET -8.020f
+#define VOLTAGE_OUT_OFFSET -0.0129f
+#define VOLTAGE_RATIO 22.227f
+#define CURRENT_RATIO -10.200f
 #define adc_volt_watchdog_min (VOLTAGE_IN_MIN * 3.896f)
 #define adc_volt_watchdog_max (VOLTAGE_IN_MAX * 3.896f)
 #define ADC_SAMPLING_FREQUENCY (1.125e6/74)
@@ -71,8 +71,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         float voltage_out_;
         float voltage_in_;
 
-        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO - VOLTAGE_OUT_OFFSET;
-        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO;
+        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO + VOLTAGE_OUT_OFFSET;
+        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO + VOLTAGE_OUT_OFFSET;
         
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
@@ -80,7 +80,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     }
     else if(hadc->Instance == ADC2)
     {
-        float current_out_ = (float)((2048 - ADC2_Rx) * ADC_RATIO - CURRENT_OUT_OFFSET) * CURRENT_RATIO;
+        float current_out_ = (float)((2048 - ADC2_Rx) * ADC_RATIO) * CURRENT_RATIO + CURRENT_OUT_OFFSET;
 
         bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,current_out_);
     }
