@@ -9,7 +9,8 @@
 #define VOLTAGE_IN_MAX 48.0f
 #define VOLTAGE_IN_MIN 14.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
-#define CURRENT_TO_VOLTAGE_DELAY 1  //ms
+#define CURRENT_TO_VOLTAGE_DELAY 10  //ms
+
 
 enum Buck_Boost_State
 {
@@ -44,10 +45,12 @@ typedef struct
 
     float voltage_gain_NFB_;
     float current_gain_NFB_;
+    float current_gain_NFB_f_;
 
     First_Order_Filter_t voltage_out_filter_;
     First_Order_Filter_t voltage_in_filter_;
     First_Order_Filter_t current_out_filter_;
+    First_Order_Filter_t current_gain_NFB_filter_;
 
     // enum Buck_Boost_State status_;
 

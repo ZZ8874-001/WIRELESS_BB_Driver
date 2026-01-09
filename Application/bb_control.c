@@ -12,6 +12,8 @@
 
 #include "filter32.h"
 
+#define NFB_CALCULATING_FREQUENCY (10000.0f)
+
 static void Choose_State(void);
 static void Data_Handle(void);
 static void Duty_Calculate();
@@ -20,8 +22,9 @@ static void NFB_Calculate();
 
 static float kp_ffb1;
 static float Kp_Volt_NFB = -0.1f;
-static float Kp_Curr_NFB = -0.2f;
+static float Kp_Curr_NFB = -0.4f;
 
+static bool is_CC = 0;
 static bool Debug_Mode = 0;
 Buck_Boost_Str bb = {0};
 static float square_ratio_a = 3;
@@ -40,12 +43,13 @@ void BB_Control_Init(void)
     kp_ffb1 = Kp_FFB;
     Debug_Mode = 0;
 
-    float_constrain(Kp_Volt_NFB,-0.4f,-0.001f);
-    float_constrain(Kp_Curr_NFB,-0.8f,-0.001f);
+    
 
     //PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  2.0f,1.0f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );
     //PID_Init(&bb.current_out_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  0.3f,1.6f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );//0.5  0.2
     
+
+    First_Order_Filter_Init(&bb.current_gain_NFB_filter_,1.0f/NFB_CALCULATING_FREQUENCY,50);
     // 开启hrtim
     
     
@@ -56,7 +60,6 @@ void BB_Control_Init(void)
     {
     }
 
-    
 
     // 初始化bben指示灯
     BBEN_Indicator_GPIO_Port->BSRR = BBEN_Indicator_Pin;
@@ -154,21 +157,35 @@ static void Data_Handle(void)
     bb.voltage_gain_measure_ = float_constrain(bb.voltage_out_f_ / bb.voltage_in_f_,0.05f,0.95f);
     bb.voltage_gain_ref_ = float_constrain(VOLTAGE_OUT_REF / bb.voltage_in_f_,0.05f,0.95f);
 
+
+    if(bb.current_out_f_ > 0.05f + bb.current_out_ref_||is_CC == 1)
+    {
+        is_CC = 1;
+        Kp_Curr_NFB = float_constrain(Kp_Curr_NFB * 1.001f,-0.6f,-0.01f);
+
+    }
+    if(bb.current_out_f_ < bb.current_out_ref_)
+    {
+        is_CC = 0;
+        Kp_Curr_NFB = float_constrain(Kp_Curr_NFB * 0.95f,-0.6f,-0.01f);
+    }
+
+
     NFB_Calculate();//10k
 
-    if(bb.current_gain_NFB_ > bb.voltage_gain_NFB_ * 1.05f && is_TOE_Overtime(CURRENT_TO_VOLTAGE_TOE))
+    if(bb.current_gain_NFB_f_ > bb.voltage_gain_NFB_ * 1.05f && is_TOE_Overtime(CURRENT_TO_VOLTAGE_TOE))
     {
         voltage_gain_PID_output = bb.voltage_gain_NFB_;
         
     }
-    else if(bb.current_gain_NFB_ < bb.voltage_gain_NFB_ * 0.95f)
+    else if(bb.current_gain_NFB_f_ < bb.voltage_gain_NFB_ )
     {
-        voltage_gain_PID_output = bb.current_gain_NFB_;
+        voltage_gain_PID_output = bb.current_gain_NFB_f_;
         Detect_Hook(CURRENT_TO_VOLTAGE_TOE);
     }
     else
     {
-        voltage_gain_PID_output = (bb.voltage_gain_NFB_ + bb.current_gain_NFB_) / 2.0f;
+        voltage_gain_PID_output = (bb.voltage_gain_NFB_ + bb.current_gain_NFB_f_) / 2.0f;
     }
 
     //k_current = pow(bb.current_out_f_/bb.current_out_ref_,square_ratio_a);
@@ -262,6 +279,9 @@ static void NFB_Calculate()
     bb.voltage_gain_NFB_ = float_constrain(bb.voltage_gain_ref_ + Kp_Volt_NFB * sinf((bb.voltage_gain_measure_ - bb.voltage_gain_ref_)/Gain_Limit * PI * 0.5f),0.05f,0.95f);
 
     //电流部分
-    bb.current_gain_NFB_ = float_constrain(bb.voltage_gain_ref_ + Kp_Curr_NFB * sinf((bb.current_out_f_ - bb.current_out_ref_) / bb.current_out_ref_ / Gain_Limit * PI * 0.5f),0.05f,0.95f);
+    float Curr_Normalized = float_constrain((bb.current_out_f_ - bb.current_out_ref_) / bb.current_out_ref_,-0.95,0.95);
+    bb.current_gain_NFB_ = float_constrain(bb.voltage_gain_NFB_ + Kp_Curr_NFB * sinf(Curr_Normalized / Gain_Limit * PI * 0.5f),0.05f,0.95f);
+
+    bb.current_gain_NFB_f_ = First_Order_Filter_Calculate(&bb.current_gain_NFB_filter_,bb.current_gain_NFB_);
+    
 }
- 

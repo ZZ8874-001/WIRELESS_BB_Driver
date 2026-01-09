@@ -26,7 +26,7 @@ void Bsp_ADC_Init(void)
     // 滤波器初始化
     First_Order_Filter_Init(&bb.voltage_in_filter_,1/ADC_SAMPLING_FREQUENCY,300);
     First_Order_Filter_Init(&bb.voltage_out_filter_,1/ADC_SAMPLING_FREQUENCY,200);
-    First_Order_Filter_Init(&bb.current_out_filter_,1/ADC_SAMPLING_FREQUENCY,200);
+    First_Order_Filter_Init(&bb.current_out_filter_,1/ADC_SAMPLING_FREQUENCY,100);
     
     // 开启ADC
     while(HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED) != HAL_OK)

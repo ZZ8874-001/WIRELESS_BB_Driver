@@ -105,11 +105,10 @@ int main(void)
   HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
   HRTIM1->sMasterRegs.MCMP2R = 0;
   DWT_Init(72);
-  // DWT_Delay(1.024f);
+  BB_Control_Init();
   Detect_Init();
   Bsp_ADC_Init();
   Bsp_UART_Init();
-  BB_Control_Init();
   HAL_TIM_Base_Start_IT(&htim2);
   // HAL_TIM_Base_Start_IT(&htim15);
 

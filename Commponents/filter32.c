@@ -40,11 +40,17 @@ void First_Order_Filter_Init(First_Order_Filter_t *first_order_filter, float dt,
  */
 float First_Order_Filter_Calculate(First_Order_Filter_t *first_order_filter, float input)
 {
+    float Prev_output;
+    Prev_output = first_order_filter->Output;
     first_order_filter->Input = input;
 
     first_order_filter->Output +=
-        float_deadband(first_order_filter->Input - first_order_filter->Output, -1e-5,1e-5) * first_order_filter->aphha;
-
+        float_deadband(first_order_filter->Input - Prev_output, -1e-5,1e-5) * first_order_filter->aphha;
+    if(isnan(first_order_filter->Output))
+    {
+        first_order_filter->Output = Prev_output;
+    }
+        
     return float_deadband(first_order_filter->Output, -1e-5,1e-5);
 }
 
