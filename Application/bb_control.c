@@ -5,7 +5,6 @@
 #include "stdint.h"
 #include "adc.h"
 #include "hrtim.h"
-#include "usart.h"
 
 #include "bsp_dwt.h"
 #include "bsp_uart.h"
@@ -42,8 +41,6 @@ void BB_Control_Init(void)
     bb.current_out_ref_ = CURRENT_OUT_MAX;
     kp_ffb1 = Kp_FFB;
     Debug_Mode = 0;
-
-    
 
     //PID_Init(&bb.voltage_gain_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  2.0f,1.0f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );
     //PID_Init(&bb.current_out_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  0.3f,1.6f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );//0.5  0.2
@@ -90,7 +87,7 @@ static void Choose_State(void)
     switch(bb_state)
     {
         case Buck:
-            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
+            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ || !(GPIOB->IDR&GPIO_PIN_10))
             {
                 last_bb_state = bb_state;
                 bb_state = VoltIpt_Error;
@@ -111,7 +108,7 @@ static void Choose_State(void)
             Detect_Hook(VoltIpt_Error_TOE);
             break;
         case VoltIpt_Error:
-            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
+            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ || !(GPIOB->IDR&GPIO_PIN_10))
             {
                 Detect_Hook(VoltIpt_Error_TOE);
             }
@@ -125,7 +122,7 @@ static void Choose_State(void)
             }
             break;
         case Soft_Start:
-            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
+            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ || !(GPIOB->IDR&GPIO_PIN_10))
             {
                 last_bb_state = bb_state;
                 bb_state = VoltIpt_Error;
@@ -138,7 +135,7 @@ static void Choose_State(void)
                 last_bb_state = bb_state;
                 enter_soft_start_time = USER_GetTick();
             }
-            else if(USER_GetTick() - enter_soft_start_time > 5000)
+            else if(USER_GetTick() - enter_soft_start_time > 1000)
             {
                 last_bb_state = bb_state;
                 bb_state = Buck;

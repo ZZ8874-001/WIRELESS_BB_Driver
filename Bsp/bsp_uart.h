@@ -1,8 +1,8 @@
 #ifndef __BSP_UART_H__
 #define __BSP_UART_H__
 
-#include "usart.h"
-
+// #include "usart.h"
+#include "main.h"
 
 typedef struct{
     uint8_t interger;
@@ -22,10 +22,10 @@ typedef struct{
     uint8_t voltage_out[4];
 }USART_Rx_Buf_t;
 
-extern USART_Rx_Buf_t Rx_Buf;
 extern USART_Tx_Buf_t Tx_Buf;
+extern USART_Rx_Buf_t Rx_Buf;
 
 void Bsp_UART_Init(void);
-// void Bsp_USART_RxCallBack(UART_HandleTypeDef *huart);
+void USER_USART_InterruptCallback(UART_HandleTypeDef *huart);
 
 #endif

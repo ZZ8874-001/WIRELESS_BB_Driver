@@ -5,8 +5,8 @@
 
 #define Kp_FFB 0.1f     //前馈增量系数
 #define VOLTAGE_OUT_REF 24.1f
-#define CURRENT_OUT_MAX 1.1f
-#define VOLTAGE_IN_MAX 48.0f
+#define CURRENT_OUT_MAX 5.1f
+#define VOLTAGE_IN_MAX 100.0f
 #define VOLTAGE_IN_MIN 14.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
 #define CURRENT_TO_VOLTAGE_DELAY 10  //ms
