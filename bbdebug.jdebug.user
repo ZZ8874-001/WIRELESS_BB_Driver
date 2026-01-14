@@ -1,33 +1,34 @@
 
 GraphedExpression="ADC2_Rx", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#a00909
 GraphedExpression="(bb).current_out_f_", Color=#09a01b
+OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=58
+OpenDocument="bb_control.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Application/bb_control.c", Line=32
 OpenDocument="stm32f3xx_it.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/stm32f3xx_it.c", Line=86
 OpenDocument="startup_stm32f334x8.s", FilePath="E:/new folder/WIRELESS_BB_Driver/startup_stm32f334x8.s", Line=46
 OpenDocument="bsp_uart.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Bsp/bsp_uart.c", Line=0
-OpenDocument="main.c", FilePath="E:/new folder/WIRELESS_BB_Driver/Core/Src/main.c", Line=58
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=794, h=528, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=994, h=448, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=794, h=628, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=794, h=533, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=994, h=461, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=794, h=623, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1773, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=994, h=708, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="500 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="582;-71", CodeGraphLegendShown=0, CodeGraphLegendPosition="598;0"
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=994, h=695, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="500 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="582;-71", CodeGraphLegendShown=0, CodeGraphLegendPosition="598;0"
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=786, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;758]
 TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" ADC2_Rx";" (bb).current_out_f_"], ColWidths=[100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;154;124;124;100;124;110;126;457]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;154;124;124;100;124;124;126;443]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[319;332;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
-WatchedExpression="bb", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="bb", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="USART_Debug_Flag", RefreshRate=2, Window=Watched Data 1
-WatchedExpression="bb_state", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="last_bb_state", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="ADC1_Rx", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="ADC2_Rx", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="hadc1", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="Rx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
-WatchedExpression="Tx_Buf", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_DEC, Window=Watched Data 1
+WatchedExpression="bb_state", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="last_bb_state", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="ADC1_Rx", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="ADC2_Rx", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="hadc1", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="Rx_Buf", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="Tx_Buf", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="Detect_List", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="hhrtim1", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="bb.buck_duty_cycle_", RefreshRate=2, Window=Watched Data 1
@@ -37,5 +38,6 @@ WatchedExpression="soft_start_gain", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="bb.voltage_gain_NFB_", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="bb.current_gain_NFB_", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="Kp_Curr_NFB", RefreshRate=2, Window=Watched Data 1
-WatchedExpression="Rx_data", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
+WatchedExpression="Rx_data", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="huart3", RefreshRate=2, Window=Watched Data 1
+WatchedExpression="Wireless_EN_flag", RefreshRate=2, Window=Watched Data 1

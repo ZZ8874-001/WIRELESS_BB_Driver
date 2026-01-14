@@ -103,7 +103,6 @@ void HAL_ADCEx_LevelOutOfWindow2Callback(ADC_HandleTypeDef* hadc)
 {
     if(hadc->Instance == ADC1)
     {
-        HRTIM1->sCommonRegs.ODISR = 0xFFFF;
         Detect_Hook(ADC1_WATCHDOG2_TOE);
     }
 }

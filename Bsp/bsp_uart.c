@@ -1,5 +1,8 @@
 #include "bsp_uart.h"
 
+#include "bb_control.h"
+#include "detect_task.h"
+
 #include <string.h>
 
 USART_Tx_Buf_t Tx_Buf = {
@@ -45,8 +48,14 @@ void USER_USART_InterruptCallback(UART_HandleTypeDef *huart)
             DMA1_Channel3->CCR &= ~DMA_CCR_EN;
             DMA1_Channel3->CNDTR = sizeof(Rx_data)/sizeof(Rx_data[0]);
 
+            WirelessRx_DataHandle(Rx_data);
+            Detect_Hook(USART3_BUCKEN_TOE);
+
             USART3->ICR |= USART_ICR_IDLECF;
             DMA1_Channel3->CCR |= DMA_CCR_EN;
+            
         }
     }
 }
+
+

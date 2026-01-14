@@ -23,6 +23,8 @@ static float kp_ffb1;
 static float Kp_Volt_NFB = -0.1f;
 static float Kp_Curr_NFB = -0.4f;
 
+static bool Wireless_EN_flag = false;
+
 static bool is_CC = 0;
 static bool Debug_Mode = 0;
 Buck_Boost_Str bb = {0};
@@ -62,8 +64,17 @@ void BB_Control_Init(void)
     BBEN_Indicator_GPIO_Port->BSRR = BBEN_Indicator_Pin;
 }
 
-void Buck_Boost_Task()
+void Buck_Boost_Task(void)
 {
+    if(!Wireless_EN_flag || is_TOE_Overtime(USART3_BUCKEN_TOE))
+    {
+        HRTIM1->sCommonRegs.ODISR = 0xF;
+    }
+    else
+    {
+        HRTIM1->sCommonRegs.OENR = 0xF;
+    }
+
     Choose_State();
     Data_Handle();
     Duty_Calculate();
@@ -257,12 +268,7 @@ static void MOS_PWM_Set()
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
         }
-        else
-        {
-            
-        }
         
-        HRTIM1->sCommonRegs.OENR = 0xF;
     }
   
 }
@@ -281,4 +287,9 @@ static void NFB_Calculate()
 
     bb.current_gain_NFB_f_ = First_Order_Filter_Calculate(&bb.current_gain_NFB_filter_,bb.current_gain_NFB_);
     
+}
+
+void WirelessRx_DataHandle(uint8_t *data)
+{
+    Wireless_EN_flag = (*data == 0xAA || *(data + 1) == 0xAA) ? true : false;
 }

@@ -61,6 +61,7 @@ extern enum Buck_Boost_State bb_state;
 extern uint8_t USART_Debug_Flag;
 
 void BB_Control_Init(void);
-void Buck_Boost_Task();
+void Buck_Boost_Task(void);
+void WirelessRx_DataHandle(uint8_t *data);
 
 //#endif
