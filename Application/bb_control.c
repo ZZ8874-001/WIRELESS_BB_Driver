@@ -1,3 +1,37 @@
+//**************************************************************************************/
+/*
+ * **************************************************************************
+ * ********************                                  ********************
+ * ********************      COPYRIGHT INFORMATION       ********************
+ * ********************                                  ********************
+ * **************************************************************************
+ *                                                                          *
+ *                                   _oo8oo_                                *
+ *                                  o8888888o                               *
+ *                                  88" . "88                               *
+ *                                  (| -_- |)                               *
+ *                                  0\  =  /0                               *
+ *                                ___/'==='\___                             *
+ *                              .' \\|     |// '.                           *
+ *                             / \\|||  :  |||// \                          *
+ *                            / _||||| -:- |||||_ \                         *
+ *                           |   | \\\  -  /// |   |                        *
+ *                           | \_|  ''\---/''  |_/ |                        *
+ *                           \  .-\__  '-'  __/-.  /                        *
+ *                         ___'. .'  /--.--\  '. .'___                      *
+ *                      ."" '<  '.___\_<|>_/___.'  >' "".                   *
+ *                     | | :  `- \`.:`\ _ /`:.`/ -`  : | |                  *
+ *                     \  \ `-.   \_ __\ /__ _/   .-` /  /                  *
+ *                 =====`-.____`.___ \_____/ ___.`____.-`=====              *
+ *                                   `=---=`                                *
+ * **************************************************************************
+ * ********************                                  ********************
+ * ********************                                  ********************
+ * ********************         佛祖保佑 永远无BUG        ********************
+ * ********************                                  ********************
+ * **************************************************************************
+ */
+
 #include "bb_control.h"
 #include "detect_task.h"
 
@@ -23,6 +57,7 @@ static float kp_ffb1;
 static float Kp_Volt_NFB = -0.1f;
 static float Kp_Curr_NFB = -0.4f;
 
+static bool Wireless_data = false;
 static bool Wireless_EN_flag = false;
 
 static bool is_CC = 0;
@@ -66,13 +101,19 @@ void BB_Control_Init(void)
 
 void Buck_Boost_Task(void)
 {
-    if(!Wireless_EN_flag || is_TOE_Overtime(USART3_BUCKEN_TOE))
+    if(is_TOE_Overtime(USART3_BUCKEN_TOE))
+    {
+        Wireless_EN_flag = false;
+    }
+    else if(!Wireless_data)
     {
         HRTIM1->sCommonRegs.ODISR = 0xF;
+        Wireless_EN_flag = false;
     }
     else
     {
         HRTIM1->sCommonRegs.OENR = 0xF;
+        Wireless_EN_flag = true;
     }
 
     Choose_State();
@@ -98,17 +139,33 @@ static void Choose_State(void)
     switch(bb_state)
     {
         case Buck:
-            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ || !(GPIOB->IDR&GPIO_PIN_10))
+            float buck_into_error_flag = 0;
+            if(is_TOE_Overtime(USART3_BUCKEN_TOE))
+            {
+                if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
+                {
+                    buck_into_error_flag = 1;
+                }
+            }
+            else if(!Wireless_EN_flag)
+            {
+                buck_into_error_flag = 1;
+            }
+            else
+            {
+                last_bb_state = bb_state;
+            }
+
+            // 癫疯之作1
+            // buck_into_error_flag = is_TOE_Overtime(USART3_BUCKEN_TOE) ? ((bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)?1:0) : ((!Wireless_EN_flag)?1:0);
+
+            if(buck_into_error_flag)
             {
                 last_bb_state = bb_state;
                 bb_state = VoltIpt_Error;
 
                 GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
                 Detect_Hook(VoltIpt_Error_TOE);
-            }
-            else
-            {
-                last_bb_state = bb_state;
             }
             break;
         case None:
@@ -119,11 +176,29 @@ static void Choose_State(void)
             Detect_Hook(VoltIpt_Error_TOE);
             break;
         case VoltIpt_Error:
-            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ || !(GPIOB->IDR&GPIO_PIN_10))
+            HRTIM1->sCommonRegs.ODISR = 0xF;
+            float error_into_ss_flag = 0;
+            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
             {
                 Detect_Hook(VoltIpt_Error_TOE);
             }
-            else if(is_TOE_Overtime(VoltIpt_Error_TOE))
+
+            if(is_TOE_Overtime(USART3_BUCKEN_TOE))
+            {
+                if(is_TOE_Overtime(VoltIpt_Error_TOE))
+                {
+                    error_into_ss_flag = 1;
+                }
+            }
+            else if(Wireless_EN_flag == 1)
+            {
+                error_into_ss_flag = 1;
+            }
+
+            // 癫疯之作2
+            // error_into_ss_flag = is_TOE_Overtime(USART3_BUCKEN_TOE) ? (is_TOE_Overtime(VoltIpt_Error_TOE) ? 1:0) : (Wireless_EN_flag == 1 ? 1:0);
+
+            if(error_into_ss_flag)
             {
                 last_bb_state = bb_state;
                 bb_state = Soft_Start;
@@ -131,9 +206,27 @@ static void Choose_State(void)
                 GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
                 GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
             }
+
             break;
         case Soft_Start:
-            if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ || !(GPIOB->IDR&GPIO_PIN_10))
+            HRTIM1->sCommonRegs.OENR = 0xF;
+            float ss_into_error_flag = 0;
+            if(is_TOE_Overtime(USART3_BUCKEN_TOE))
+            {
+                if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
+                {
+                    ss_into_error_flag = 1;
+                }
+            }
+            else if(!Wireless_EN_flag)
+            {
+                ss_into_error_flag = 1;
+            }
+
+            // 癫疯之作3,其实我感觉三个都大差不差)
+            // ss_into_error_flag = is_TOE_Overtime(USART3_BUCKEN_TOE) ? (bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_ ? 1:0) : ((!Wireless_EN_flag) ? 1:0);
+
+            if(ss_into_error_flag)
             {
                 last_bb_state = bb_state;
                 bb_state = VoltIpt_Error;
@@ -141,7 +234,8 @@ static void Choose_State(void)
                 GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
                 Detect_Hook(VoltIpt_Error_TOE);
             }
-            else if(last_bb_state != Soft_Start)
+            
+            if(last_bb_state != Soft_Start)
             {
                 last_bb_state = bb_state;
                 enter_soft_start_time = USER_GetTick();
@@ -291,5 +385,5 @@ static void NFB_Calculate()
 
 void WirelessRx_DataHandle(uint8_t *data)
 {
-    Wireless_EN_flag = (*data == 0xAA || *(data + 1) == 0xAA) ? true : false;
+    Wireless_data = (*data == 0xAA || *(data + 1) == 0xAA) ? true : false;
 }

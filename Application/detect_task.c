@@ -12,7 +12,7 @@ void Detect_Init()
         1000,
         2500,
         CURRENT_TO_VOLTAGE_DELAY,
-        1000,
+        25,
     };
 
     for(uint8_t i = 0;i<DETECT_LIST_LENGTH;i++)

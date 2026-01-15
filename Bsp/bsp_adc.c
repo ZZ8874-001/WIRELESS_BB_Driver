@@ -19,7 +19,7 @@
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
 
-static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t high_threshold,uint16_t low_threshold);
+static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,int16_t high_threshold,int16_t low_threshold);
 
 void Bsp_ADC_Init(void)
 {
@@ -43,13 +43,21 @@ void Bsp_ADC_Init(void)
     }
     ADC1->AWD2CR = 1 << 2;
     // 1020-3000
-    Change_ADC_AWD_Threshold(&ADC1->TR2,adc_volt_watchdog_min,adc_volt_watchdog_max);//ADC1_WATCHDOG1_TOE
+    Change_ADC_AWD_Threshold(&ADC1->TR2,adc_volt_watchdog_min,(adc_volt_watchdog_max<255?adc_volt_watchdog_max:255));//ADC1_WATCHDOG1_TOE
     ADC1->IER |= ADC_IER_AWD2IE;
 
 }
 
-static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,uint16_t low_threshold,uint16_t high_threshold)
+static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,int16_t low_threshold,int16_t high_threshold)
 {
+    if(high_threshold > 4095)
+    {
+        high_threshold = 4095;
+    }
+    if(low_threshold < 0)
+    {
+        low_threshold = 0;
+    }
     *ADCx_TRx = (high_threshold << 16) | low_threshold;
 }
 
