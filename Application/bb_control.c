@@ -320,7 +320,7 @@ static void Duty_Calculate()
 
     case Soft_Start:
         //电压增益->占空比
-        soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 5000.0f + 0.026f;
+        soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 1000.0f + 0.026f;
         bb.buck_duty_cycle_ = float_constrain(soft_start_gain,0.05f,0.95f);
        
         break;
