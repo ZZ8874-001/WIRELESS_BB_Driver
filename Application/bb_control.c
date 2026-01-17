@@ -46,6 +46,7 @@
 #include "filter32.h"
 
 #define NFB_CALCULATING_FREQUENCY (10000.0f)
+#define BUCK_HIGH 52.0f
 
 static void Choose_State(void);
 static void Data_Handle(void);
@@ -107,12 +108,10 @@ void Buck_Boost_Task(void)
     }
     else if(!Wireless_data)
     {
-        HRTIM1->sCommonRegs.ODISR = 0xF;
         Wireless_EN_flag = false;
     }
     else
     {
-        HRTIM1->sCommonRegs.OENR = 0xF;
         Wireless_EN_flag = true;
     }
 
@@ -121,8 +120,7 @@ void Buck_Boost_Task(void)
     Duty_Calculate();
 
     if((!is_TOE_Overtime(ADC1_WATCHDOG1_TOE) 
-    || !is_TOE_Overtime(ADC1_WATCHDOG2_TOE) 
-    || !is_TOE_Overtime(ADC2_WATCHDOG1_TOE)) 
+    || !is_TOE_Overtime(ADC1_WATCHDOG2_TOE)) 
     && USART_Debug_Flag == 0)
     {
         bb.buck_duty_cycle_ = 0;
@@ -139,6 +137,10 @@ static void Choose_State(void)
     switch(bb_state)
     {
         case Buck:
+            HRTIM1->sCommonRegs.OENR = 0xF;
+            GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
+            GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
+
             float buck_into_error_flag = 0;
             if(is_TOE_Overtime(USART3_BUCKEN_TOE))
             {
@@ -159,12 +161,11 @@ static void Choose_State(void)
             // 癫疯之作1
             // buck_into_error_flag = is_TOE_Overtime(USART3_BUCKEN_TOE) ? ((bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)?1:0) : ((!Wireless_EN_flag)?1:0);
 
-            if(buck_into_error_flag)
+            if(buck_into_error_flag && bb.voltage_in_f_ < BUCK_HIGH)
             {
                 last_bb_state = bb_state;
                 bb_state = VoltIpt_Error;
 
-                GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
                 Detect_Hook(VoltIpt_Error_TOE);
             }
             break;
@@ -177,6 +178,8 @@ static void Choose_State(void)
             break;
         case VoltIpt_Error:
             HRTIM1->sCommonRegs.ODISR = 0xF;
+            GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
+
             float error_into_ss_flag = 0;
             if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
             {
@@ -198,18 +201,23 @@ static void Choose_State(void)
             // 癫疯之作2
             // error_into_ss_flag = is_TOE_Overtime(USART3_BUCKEN_TOE) ? (is_TOE_Overtime(VoltIpt_Error_TOE) ? 1:0) : (Wireless_EN_flag == 1 ? 1:0);
 
-            if(error_into_ss_flag)
+            if(bb.voltage_in_f_ > BUCK_HIGH)
             {
                 last_bb_state = bb_state;
                 bb_state = Soft_Start;
-
-                GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
-                GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
+            }
+            else if(error_into_ss_flag)
+            {
+                last_bb_state = bb_state;
+                bb_state = Soft_Start;
             }
 
             break;
         case Soft_Start:
             HRTIM1->sCommonRegs.OENR = 0xF;
+            GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
+            GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
+
             float ss_into_error_flag = 0;
             if(is_TOE_Overtime(USART3_BUCKEN_TOE))
             {
@@ -231,7 +239,6 @@ static void Choose_State(void)
                 last_bb_state = bb_state;
                 bb_state = VoltIpt_Error;
 
-                GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
                 Detect_Hook(VoltIpt_Error_TOE);
             }
             
@@ -320,9 +327,8 @@ static void Duty_Calculate()
 
     case Soft_Start:
         //电压增益->占空比
-        soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 5000.0f + 0.026f;
+        soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 1000.0f + 0.026f;
         bb.buck_duty_cycle_ = float_constrain(soft_start_gain,0.05f,0.95f);
-       
         break;
     
     default:
@@ -342,22 +348,14 @@ static void MOS_PWM_Set()
     // }
     if(is_TOE_Overtime(ADC1_WATCHDOG2_TOE))
     {
-        if(!is_TOE_Overtime(VoltIpt_Error))
+        if(!is_TOE_Overtime(VoltIpt_Error)
+        || (last_bb_state != VoltIpt_Error && bb_state == VoltIpt_Error)
+        || (bb_state == Soft_Start && USER_GetTick() - enter_soft_start_time < 1))
         {
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
             HRTIM1->sMasterRegs.MCMP2R = 0;
         }
-        else if(last_bb_state != VoltIpt_Error && bb_state == VoltIpt_Error)
-        {
-            HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
-            HRTIM1->sMasterRegs.MCMP2R = 0;
-        }
-        else if(bb_state == Soft_Start && USER_GetTick() - enter_soft_start_time < 1)
-        {
-            HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
-            HRTIM1->sMasterRegs.MCMP2R = 0;
-        }
-        else if(last_bb_state == Buck || last_bb_state == Soft_Start)
+        else if((bb_state == Buck || last_bb_state == Soft_Start))
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1

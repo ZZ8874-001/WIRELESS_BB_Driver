@@ -76,7 +76,7 @@ Commponents/Controller/controller.c \
 Core/Src/stm32f3xx_hal_timebase_tim.c \
 Core/Src/usart.c \
 Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart.c \
-Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart_ex.c
+Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_uart_ex.c 
 
 
 
