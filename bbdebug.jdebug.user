@@ -23,7 +23,7 @@ TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING"
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[319;332;100;100]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
-TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;340]
+TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;1040]
 WatchedExpression="bb", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="USART_Debug_Flag", RefreshRate=2, Window=Watched Data 1
 WatchedExpression="bb_state", RefreshRate=2, Window=Watched Data 1
