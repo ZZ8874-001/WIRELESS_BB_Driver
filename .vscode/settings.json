@@ -3,5 +3,7 @@
         "bb_control.h": "c",
         "type_traits": "c",
         "usart.h": "c"
-    }
+    },
+    "trae.tab.enableRename": false,
+    "trae.tab.enableAutoImport": false
 }
