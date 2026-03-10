@@ -8,10 +8,10 @@
 #include "detect_task.h"
 
 #define ADC_RATIO 2.9832f/4096.0f
-#define CURRENT_OUT_OFFSET -8.020f
+#define CURRENT_OUT_OFFSET -15.9082//-8.020f
 #define VOLTAGE_OUT_OFFSET -0.0129f
 #define VOLTAGE_RATIO 22.227f
-#define CURRENT_RATIO -10.200f
+#define CURRENT_RATIO -20.3865//-10.200f
 #define adc_volt_watchdog_min (VOLTAGE_IN_MIN * 3.896f)
 #define adc_volt_watchdog_max (VOLTAGE_IN_MAX * 3.896f)
 #define ADC_SAMPLING_FREQUENCY (1.125e6/74)

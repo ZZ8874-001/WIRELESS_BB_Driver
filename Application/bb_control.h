@@ -4,7 +4,7 @@
 #include "controller.h"
 
 #define Kp_FFB 0.1f     //前馈增量系数
-#define VOLTAGE_OUT_REF 24.1f
+#define VOLTAGE_OUT_REF 26.4f
 #define CURRENT_OUT_MAX 5.1f
 #define VOLTAGE_IN_MAX 100.0f
 #define VOLTAGE_IN_MIN 14.0f
