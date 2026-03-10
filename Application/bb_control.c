@@ -354,11 +354,15 @@ static void MOS_PWM_Set()
         {
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
             HRTIM1->sMasterRegs.MCMP2R = 0;
+
+            HRTIM1->sTimerxRegs[1].CMP3xR = Hrtim_Period/2;
         }
         else if((bb_state == Buck || last_bb_state == Soft_Start))
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
+            
+            HRTIM1->sTimerxRegs[1].CMP3xR = Hrtim_Period/2;
         }
         
     }
