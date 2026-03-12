@@ -72,6 +72,8 @@ uint8_t USART_Debug_Flag = 0;
 static float voltage_gain_final_output = 0;
 static float enter_soft_start_time = 0;
 
+int8_t IDCard = 0;
+
 void BB_Control_Init(void)
 {
     bb.current_out_ref_ = 0;
@@ -88,7 +90,7 @@ void BB_Control_Init(void)
     // 开启hrtim
     
     
-    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B) != HAL_OK)
+    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A) != HAL_OK)
     {
     }
     while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2) != HAL_OK)
@@ -354,15 +356,11 @@ static void MOS_PWM_Set()
         {
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
             HRTIM1->sMasterRegs.MCMP2R = 0;
-
-            HRTIM1->sTimerxRegs[1].CMP3xR = Hrtim_Period/2;
         }
         else if((bb_state == Buck || last_bb_state == Soft_Start))
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
-            
-            HRTIM1->sTimerxRegs[1].CMP3xR = Hrtim_Period/2;
         }
         
     }

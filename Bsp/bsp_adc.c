@@ -7,11 +7,12 @@
 #include "bb_control.h"
 #include "detect_task.h"
 
-#define ADC_RATIO 2.9832f/4096.0f
-#define CURRENT_OUT_OFFSET -15.9082//-8.020f
-#define VOLTAGE_OUT_OFFSET -0.0129f
-#define VOLTAGE_RATIO 22.227f
-#define CURRENT_RATIO -20.3865//-10.200f
+float ADC_RATIO[BOARD_NUM] = { 2.9832f/4096.0f, 2.9832f/4096.0f };
+float CURRENT_OUT_OFFSET[BOARD_NUM] = { -8.020f, -15.9082f };
+float VOLTAGE_OUT_OFFSET[BOARD_NUM] = { -0.0129f, -0.0129f };
+float VOLTAGE_RATIO[BOARD_NUM] = { 22.227f , 22.227f };
+float CURRENT_RATIO[BOARD_NUM] = { -10.200f , -20.3865f };
+
 #define adc_volt_watchdog_min (VOLTAGE_IN_MIN * 3.896f)
 #define adc_volt_watchdog_max (VOLTAGE_IN_MAX * 3.896f)
 #define ADC_SAMPLING_FREQUENCY (1.125e6/74)
@@ -79,8 +80,8 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
         float voltage_out_;
         float voltage_in_;
 
-        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[0]) * ADC_RATIO * VOLTAGE_RATIO + VOLTAGE_OUT_OFFSET;
-        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[1]) * ADC_RATIO * VOLTAGE_RATIO + VOLTAGE_OUT_OFFSET;
+        voltage_out_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_out,4):ADC1_Rx[0]) * ADC_RATIO[IDCard] * VOLTAGE_RATIO[IDCard] + VOLTAGE_OUT_OFFSET[IDCard];
+        voltage_in_ = (float) (USART_Debug_Flag?Char_To_Uint16(Rx_Buf.voltage_in,4):ADC1_Rx[1]) * ADC_RATIO[IDCard] * VOLTAGE_RATIO[IDCard] + VOLTAGE_OUT_OFFSET[IDCard];
         
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
@@ -88,7 +89,7 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     }
     else if(hadc->Instance == ADC2)
     {
-        float current_out_ = (float)((2048 - ADC2_Rx) * ADC_RATIO) * CURRENT_RATIO + CURRENT_OUT_OFFSET;
+        float current_out_ = (float)((2048 - ADC2_Rx) * ADC_RATIO[IDCard]) * CURRENT_RATIO[IDCard] + CURRENT_OUT_OFFSET[IDCard];
 
         bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,current_out_);
     }

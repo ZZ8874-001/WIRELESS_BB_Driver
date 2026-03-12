@@ -3,6 +3,13 @@
 
 #include "controller.h"
 
+#define BOARD_NUM 2
+#define BOARD_ID_0 { 0x80090020 , 0xAAAAAAAA }
+#define BOARD_ID_1 { 0x58304302 , 0xAAAAAAAA }
+#define BOARD_ID_2 { 0x2037334D , 0xAAAAAAAA }
+
+extern int8_t IDCard;
+
 #define Kp_FFB 0.1f     //前馈增量系数
 #define VOLTAGE_OUT_REF 26.4f
 #define CURRENT_OUT_MAX 5.1f
