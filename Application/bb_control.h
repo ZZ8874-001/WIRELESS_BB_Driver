@@ -4,9 +4,9 @@
 #include "controller.h"
 
 #define BOARD_NUM 2
-#define BOARD_ID_0 { 0x80090020 , 0xAAAAAAAA }
-#define BOARD_ID_1 { 0x58304302 , 0xAAAAAAAA }
-#define BOARD_ID_2 { 0x2037334D , 0xAAAAAAAA }
+#define BOARD_ID_0 { 0x80090020 , 0x8006000E }
+#define BOARD_ID_1 { 0x58304302 , 0x564E4317 }
+#define BOARD_ID_2 { 0x2037334D , 0x20353635 }
 
 extern int8_t IDCard;
 

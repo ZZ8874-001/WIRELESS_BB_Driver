@@ -104,6 +104,7 @@ int main(void)
   /* USER CODE BEGIN 2 */
   uint32_t board_id[3];
   uint32_t id_card[3][BOARD_NUM] = {BOARD_ID_0,BOARD_ID_1,BOARD_ID_2};
+  int8_t IDCard = 0;
   
   board_id[0] = *(uint32_t *)(0x1FFFF7AC);
   board_id[1] = *(uint32_t *)(0x1FFFF7B0);
