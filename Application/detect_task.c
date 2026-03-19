@@ -10,7 +10,7 @@ void Detect_Init()
         1000,// ms
         1000,
         1000,
-        2500,
+        10,
         CURRENT_TO_VOLTAGE_DELAY,
         25,
     };

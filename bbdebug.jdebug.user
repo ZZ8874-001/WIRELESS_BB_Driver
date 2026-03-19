@@ -1,24 +1,26 @@
 
 
-GraphedExpression="(bb).current_out_f_", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#e56a6f
-GraphedExpression="(bb).voltage_in_f_", Color=#35792b
+GraphedExpression="(bb).current_out_f_", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#e56a6f, Show=0
+GraphedExpression="(bb).voltage_in_f_", Color=#35792b, Show=0
 GraphedExpression="(bb).voltage_out_f_", Color=#769dda
 GraphedExpression="ADC2_Rx", Color=#b14f0d, Show=0
-OpenDocument="main.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Core/Src/main.c", Line=58
+GraphedExpression="(bb).buck_duty_cycle_", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#b3c38e
+GraphedExpression="bb_state", Color=#ab7b05, Show=0
 OpenDocument="startup_stm32f334x8.s", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/startup_stm32f334x8.s", Line=0
+OpenDocument="main.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Core/Src/main.c", Line=58
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=983, h=661, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=994, h=624, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=983, h=709, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=0, w=983, h=665, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=994, h=630, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=1, w=983, h=705, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1894, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=994, h=746, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="20 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="1433;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="1454;0"
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=994, h=740, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="500 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;89", DataGraphShowNamesAtCursor=1, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="846;-75", CodeGraphLegendShown=0, CodeGraphLegendPosition="866;0"
 OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=841, h=264, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
 TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;1024]
-TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).current_out_f_";" (bb).voltage_in_f_";" (bb).voltage_out_f_";" ADC2_Rx"], ColWidths=[100;100;100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;168;157;179;135;146;130;157;368]
+TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).current_out_f_";" (bb).voltage_in_f_";" (bb).voltage_out_f_";" ADC2_Rx";" (bb).buck_duty_cycle_";" bb_state"], ColWidths=[100;100;100;100;100;100;100;100]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="DESCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;245;157;157;135;157;130;157;302]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
-TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[319;332;100;202]
+TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[319;332;100;232]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
 TableHeader="TargetExceptionDialog", SortCol="Name", SortOrder="ASCENDING", VisibleCols=["Name";"Value";"Address";"Description"], ColWidths=[200;100;100;1038]
 WatchedExpression="bb", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1

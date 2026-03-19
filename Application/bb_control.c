@@ -48,6 +48,8 @@
 #define NFB_CALCULATING_FREQUENCY (10000.0f)
 #define BUCK_HIGH 52.0f
 
+#define SS_2_BUCK_TIME 200
+
 static void Choose_State(void);
 static void Data_Handle(void);
 static void Duty_Calculate();
@@ -249,7 +251,7 @@ static void Choose_State(void)
                 last_bb_state = bb_state;
                 enter_soft_start_time = USER_GetTick();
             }
-            else if(USER_GetTick() - enter_soft_start_time > 1000)
+            else if(USER_GetTick() - enter_soft_start_time > SS_2_BUCK_TIME)
             {
                 last_bb_state = bb_state;
                 bb_state = Buck;
@@ -329,7 +331,7 @@ static void Duty_Calculate()
 
     case Soft_Start:
         //电压增益->占空比
-        soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / 1000.0f + 0.026f;
+        soft_start_gain = float_constrain(voltage_gain_final_output,0.025f,0.95f) * (USER_GetTick() - enter_soft_start_time) / SS_2_BUCK_TIME + 0.026f;
         bb.buck_duty_cycle_ = float_constrain(soft_start_gain,0.05f,0.95f);
         break;
     
@@ -357,7 +359,7 @@ static void MOS_PWM_Set()
             HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
             HRTIM1->sMasterRegs.MCMP2R = 0;
         }
-        else if((bb_state == Buck || last_bb_state == Soft_Start))
+        else if(bb_state == Buck || last_bb_state == Soft_Start)
         {
             HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
             HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
