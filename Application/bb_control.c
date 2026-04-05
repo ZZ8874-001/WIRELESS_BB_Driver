@@ -55,7 +55,6 @@ static void Data_Handle(void);
 static void Duty_Calculate();
 static void MOS_PWM_Set();
 static void NFB_Calculate();
-static void Wireless_EN_Indicator_Set(void);
 
 static float kp_ffb1;
 static float Kp_Volt_NFB = -0.1f;
@@ -102,7 +101,7 @@ void BB_Control_Init(void)
 
 
     // 初始化bben指示灯
-    Wireless_EN_Indicator_Set();
+    BBEN_Indicator_GPIO_Port->BSRR = BBEN_Indicator_Pin;
 }
 
 void Buck_Boost_Task(void)
@@ -120,7 +119,6 @@ void Buck_Boost_Task(void)
         Wireless_EN_flag = true;
     }
 
-    Wireless_EN_Indicator_Set();
     Choose_State();
     Data_Handle();
     Duty_Calculate();
@@ -144,7 +142,7 @@ static void Choose_State(void)
     {
         case Buck:
             HRTIM1->sCommonRegs.OENR = 0xF;
-            GPIOA->BSRR = GPIO_PIN_6;
+            GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
             GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
 
             float buck_into_error_flag = 0;
@@ -179,12 +177,12 @@ static void Choose_State(void)
             last_bb_state = bb_state;
             bb_state = VoltIpt_Error;
 
-            GPIOA->BRR = GPIO_PIN_6;
+            GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
             Detect_Hook(VoltIpt_Error_TOE);
             break;
         case VoltIpt_Error:
             HRTIM1->sCommonRegs.ODISR = 0xF;
-            GPIOA->BRR = GPIO_PIN_6;
+            GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
 
             float error_into_ss_flag = 0;
             if(bb.voltage_in_f_ < VOLTAGE_IN_MIN || VOLTAGE_IN_MAX < bb.voltage_in_f_)
@@ -221,7 +219,7 @@ static void Choose_State(void)
             break;
         case Soft_Start:
             HRTIM1->sCommonRegs.OENR = 0xF;
-            GPIOA->BSRR = GPIO_PIN_6;
+            GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
             GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
 
             float ss_into_error_flag = 0;
@@ -345,9 +343,6 @@ static void Duty_Calculate()
 
 static void MOS_PWM_Set()
 {
-    uint32_t cmp1 = Hrtim_Period;
-    uint32_t cmp2 = 0;
-
     // if(USART_Debug_Flag)
     // {
     //     Tx_Buf.duty1.data[0] = (uint8_t)(bb.buck_duty_cycle_ * 10) + '0';
@@ -357,23 +352,21 @@ static void MOS_PWM_Set()
     // }
     if(is_TOE_Overtime(ADC1_WATCHDOG2_TOE))
     {
-        if(!is_TOE_Overtime(VoltIpt_Error_TOE)
+        if(!is_TOE_Overtime(VoltIpt_Error)
         || (last_bb_state != VoltIpt_Error && bb_state == VoltIpt_Error)
         || (bb_state == Soft_Start && USER_GetTick() - enter_soft_start_time < 1))
         {
-            cmp1 = Hrtim_Period;
-            cmp2 = 0;
+            HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+            HRTIM1->sMasterRegs.MCMP2R = 0;
         }
         else if(bb_state == Buck || last_bb_state == Soft_Start)
         {
-            cmp1 = (uint32_t)(bb.buck_duty_cycle_ * 0.5f * Hrtim_Period);                    // buck low d2
-            cmp2 = (uint32_t)((1.0f - bb.buck_duty_cycle_ * 0.5f) * Hrtim_Period);           // buck high d1
+            HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
+            HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
         }
-
-        HRTIM1->sMasterRegs.MCMP1R = cmp1;
-        HRTIM1->sMasterRegs.MCMP2R = cmp2;
-        HAL_HRTIM_SoftwareUpdate(&hhrtim1, HRTIM_TIMERUPDATE_MASTER);
+        
     }
+  
 }
  
 static void NFB_Calculate()
@@ -390,18 +383,6 @@ static void NFB_Calculate()
 
     bb.current_gain_NFB_f_ = First_Order_Filter_Calculate(&bb.current_gain_NFB_filter_,bb.current_gain_NFB_);
     
-}
-
-static void Wireless_EN_Indicator_Set(void)
-{
-    if(Wireless_EN_flag)
-    {
-        BBEN_Indicator_GPIO_Port->BSRR = BBEN_Indicator_Pin;
-    }
-    else
-    {
-        BBEN_Indicator_GPIO_Port->BRR = BBEN_Indicator_Pin;
-    }
 }
 
 void WirelessRx_DataHandle(uint8_t *data)
