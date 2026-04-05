@@ -55,6 +55,7 @@ void Detect_Hook(uint8_t toe)
 {
     Detect_List[toe].new_time = USER_GetTick();
     Detect_List[toe].is_Lost = 0;
+    Detect_List[toe].Overtime_Exit = 0;
 }
 
 uint8_t is_TOE_Overtime(uint8_t toe)
