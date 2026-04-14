@@ -73,9 +73,9 @@ void Error_Handler(void);
 #define VCC_Indicator_GPIO_Port GPIOA
 #define BBEN_Indicator_Pin GPIO_PIN_7
 #define BBEN_Indicator_GPIO_Port GPIOA
-#define BUCK_L_IN_Pin GPIO_PIN_8
+#define BUCK_L_IN_Pin GPIO_PIN_10
 #define BUCK_L_IN_GPIO_Port GPIOA
-#define BUCK_H_IN_Pin GPIO_PIN_9
+#define BUCK_H_IN_Pin GPIO_PIN_11
 #define BUCK_H_IN_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */

@@ -92,10 +92,10 @@ void BB_Control_Init(void)
     // 开启hrtim
     
     
-    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A) != HAL_OK)
+    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_B) != HAL_OK)
     {
     }
-    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1 | HRTIM_OUTPUT_TA2) != HAL_OK)
+    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2) != HAL_OK)
     {
     }
 
@@ -141,7 +141,7 @@ static void Choose_State(void)
     switch(bb_state)
     {
         case Buck:
-            HRTIM1->sCommonRegs.OENR = 0xF;
+            HRTIM1->sCommonRegs.OENR = 0xC;
             GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
             GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
 
@@ -181,7 +181,7 @@ static void Choose_State(void)
             Detect_Hook(VoltIpt_Error_TOE);
             break;
         case VoltIpt_Error:
-            HRTIM1->sCommonRegs.ODISR = 0xF;
+            HRTIM1->sCommonRegs.ODISR = 0xC;
             GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
 
             float error_into_ss_flag = 0;
@@ -218,7 +218,7 @@ static void Choose_State(void)
 
             break;
         case Soft_Start:
-            HRTIM1->sCommonRegs.OENR = 0xF;
+            HRTIM1->sCommonRegs.OENR = 0xC;
             GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
             GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
 
