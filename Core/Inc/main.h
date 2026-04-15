@@ -73,6 +73,8 @@ void Error_Handler(void);
 #define VCC_Indicator_GPIO_Port GPIOA
 #define BBEN_Indicator_Pin GPIO_PIN_7
 #define BBEN_Indicator_GPIO_Port GPIOA
+#define SYNC_T_Pin GPIO_PIN_8
+#define SYNC_T_GPIO_Port GPIOA
 #define BUCK_L_IN_Pin GPIO_PIN_10
 #define BUCK_L_IN_GPIO_Port GPIOA
 #define BUCK_H_IN_Pin GPIO_PIN_11

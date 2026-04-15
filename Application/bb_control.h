@@ -3,15 +3,15 @@
 
 #include "controller.h"
 
-#define BOARD_NUM 2
-#define BOARD_ID_0 { 0x80090020 , 0x8006000E }
-#define BOARD_ID_1 { 0x58304302 , 0x564E4317 }
-#define BOARD_ID_2 { 0x2037334D , 0x20353635 }
+#define BOARD_NUM 3
+#define BOARD_ID_0 { 0x80090020 , 0x8006000E , 0x00100014}
+#define BOARD_ID_1 { 0x58304302 , 0x564E4317 , 0x53524301}
+#define BOARD_ID_2 { 0x2037334D , 0x20353635 , 0x20393038}
 
 extern int8_t IDCard;
 
 #define Kp_FFB 0.1f     //前馈增量系数
-#define VOLTAGE_OUT_REF 26.4f
+#define VOLTAGE_OUT_REF 22.4f
 #define CURRENT_OUT_MAX 5.1f
 #define VOLTAGE_IN_MAX 100.0f
 #define VOLTAGE_IN_MIN 14.0f
