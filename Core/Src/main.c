@@ -121,7 +121,7 @@ int main(void)
       IDCard = -1;
     }
   }
-  while(IDCard == -1);
+  while(IDCard == -1){};
 
   HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
   HRTIM1->sMasterRegs.MCMP2R = 0;
