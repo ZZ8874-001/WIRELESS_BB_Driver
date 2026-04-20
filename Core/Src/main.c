@@ -128,9 +128,9 @@ int main(void)
   DWT_Init(72);
   BB_Control_Init();
   Detect_Init();
-  Bsp_ADC_Init();
   Bsp_UART_Init();
   HAL_TIM_Base_Start_IT(&htim2);
+  Bsp_ADC_Init();
   // HAL_TIM_Base_Start_IT(&htim15);
 
   /* USER CODE END 2 */
@@ -189,7 +189,7 @@ void SystemClock_Config(void)
     Error_Handler();
   }
   PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_HRTIM1|RCC_PERIPHCLK_ADC12;
-  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV64;
+  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV2;
   PeriphClkInit.Hrtim1ClockSelection = RCC_HRTIM1CLK_PLLCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
