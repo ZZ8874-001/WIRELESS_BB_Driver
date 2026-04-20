@@ -42,10 +42,13 @@ void Bsp_ADC_Init(void)
     while(HAL_ADC_Start_DMA(&hadc2,&ADC2_Rx,1) != HAL_OK)
     {
     }
+    DMA1_Channel1->CCR &= ~(DMA_CCR_HTIE | DMA_CCR_TCIE);
+    DMA1_Channel4->CCR &= ~(DMA_CCR_HTIE | DMA_CCR_TCIE);
     ADC1->AWD2CR = 1 << 2;
     // 1020-3000
     Change_ADC_AWD_Threshold(&ADC1->TR2,adc_volt_watchdog_min,(adc_volt_watchdog_max<255?adc_volt_watchdog_max:255));//ADC1_WATCHDOG1_TOE
-    ADC1->IER |= ADC_IER_AWD2IE;
+    ADC1->IER |= ADC_IER_AWD2IE | ADC_IER_EOSIE;
+    ADC2->IER |= ADC_IER_EOSIE;
 
 }
 
@@ -75,6 +78,7 @@ static uint16_t Char_To_Uint16(uint8_t *buf,uint8_t size)
 
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
 {
+    //static uint32_t count1,count2 = 0;
     if(hadc->Instance == ADC1)
     {
         float voltage_out_;
@@ -86,12 +90,14 @@ void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef* hadc)
     
         bb.voltage_out_f_ = First_Order_Filter_Calculate(&bb.voltage_out_filter_,voltage_out_);
         bb.voltage_in_f_ = First_Order_Filter_Calculate(&bb.voltage_in_filter_,voltage_in_);
+        //count1++;
     }
     else if(hadc->Instance == ADC2)
     {
         float current_out_ = (float)((2048 - ADC2_Rx) * ADC_RATIO[IDCard]) * CURRENT_RATIO[IDCard] + CURRENT_OUT_OFFSET[IDCard];
 
         bb.current_out_f_ = First_Order_Filter_Calculate(&bb.current_out_filter_,current_out_);
+        //count2++;
     }
 }
 

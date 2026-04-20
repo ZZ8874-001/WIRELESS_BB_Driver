@@ -92,7 +92,7 @@ void BB_Control_Init(void)
     // 开启hrtim
     
     
-    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_MASTER | HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B) != HAL_OK)
+    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B) != HAL_OK)
     {
     }
     while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2 | HRTIM_OUTPUT_TA1) != HAL_OK)
@@ -357,13 +357,13 @@ static void MOS_PWM_Set()
     || (last_bb_state != VoltIpt_Error && bb_state == VoltIpt_Error)
     || (bb_state == Soft_Start && USER_GetTick() - enter_soft_start_time < 1))
     {
-        HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
-        HRTIM1->sMasterRegs.MCMP2R = 0;
+        HRTIM1->sTimerxRegs[HRTIM_TIMERINDEX_TIMER_B].CMP1xR = Hrtim_Period;  // buck low d2
+        HRTIM1->sTimerxRegs[HRTIM_TIMERINDEX_TIMER_B].CMP2xR = 0;
     }
     else if(bb_state == Buck || last_bb_state == Soft_Start)
     {
-        HRTIM1->sMasterRegs.MCMP1R = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
-        HRTIM1->sMasterRegs.MCMP2R = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
+        HRTIM1->sTimerxRegs[HRTIM_TIMERINDEX_TIMER_B].CMP1xR = (1 - (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck low d2
+        HRTIM1->sTimerxRegs[HRTIM_TIMERINDEX_TIMER_B].CMP2xR = (1 + (1 - bb.buck_duty_cycle_  )) / 2 * Hrtim_Period;  // buck high d1
     }
 }
  

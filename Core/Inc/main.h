@@ -60,7 +60,7 @@ void Error_Handler(void);
 #define L_duty 0.05f
 #define deadtime 100
 #define H_duty 0.95f
-#define Hrtim_Period 46080
+#define Hrtim_Period 23040
 #define ADC1_VOUT_Pin GPIO_PIN_0
 #define ADC1_VOUT_GPIO_Port GPIOA
 #define ADC1_VIN_Pin GPIO_PIN_1
