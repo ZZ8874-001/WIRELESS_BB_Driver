@@ -15,7 +15,7 @@ float CURRENT_RATIO[BOARD_NUM] = { -10.200f , -20.3865f, -15.3139f };
 
 #define adc_volt_watchdog_min (VOLTAGE_IN_MIN * 3.896f)
 #define adc_volt_watchdog_max (VOLTAGE_IN_MAX * 3.896f)
-#define ADC_SAMPLING_FREQUENCY (1.125e6/74)
+#define ADC_SAMPLING_FREQUENCY (12.5e3)
 
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
@@ -25,9 +25,9 @@ static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,int16_t high_threshold,i
 void Bsp_ADC_Init(void)
 {
     // 滤波器初始化
-    First_Order_Filter_Init(&bb.voltage_in_filter_,1/ADC_SAMPLING_FREQUENCY,300);
-    First_Order_Filter_Init(&bb.voltage_out_filter_,1/ADC_SAMPLING_FREQUENCY,200);
-    First_Order_Filter_Init(&bb.current_out_filter_,1/ADC_SAMPLING_FREQUENCY,100);
+    First_Order_Filter_Init(&bb.voltage_in_filter_,1/ADC_SAMPLING_FREQUENCY,8000);
+    First_Order_Filter_Init(&bb.voltage_out_filter_,1/ADC_SAMPLING_FREQUENCY,8000);
+    First_Order_Filter_Init(&bb.current_out_filter_,1/ADC_SAMPLING_FREQUENCY,8000);
     
     // 开启ADC
     while(HAL_ADCEx_Calibration_Start(&hadc1,ADC_SINGLE_ENDED) != HAL_OK)

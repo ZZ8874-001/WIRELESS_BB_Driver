@@ -1,6 +1,6 @@
 
 
-GraphedExpression="(bb).current_out_f_", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#e56a6f, Show=0
+GraphedExpression="(bb).current_out_f_", DisplayFormat=DISPLAY_FORMAT_DEC, Color=#e56a6f
 GraphedExpression="(bb).voltage_in_f_", Color=#35792b, Show=0
 GraphedExpression="(bb).voltage_out_f_", Color=#769dda, Show=0
 GraphedExpression="ADC2_Rx", Color=#b14f0d, Show=0
@@ -9,25 +9,23 @@ GraphedExpression="bb_state", Color=#ab7b05, Show=0
 GraphedExpression="ADC1_Rx[1]", Color=#7fd3b7, Show=0
 GraphedExpression="ADC1_Rx[0]", Color=#50328f, Show=0
 OpenDocument="main.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Core/Src/main.c", Line=0
-OpenDocument="detect_task.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Application/detect_task.c", Line=0
-OpenDocument="stm32f3xx_it.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Core/Src/stm32f3xx_it.c", Line=261
-OpenDocument="stm32f3xx_hal_adc_ex.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc_ex.c", Line=2940
-OpenDocument="bsp_adc.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Bsp/bsp_adc.c", Line=67
-OpenDocument="stm32f3xx_hal_dma.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_dma.c", Line=609
-OpenDocument="filter32.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Commponents/filter32.c", Line=0
-OpenDocument="stm32f3xx_hal_adc.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc.c", Line=0
-OpenDocument="stm32f3xx_hal.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal.c", Line=0
+OpenDocument="bb_control.c", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/Application/bb_control.c", Line=0
 OpenDocument="startup_stm32f334x8.s", FilePath="C:/Users/Shuchen Tao/Documents/BB_Driver/startup_stm32f334x8.s", Line=0
+OpenDocument="stm32f3xx_it.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Core/Src/stm32f3xx_it.c", Line=92
+OpenDocument="bsp_adc.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Bsp/bsp_adc.c", Line=66
+OpenDocument="stm32f3xx_hal_adc_ex.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_adc_ex.c", Line=2940
+OpenDocument="stm32f3xx_hal_dma.c", FilePath="//192.168.191.221/Shuchen's_Documents/BB_Driver/Drivers/STM32F3xx_HAL_Driver/Src/stm32f3xx_hal_dma.c", Line=609
 OpenToolbar="Debug", Floating=0, x=0, y=0
-OpenWindow="Source Files", DockArea=LEFT, x=0, y=1, w=919, h=623, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=919, h=623, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
-OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=1714, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
-OpenWindow="Timeline", DockArea=RIGHT, x=0, y=0, w=709, h=1247, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="1 s / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;58", DataGraphShowNamesAtCursor=0, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="578;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="598;0"
-OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=1021, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Source Files", DockArea=LEFT, x=0, y=1, w=919, h=390, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Disassembly", DockArea=RIGHT, x=0, y=0, w=1402, h=307, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Watched Data 1", DockArea=LEFT, x=0, y=0, w=919, h=607, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
+OpenWindow="Data Sampling", DockArea=BOTTOM, x=1, y=0, w=2028, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0, VisibleTab=0, UniformSampleSpacing=0
+OpenWindow="Timeline", DockArea=RIGHT, x=0, y=1, w=1402, h=690, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=1, DataPaneShown=1, PowerPaneShown=0, CodePaneShown=0, PinCursor="Cursor Movable", TimePerDiv="500 ms / Div", TimeStampFormat="Time", DataGraphDrawAsPoints=0, DataGraphLegendShown=1, DataGraphUniformSampleSpacing=0, DataGraphLegendPosition="0;0", DataGraphShowNamesAtCursor=1, PowerGraphDrawAsPoints=0, PowerGraphLegendShown=0, PowerGraphAvgFilterTime=Off, PowerGraphAvgFilterLen=Off, PowerGraphUniformSampleSpacing=0, PowerGraphLegendPosition="436;0", CodeGraphLegendShown=0, CodeGraphLegendPosition="456;0"
+OpenWindow="Console", DockArea=BOTTOM, x=0, y=0, w=491, h=388, FilterBarShown=0, TotalValueBarShown=0, ToolBarShown=0
 SmartViewPlugin="", Page="", Toolbar="Hidden", Window="SmartView 1"
 TableHeader="Source Files", SortCol="File", SortOrder="ASCENDING", VisibleCols=["File";"Status";"Size";"#Insts";"Path"], ColWidths=[233;100;100;100;1024]
 TableHeader="Data Sampling Table", SortCol="None", SortOrder="ASCENDING", VisibleCols=["Index";"Time";" (bb).current_out_f_";" (bb).voltage_in_f_";" (bb).voltage_out_f_";" ADC2_Rx";" (bb).buck_duty_cycle_";" bb_state";" ADC1_Rx[1]";" ADC1_Rx[0]"], ColWidths=[100;100;100;100;100;100;100;100;100;100]
-TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;245;168;157;135;146;130;157;157]
+TableHeader="Data Sampling Setup", SortCol="Min. Change", SortOrder="ASCENDING", VisibleCols=["Expression";"Type";"Value";"Min";"Max";"Average";"# Changes";"Min. Change";"Max. Change"], ColWidths=[454;245;157;157;146;168;130;157;414]
 TableHeader="Power Sampling", SortCol="Index", SortOrder="ASCENDING", VisibleCols=["Index";"Time";"Ch 0"], ColWidths=[100;100;100]
 TableHeader="Watched Data 1", SortCol="Expression", SortOrder="ASCENDING", VisibleCols=["Expression";"Value";"Location";"Refresh"], ColWidths=[319;332;100;138]
 TableHeader="RegisterSelectionDialog", SortCol="None", SortOrder="ASCENDING", VisibleCols=[], ColWidths=[]
@@ -55,6 +53,6 @@ WatchedExpression="huart3", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_HEX, Win
 WatchedExpression="Wireless_EN_flag", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
 WatchedExpression="IDCard", RefreshRate=2, DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
 WatchedExpression="board_id", DisplayFormat=DISPLAY_FORMAT_HEX, Window=Watched Data 1
-WatchedExpression="Rx_data", RefreshRate=5, Window=Watched Data 1
-WatchedExpression="count1", Window=Watched Data 1
-WatchedExpression="count2", Window=Watched Data 1
+WatchedExpression="Rx_data", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="count1", RefreshRate=1, Window=Watched Data 1
+WatchedExpression="count2", RefreshRate=1, Window=Watched Data 1
