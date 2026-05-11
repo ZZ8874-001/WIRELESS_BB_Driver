@@ -1087,6 +1087,11 @@
               <FilePath>..\Application\bb_control.c</FilePath>
             </File>
             <File>
+              <FileName>board_id.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Application\board_id.c</FilePath>
+            </File>
+            <File>
               <FileName>detect_task.c</FileName>
               <FileType>1</FileType>
               <FilePath>..\Application\detect_task.c</FilePath>

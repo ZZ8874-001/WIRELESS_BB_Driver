@@ -2,11 +2,7 @@
 #define BB_CONTROL_H
 
 #include "controller.h"
-
-#define BOARD_NUM 3
-#define BOARD_ID_0 { 0x80090020 , 0x8006000E , 0x00100014}
-#define BOARD_ID_1 { 0x58304302 , 0x564E4317 , 0x53524301}
-#define BOARD_ID_2 { 0x2037334D , 0x20353635 , 0x20393038}
+#include "board_id.h"
 
 extern int8_t IDCard;
 
@@ -14,7 +10,7 @@ extern int8_t IDCard;
 #define VOLTAGE_OUT_REF 22.4f
 #define CURRENT_OUT_MAX 5.1f
 #define VOLTAGE_IN_MAX 100.0f
-#define VOLTAGE_IN_MIN 14.0f
+#define VOLTAGE_IN_MIN 0.0f
 #define VoltProt_Delay 180000000.0f // 2.5*72mHz
 #define CURRENT_TO_VOLTAGE_DELAY 10  //ms
 

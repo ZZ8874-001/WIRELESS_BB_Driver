@@ -49,12 +49,17 @@
 #define BUCK_HIGH 52.0f
 
 #define SS_2_BUCK_TIME 200
+#define BUCK_OUTPUT_MASK (HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2)
+#define BUCK_OUTPUT_OVERVOLT_DISABLE_RATIO (1.05f)
+#define BUCK_OUTPUT_OVERVOLT_RELEASE_RATIO (1.02f)
 
 static void Choose_State(void);
 static void Data_Handle(void);
 static void Duty_Calculate();
 static void MOS_PWM_Set();
 static void NFB_Calculate();
+static void Update_Buck_Output_Enable(void);
+static bool Is_Buck_OutputVoltage_Allowed(void);
 
 static float kp_ffb1;
 static float Kp_Volt_NFB = -0.1f;
@@ -62,6 +67,7 @@ static float Kp_Curr_NFB = -0.4f;
 
 static bool Wireless_data = false;
 static bool Wireless_EN_flag = false;
+static bool Buck_output_ovp_active = false;
 
 static bool is_CC = 0;
 static bool Debug_Mode = 0;
@@ -74,7 +80,7 @@ uint8_t USART_Debug_Flag = 0;
 static float voltage_gain_final_output = 0;
 static float enter_soft_start_time = 0;
 
-int8_t IDCard = 0;
+int8_t IDCard = BOARD_ID_INVALID;
 
 void BB_Control_Init(void)
 {
@@ -95,10 +101,11 @@ void BB_Control_Init(void)
     while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B) != HAL_OK)
     {
     }
-    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TB1 | HRTIM_OUTPUT_TB2 | HRTIM_OUTPUT_TA1) != HAL_OK)
+    while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1) != HAL_OK)
     {
     }
-    HRTIM1->sCommonRegs.OENR = 0x1;
+    HRTIM1->sCommonRegs.OENR = HRTIM_OUTPUT_TA1;
+    HRTIM1->sCommonRegs.ODISR = BUCK_OUTPUT_MASK;
 
 
     // 初始化bben指示灯
@@ -120,6 +127,7 @@ void Buck_Boost_Task(void)
         Wireless_EN_flag = true;
     }
 
+    Update_Buck_Output_Enable();
     Choose_State();
     Data_Handle();
     Duty_Calculate();
@@ -143,7 +151,6 @@ static void Choose_State(void)
     switch(bb_state)
     {
         case Buck:
-            HRTIM1->sCommonRegs.OENR = 0xC;
             GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
             GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
 
@@ -183,7 +190,6 @@ static void Choose_State(void)
             Detect_Hook(VoltIpt_Error_TOE);
             break;
         case VoltIpt_Error:
-            HRTIM1->sCommonRegs.ODISR = 0xC;
             GPIOA->BRR = GPIO_PIN_7|GPIO_PIN_6;
 
             float error_into_ss_flag = 0;
@@ -192,14 +198,7 @@ static void Choose_State(void)
                 Detect_Hook(VoltIpt_Error_TOE);
             }
 
-            if(is_TOE_Overtime(USART3_BUCKEN_TOE))
-            {
-                if(is_TOE_Overtime(VoltIpt_Error_TOE))
-                {
-                    error_into_ss_flag = 1;
-                }
-            }
-            else if(Wireless_EN_flag == 1)
+            if(Wireless_EN_flag == 1 && Is_Buck_OutputVoltage_Allowed())
             {
                 error_into_ss_flag = 1;
             }
@@ -207,12 +206,7 @@ static void Choose_State(void)
             // 癫疯之作2
             // error_into_ss_flag = is_TOE_Overtime(USART3_BUCKEN_TOE) ? (is_TOE_Overtime(VoltIpt_Error_TOE) ? 1:0) : (Wireless_EN_flag == 1 ? 1:0);
 
-            if(bb.voltage_in_f_ > BUCK_HIGH)
-            {
-                last_bb_state = bb_state;
-                bb_state = Soft_Start;
-            }
-            else if(error_into_ss_flag)
+            if(error_into_ss_flag)
             {
                 last_bb_state = bb_state;
                 bb_state = Soft_Start;
@@ -220,7 +214,6 @@ static void Choose_State(void)
 
             break;
         case Soft_Start:
-            HRTIM1->sCommonRegs.OENR = 0xC;
             GPIOA->BSRR = GPIO_PIN_6 | GPIO_PIN_7;
             GPIOA->BRR = 0.2f*CURRENT_OUT_MAX<bb.current_out_f_ ? 0:GPIO_PIN_6;
 
@@ -232,7 +225,7 @@ static void Choose_State(void)
                     ss_into_error_flag = 1;
                 }
             }
-            else if(!Wireless_EN_flag)
+            else if(!Wireless_EN_flag || !Is_Buck_OutputVoltage_Allowed())
             {
                 ss_into_error_flag = 1;
             }
@@ -381,6 +374,35 @@ static void NFB_Calculate()
 
     bb.current_gain_NFB_f_ = First_Order_Filter_Calculate(&bb.current_gain_NFB_filter_,bb.current_gain_NFB_);
     
+}
+
+static void Update_Buck_Output_Enable(void)
+{
+    if (Wireless_EN_flag && Is_Buck_OutputVoltage_Allowed())
+    {
+        HRTIM1->sCommonRegs.OENR = BUCK_OUTPUT_MASK;
+    }
+    else
+    {
+        HRTIM1->sCommonRegs.ODISR = BUCK_OUTPUT_MASK;
+    }
+}
+
+static bool Is_Buck_OutputVoltage_Allowed(void)
+{
+    if (Buck_output_ovp_active)
+    {
+        if (bb.voltage_out_f_ <= (bb.voltage_in_f_ * BUCK_OUTPUT_OVERVOLT_RELEASE_RATIO))
+        {
+            Buck_output_ovp_active = false;
+        }
+    }
+    else if (bb.voltage_out_f_ > (bb.voltage_in_f_ * BUCK_OUTPUT_OVERVOLT_DISABLE_RATIO))
+    {
+        Buck_output_ovp_active = true;
+    }
+
+    return !Buck_output_ovp_active;
 }
 
 void WirelessRx_DataHandle(uint8_t *data)

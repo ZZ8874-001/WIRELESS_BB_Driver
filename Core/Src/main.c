@@ -31,6 +31,7 @@
 #include "bsp_dwt.h"
 #include "bsp_uart.h"
 #include "bb_control.h"
+#include "board_id.h"
 #include "detect_task.h"
 /* USER CODE END Includes */
 
@@ -102,30 +103,15 @@ int main(void)
   MX_ADC2_Init();
   MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
-  uint32_t board_id[3];
-  uint32_t id_card[3][BOARD_NUM] = {BOARD_ID_0,BOARD_ID_1,BOARD_ID_2};
-  
-  board_id[0] = *(uint32_t *)(0x1FFFF7AC);
-  board_id[1] = *(uint32_t *)(0x1FFFF7B0);
-  board_id[2] = *(uint32_t *)(0x1FFFF7B4);
 
-  for(uint8_t i = 0;i<BOARD_NUM;i++)
-  {
-    if(board_id[0] == id_card[0][i] && board_id[1] == id_card[1][i] && board_id[2] == id_card[2][i])
-    {
-      IDCard = i;
-      break;
-    }
-    else
-    {
-      IDCard = -1;
-    }
-  }
-  while(IDCard == -1){};
+  IDCard = BoardID_Detect();
+  while (!BoardID_IsValid(IDCard)) {}
 
   HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
   HRTIM1->sMasterRegs.MCMP2R = 0;
   DWT_Init(72);
+  DWT_Delay(1.25);
+
   BB_Control_Init();
   Detect_Init();
   Bsp_UART_Init();
