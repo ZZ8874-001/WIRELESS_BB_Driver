@@ -24,31 +24,31 @@
 //    ZE, ZE, PM, PM, PM, PB, PB};
 
 static float FuzzyRuleKpRAW[7][7] = {
-    NB, NB, PM, PM, PS, ZE, ZE,
-    NB, NB, PM, PS, PS, ZE, PS,
-    NM, NM, PM, PS, ZE, PS, PS,
-    NM, NM, PS, ZE, PS, PM, PM,
-    NS, NS, ZE, PS, PS, PM, PM,
-    NS, ZE, PS, PM, PM, PM, PB,
-    ZE, ZE, PM, PM, PM, PB, PB};
+    {NB, NB, PM, PM, PS, ZE, ZE},
+    {NB, NB, PM, PS, PS, ZE, PS},
+    {NM, NM, PM, PS, ZE, PS, PS},
+    {NM, NM, PS, ZE, PS, PM, PM},
+    {NS, NS, ZE, PS, PS, PM, PM},
+    {NS, ZE, PS, PM, PM, PM, PB},
+    {ZE, ZE, PM, PM, PM, PB, PB}};
 
 static float FuzzyRuleKiRAW[7][7] = {
-    PB, PB, PM, PM, PS, ZE, ZE,
-    PB, PB, PM, PS, PS, ZE, ZE,
-    PB, PM, PM, PS, ZE, PS, PS,
-    PM, PM, PS, ZE, PS, PM, PM,
-    PS, PS, ZE, PS, PS, PM, PB,
-    ZE, ZE, PS, PS, PM, PB, PB,
-    ZE, ZE, PS, PM, PM, PB, PB};
+    {PB, PB, PM, PM, PS, ZE, ZE},
+    {PB, PB, PM, PS, PS, ZE, ZE},
+    {PB, PM, PM, PS, ZE, PS, PS},
+    {PM, PM, PS, ZE, PS, PM, PM},
+    {PS, PS, ZE, PS, PS, PM, PB},
+    {ZE, ZE, PS, PS, PM, PB, PB},
+    {ZE, ZE, PS, PM, PM, PB, PB}};
 
 static float FuzzyRuleKdRAW[7][7] = {
-    PS, PS, PB, PB, PB, PM, PS,
-    PS, PS, PB, PM, PM, PS, ZE,
-    ZE, PS, PM, PM, PS, PS, ZE,
-    ZE, PS, PS, PS, PS, PS, ZE,
-    ZE, ZE, ZE, ZE, ZE, ZE, ZE,
-    PB, PS, PS, PS, PS, PS, PB,
-    PB, PM, PM, PM, PS, PS, PB};
+    {PS, PS, PB, PB, PB, PM, PS},
+    {PS, PS, PB, PM, PM, PS, ZE},
+    {ZE, PS, PM, PM, PS, PS, ZE},
+    {ZE, PS, PS, PS, PS, PS, ZE},
+    {ZE, ZE, ZE, ZE, ZE, ZE, ZE},
+    {PB, PS, PS, PS, PS, PS, PB},
+    {PB, PM, PM, PM, PS, PS, PB}};
 
 void Fuzzy_Rule_Init(FuzzyRule_t *fuzzyRule, float (*fuzzyRuleKp)[7], float (*fuzzyRuleKi)[7], float (*fuzzyRuleKd)[7],
                      float kpRatio, float kiRatio, float kdRatio,

@@ -21,7 +21,7 @@ float CURRENT_RATIO[BOARD_NUM] = { -10.200f , -20.3865f, -15.3139f, -19.1205f };
 static uint16_t ADC1_Rx[2];
 static uint16_t ADC2_Rx;
 
-static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,int16_t high_threshold,int16_t low_threshold);
+static void Change_ADC_AWD_Threshold(volatile uint32_t *ADCx_TRx,int16_t low_threshold,int16_t high_threshold);
 
 void Bsp_ADC_Init(void)
 {
@@ -37,10 +37,10 @@ void Bsp_ADC_Init(void)
     while(HAL_ADCEx_Calibration_Start(&hadc2,ADC_SINGLE_ENDED) != HAL_OK)
     {
     }
-    while(HAL_ADC_Start_DMA(&hadc1,ADC1_Rx,2) != HAL_OK)
+    while(HAL_ADC_Start_DMA(&hadc1,(uint32_t *)ADC1_Rx,2) != HAL_OK)
     {
     }
-    while(HAL_ADC_Start_DMA(&hadc2,&ADC2_Rx,1) != HAL_OK)
+    while(HAL_ADC_Start_DMA(&hadc2,(uint32_t *)&ADC2_Rx,1) != HAL_OK)
     {
     }
     DMA1_Channel1->CCR &= ~(DMA_CCR_HTIE | DMA_CCR_TCIE);
@@ -53,7 +53,7 @@ void Bsp_ADC_Init(void)
 
 }
 
-static void Change_ADC_AWD_Threshold(uint32_t *ADCx_TRx,int16_t low_threshold,int16_t high_threshold)
+static void Change_ADC_AWD_Threshold(volatile uint32_t *ADCx_TRx,int16_t low_threshold,int16_t high_threshold)
 {
     if(high_threshold > 4095)
     {

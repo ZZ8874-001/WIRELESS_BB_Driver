@@ -27,7 +27,7 @@
 
 #if (__CORTEX_M == (4U))
 
-typedef __packed struct
+typedef struct
 {
     float Input;  //��������
     float Output; //�˲����������
@@ -36,7 +36,7 @@ typedef __packed struct
     float aphha;
 } First_Order_Filter_t;
 
-typedef __packed struct window_filter
+typedef struct window_filter
 {
     float Input;         //��������
     float Output;        //�˲����������
@@ -45,7 +45,7 @@ typedef __packed struct window_filter
     float *WindowBuffer; //�������ݻ�����
 } Window_Filter_t;
 
-typedef __packed struct
+typedef struct
 {
     float Input;   //��������
     float Output;  //�˲����������

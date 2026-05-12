@@ -22,7 +22,7 @@ TARGET = WireLess_BB_Driver
 # debug build?
 DEBUG = 1
 # optimization
-OPT = -Og
+OPT = -O2
 
 
 #######################################

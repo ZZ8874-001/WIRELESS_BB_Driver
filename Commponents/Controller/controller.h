@@ -70,7 +70,7 @@
 #define PM 2
 #define PB 3
 
-typedef __packed struct
+typedef struct
 {
     float KpFuzzy;
     float KiFuzzy;
@@ -130,13 +130,13 @@ typedef enum errorType_e
     Motor_Blocked = 0x01U
 } ErrorType_e;
 
-typedef __packed struct
+typedef struct
 {
     uint64_t ERRORCount;
     ErrorType_e ERRORType;
 } PID_ErrorHandler_t;
 
-typedef __packed struct pid_t
+typedef struct pid_t
 {
     float Ref;
     float Kp;
@@ -220,7 +220,7 @@ float Inc_PID_Calculate(PID_t *pid,float measure,float ref);
 void PID_Reset(PID_t *pid);
 
 /*************************** FEEDFORWARD CONTROL *****************************/
-typedef __packed struct
+typedef struct
 {
     float c[3]; // G(s) = 1/(c2s^2 + c1s + c0)
 
@@ -259,7 +259,7 @@ void Feedforward_Init(
 float Feedforward_Calculate(Feedforward_t *ffc, float ref);
 
 /************************* LINEAR DISTURBANCE OBSERVER *************************/
-typedef __packed struct
+typedef struct
 {
     float c[3]; // G(s) = 1/(c2s^2 + c1s + c0)
 
@@ -302,7 +302,7 @@ void LDOB_Init(
 float LDOB_Calculate(LDOB_t *ldob, float measure, float u);
 
 /*************************** Tracking Differentiator ***************************/
-typedef __packed struct
+typedef struct
 {
     float Input;
 
@@ -324,7 +324,7 @@ void TD_Init(TD_t *td, float r, float h0);
 float TD_Calculate(TD_t *td, float input);
 
 /************** Second Order System based Tracking Differentiator **************/
-typedef __packed struct
+typedef struct
 {
     float Input;
 
@@ -385,7 +385,7 @@ float ThirdOrder_TD_Calculate(ThirdOrderTD_t *tf, float input);
 //     uint32_t count;
 
 // } SI_t;
-typedef __packed struct
+typedef struct
 {
     uint8_t System_Order;
     uint8_t Dynamic_Friction; // Whether or not to consider dynamic friction

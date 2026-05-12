@@ -72,7 +72,6 @@ static bool Buck_output_ovp_active = false;
 static bool is_CC = 0;
 static bool Debug_Mode = 0;
 Buck_Boost_Str bb = {0};
-static float square_ratio_a = 3;
 enum Buck_Boost_State bb_state = VoltIpt_Error;
 enum Buck_Boost_State last_bb_state = VoltIpt_Error;
 uint8_t USART_Debug_Flag = 0;
@@ -260,7 +259,7 @@ static void Choose_State(void)
 static void Data_Handle(void)
 {
     //static float k_current,k_voltage = 0;
-    static float voltage_gain_PID_output,voltage_gain_FFB_output = 0;
+    static float voltage_gain_PID_output = 0;
     
     bb.voltage_gain_measure_ = float_constrain(bb.voltage_out_f_ / bb.voltage_in_f_,0.05f,0.95f);
     bb.voltage_gain_ref_ = float_constrain(VOLTAGE_OUT_REF / bb.voltage_in_f_,0.05f,0.95f);

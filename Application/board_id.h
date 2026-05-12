@@ -13,6 +13,9 @@ typedef struct
     uint32_t words[BOARD_ID_WORD_COUNT];
 } BoardID_t;
 
+extern volatile BoardID_t g_board_id_snapshot;
+extern volatile int8_t g_board_id_last_result;
+
 bool BoardID_Read(BoardID_t *board_id);
 int8_t BoardID_Detect(void);
 bool BoardID_IsValid(int8_t board_id);

@@ -6,7 +6,6 @@
 #include <string.h>
 
 USART_Rx_Buf_t Rx_Buf = {0};
-static DMA_TypeDef *dma1 = DMA1; 
 
 uint8_t Rx_data[255] = {0};
 
