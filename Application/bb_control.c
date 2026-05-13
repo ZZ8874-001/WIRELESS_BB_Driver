@@ -81,6 +81,8 @@ static float enter_soft_start_time = 0;
 
 int8_t IDCard = BOARD_ID_INVALID;
 
+//static uint32_t count_cycle = 0;
+
 void BB_Control_Init(void)
 {
     bb.current_out_ref_ = 0;
@@ -93,11 +95,11 @@ void BB_Control_Init(void)
     //PID_Init(&bb.current_out_PID_,1.5f,0.5f,  1.0f,-1.0f,  0.001f,  0.3f,1.6f,0,  1,1,  0,0.5,  0,Integral_Limit | DerivativeFilter );//0.5  0.2
     
 
-    First_Order_Filter_Init(&bb.current_gain_NFB_filter_,1.0f/NFB_CALCULATING_FREQUENCY,50);
+    First_Order_Filter_Init(&bb.current_gain_NFB_filter_,1.0f/NFB_CALCULATING_FREQUENCY,50,1);
     // 开启hrtim
     
     
-    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B) != HAL_OK)
+    while(HAL_HRTIM_WaveformCountStart(&hhrtim1, HRTIM_TIMERID_TIMER_A | HRTIM_TIMERID_TIMER_B | HRTIM_TIMERID_TIMER_C) != HAL_OK)
     {
     }
     while(HAL_HRTIM_WaveformOutputStart(&hhrtim1, HRTIM_OUTPUT_TA1) != HAL_OK)
@@ -125,6 +127,9 @@ void Buck_Boost_Task(void)
     {
         Wireless_EN_flag = true;
     }
+
+    
+    //count_cycle++;
 
     Update_Buck_Output_Enable();
     Choose_State();

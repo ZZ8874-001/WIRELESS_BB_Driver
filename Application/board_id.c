@@ -13,6 +13,7 @@ static const BoardID_t kKnownBoardIDs[BOARD_NUM] =
     {{0x58304302U, 0x564E4317U, 0x53524301U}},
     {{0x00100014U, 0x53524301U, 0x20393038U}},
     {{0x00050023U, 0x43534317U, 0x20353437U}},
+    {{0x0006000EU, 0x3131430CU, 0x20333047U}},
 };
 
 static bool BoardID_Equals(const BoardID_t *lhs, const BoardID_t *rhs)
