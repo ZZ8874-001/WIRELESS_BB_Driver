@@ -23,10 +23,10 @@
 
 /* 各板卡 ADC 校准系数 */
 float ADC_RATIO[BOARD_NUM]           = {  2.9832f/4096.0f,  2.9827f/4096.0f,  2.9799f/4096.0f,  2.9899f/4096.0f,  2.9859f/4096.0f };
-float CURRENT_OUT_OFFSET[BOARD_NUM]  = { -8.020f,         -15.9082f,        -11.9225f,        -14.8929f,        -14.8929f       };
-float VOLTAGE_OUT_OFFSET[BOARD_NUM]  = { -0.0129f,         -0.0129f,          0.037000f,        0.037000f,        0.037000f       };
-float VOLTAGE_RATIO[BOARD_NUM]       = { 22.227f,          22.227f,          20.134f,          20.648f,          20.648f         };
-float CURRENT_RATIO[BOARD_NUM]       = { -10.200f,        -20.3865f,        -15.3139f,        -19.1205f,        -19.1205f        };
+float CURRENT_OUT_OFFSET[BOARD_NUM]  = { -8.020f,         -15.9082f,        -11.9225f,        -14.8929f,        -16.937f         };
+float VOLTAGE_OUT_OFFSET[BOARD_NUM]  = { -0.0129f,         -0.0129f,          0.037000f,        0.037000f,        -0.022158f       };
+float VOLTAGE_RATIO[BOARD_NUM]       = { 22.227f,          22.227f,          20.134f,          20.648f,          21.471f          };
+float CURRENT_RATIO[BOARD_NUM]       = { -10.200f,        -20.3865f,        -15.3139f,        -19.1205f,        -21.277f         };
 
 #define adc_volt_watchdog_min (VOLTAGE_IN_MIN * 3.896f)
 #define adc_volt_watchdog_max (VOLTAGE_IN_MAX * 3.896f)
