@@ -7,12 +7,12 @@ void Detect_Init()
 {
     float set_item[DETECT_LIST_LENGTH] = 
     {
-        1000,// ms
-        1000,
-        1000,
-        10,
-        CURRENT_TO_VOLTAGE_DELAY,
-        25,
+        1000,// ADC1_WATCHDOG1_TOE
+        1000,// ADC1_WATCHDOG2_TOE
+        1000,// ADC2_WATCHDOG1_TOE
+        10,  // VoltIpt_Error_TOE
+        CURRENT_TO_VOLTAGE_DELAY, // CURRENT_TO_VOLTAGE_TOE
+        25,  // USART3_BUCKEN_TOE
     };
 
     for(uint8_t i = 0;i<DETECT_LIST_LENGTH;i++)

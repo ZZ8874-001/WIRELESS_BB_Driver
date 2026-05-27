@@ -45,9 +45,9 @@ static void Change_ADC_AWD_Threshold(volatile uint32_t *ADCx_TRx, int16_t low_th
 void Bsp_ADC_Init(void)
 {
     /* 一阶低通滤波器初始化：截止频率 8kHz，采样频率 200kHz（与 HRTIM 一致） */
-    First_Order_Filter_Init(&bb.voltage_in_filter_,  1.0f / ADC_SAMPLING_FREQUENCY, 8000, ADC_VIN_BUF_SIZE);
-    First_Order_Filter_Init(&bb.voltage_out_filter_, 1.0f / ADC_SAMPLING_FREQUENCY, 8000, ADC_VOUT_BUF_SIZE);
-    First_Order_Filter_Init(&bb.current_out_filter_, 1.0f / ADC_SAMPLING_FREQUENCY, 8000, ADC_CURR_BUF_SIZE);
+    First_Order_Filter_Init(&bb.voltage_in_filter_,  1.0f / ADC_SAMPLING_FREQUENCY, 4000, ADC_VIN_BUF_SIZE);
+    First_Order_Filter_Init(&bb.voltage_out_filter_, 1.0f / ADC_SAMPLING_FREQUENCY, 4000, ADC_VOUT_BUF_SIZE);
+    First_Order_Filter_Init(&bb.current_out_filter_, 1.0f / ADC_SAMPLING_FREQUENCY, 4000, ADC_CURR_BUF_SIZE);
 
     /* ADC 校准 */
     while (HAL_ADCEx_Calibration_Start(&hadc1, ADC_SINGLE_ENDED) != HAL_OK) {}
