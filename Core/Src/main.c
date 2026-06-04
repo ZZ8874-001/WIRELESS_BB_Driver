@@ -203,6 +203,7 @@ void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
   if (htim->Instance == TIM2)
   {
       count++;
+      Bsp_ADC_ProcessSample();
       Buck_Boost_Task();
       if (count >= 10)
       {

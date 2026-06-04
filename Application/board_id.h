@@ -4,7 +4,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
-#define BOARD_NUM 4
+#define BOARD_NUM 5
 #define BOARD_ID_WORD_COUNT 3U
 #define BOARD_ID_INVALID ((int8_t)-1)
 
