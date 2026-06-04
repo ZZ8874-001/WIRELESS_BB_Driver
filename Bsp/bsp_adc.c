@@ -112,6 +112,7 @@ void Bsp_ADC_ProcessSample(void)
     }
 
     /* 一次性并行滤波 20 个采样（每采样点一个独立 filter channel） */
+    // 虽然输入和输出数组指向同一地址结果没问题，但建议别这么写
     First_Order_Filter_Calculate_Array(&bb.voltage_out_filter_, vout_in, vout_in);
     First_Order_Filter_Calculate_Array(&bb.voltage_in_filter_,  vin_in,  vin_in);
 

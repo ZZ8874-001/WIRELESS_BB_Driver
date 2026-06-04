@@ -24,10 +24,6 @@
 #define ADC1_DMA_BUF_SIZE  (ADC_VOUT_BUF_SIZE * 2)   /* 交织：40 half-words */
 #define ADC2_DMA_BUF_SIZE  (ADC_CURR_BUF_SIZE)        /* 独立：20 half-words */
 
-/* DMA 循环目标缓冲区（DMA 硬件自动循环搬运） */
-extern uint16_t ADC1_DMA_Buf[ADC1_DMA_BUF_SIZE];
-extern uint16_t ADC2_DMA_Buf[ADC2_DMA_BUF_SIZE];
-
 void Bsp_ADC_Init(void);
 void Bsp_ADC_ProcessSample(void);        /* TIM 回调中批量解交织 + 工程值转换 + 滤波 */
 void HAL_ADC_ConvCpltCallback(ADC_HandleTypeDef *hadc);
