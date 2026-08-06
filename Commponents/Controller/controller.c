@@ -24,31 +24,31 @@
 //    ZE, ZE, PM, PM, PM, PB, PB};
 
 static float FuzzyRuleKpRAW[7][7] = {
-    NB, NB, PM, PM, PS, ZE, ZE,
-    NB, NB, PM, PS, PS, ZE, PS,
-    NM, NM, PM, PS, ZE, PS, PS,
-    NM, NM, PS, ZE, PS, PM, PM,
-    NS, NS, ZE, PS, PS, PM, PM,
-    NS, ZE, PS, PM, PM, PM, PB,
-    ZE, ZE, PM, PM, PM, PB, PB};
+    {NB, NB, PM, PM, PS, ZE, ZE},
+    {NB, NB, PM, PS, PS, ZE, PS},
+    {NM, NM, PM, PS, ZE, PS, PS},
+    {NM, NM, PS, ZE, PS, PM, PM},
+    {NS, NS, ZE, PS, PS, PM, PM},
+    {NS, ZE, PS, PM, PM, PM, PB},
+    {ZE, ZE, PM, PM, PM, PB, PB}};
 
 static float FuzzyRuleKiRAW[7][7] = {
-    PB, PB, PM, PM, PS, ZE, ZE,
-    PB, PB, PM, PS, PS, ZE, ZE,
-    PB, PM, PM, PS, ZE, PS, PS,
-    PM, PM, PS, ZE, PS, PM, PM,
-    PS, PS, ZE, PS, PS, PM, PB,
-    ZE, ZE, PS, PS, PM, PB, PB,
-    ZE, ZE, PS, PM, PM, PB, PB};
+    {PB, PB, PM, PM, PS, ZE, ZE},
+    {PB, PB, PM, PS, PS, ZE, ZE},
+    {PB, PM, PM, PS, ZE, PS, PS},
+    {PM, PM, PS, ZE, PS, PM, PM},
+    {PS, PS, ZE, PS, PS, PM, PB},
+    {ZE, ZE, PS, PS, PM, PB, PB},
+    {ZE, ZE, PS, PM, PM, PB, PB}};
 
 static float FuzzyRuleKdRAW[7][7] = {
-    PS, PS, PB, PB, PB, PM, PS,
-    PS, PS, PB, PM, PM, PS, ZE,
-    ZE, PS, PM, PM, PS, PS, ZE,
-    ZE, PS, PS, PS, PS, PS, ZE,
-    ZE, ZE, ZE, ZE, ZE, ZE, ZE,
-    PB, PS, PS, PS, PS, PS, PB,
-    PB, PM, PM, PM, PS, PS, PB};
+    {PS, PS, PB, PB, PB, PM, PS},
+    {PS, PS, PB, PM, PM, PS, ZE},
+    {ZE, PS, PM, PM, PS, PS, ZE},
+    {ZE, PS, PS, PS, PS, PS, ZE},
+    {ZE, ZE, ZE, ZE, ZE, ZE, ZE},
+    {PB, PS, PS, PS, PS, PS, PB},
+    {PB, PM, PM, PM, PS, PS, PB}};
 
 void Fuzzy_Rule_Init(FuzzyRule_t *fuzzyRule, float (*fuzzyRuleKp)[7], float (*fuzzyRuleKi)[7], float (*fuzzyRuleKd)[7],
                      float kpRatio, float kiRatio, float kdRatio,
@@ -253,19 +253,19 @@ float Inc_PID_Calculate(PID_t *pid,float measure,float ref)
             f_Integral_Limit(pid);
         if (pid->Improve & DerivativeFilter)
             f_Derivative_Filter(pid);
-            // f_Derivative_IIR_Filter(pid);
 
         pid->dOutput = pid->Pout + pid->Iout + pid->Dout;
         pid->Output += pid->dOutput;
+
+        if(pid->Improve & OutputFilter)
+            f_Output_Filter(pid);
 
         f_Output_Limit(pid);
 
     }
     
-    pid->Last_Measure = pid->Measure;
     pid->Last_Output = pid->Output;
     pid->Last_Dout = pid->Dout;
-    pid->Last_Err = pid->Err;
     pid->Last_ITerm = pid->ITerm;
 
     pid->Err2 = pid->Err1;

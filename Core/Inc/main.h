@@ -58,10 +58,27 @@ void Error_Handler(void);
 
 /* Private defines -----------------------------------------------------------*/
 #define L_duty 0.05f
-#define deadtime 0.16f
-#define Frequency 100000.0f
+#define deadtime 100
 #define H_duty 0.95f
-#define Hrtim_Period 46080
+#define Hrtim_Period 23040
+#define ADC1_VOUT_Pin GPIO_PIN_0
+#define ADC1_VOUT_GPIO_Port GPIOA
+#define ADC1_VIN_Pin GPIO_PIN_1
+#define ADC1_VIN_GPIO_Port GPIOA
+#define ADC_CURR_P_Pin GPIO_PIN_4
+#define ADC_CURR_P_GPIO_Port GPIOA
+#define ADC_CURR_N_Pin GPIO_PIN_5
+#define ADC_CURR_N_GPIO_Port GPIOA
+#define VCC_Indicator_Pin GPIO_PIN_6
+#define VCC_Indicator_GPIO_Port GPIOA
+#define BBEN_Indicator_Pin GPIO_PIN_7
+#define BBEN_Indicator_GPIO_Port GPIOA
+#define SYNC_T_Pin GPIO_PIN_8
+#define SYNC_T_GPIO_Port GPIOA
+#define BUCK_L_IN_Pin GPIO_PIN_10
+#define BUCK_L_IN_GPIO_Port GPIOA
+#define BUCK_H_IN_Pin GPIO_PIN_11
+#define BUCK_H_IN_GPIO_Port GPIOA
 
 /* USER CODE BEGIN Private defines */
 

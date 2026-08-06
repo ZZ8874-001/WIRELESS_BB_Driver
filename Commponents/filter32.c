@@ -15,44 +15,80 @@
 
 #if (__CORTEX_M == (4U))
 /**
- * @brief
- *
- * @param first_order_filter Ò»½×µÍÍ¨ÂË²¨Æ÷
- * @param dt ²ÉÑùÖÜÆÚ£¬µ¥Î»s
- * @param cutoff_freq ½ØÖ¹ÆµÂÊ
+ * @brief  ä¸€é˜¶ä½é€šæ»¤æ³¢å™¨åˆå§‹åŒ–
+ * @param  first_order_filter  æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param  dt                  é‡‡æ ·å‘¨æœŸï¼Œå•ä½ s
+ * @param  cutoff_freq         æˆªæ­¢é¢‘ç‡ï¼Œå•ä½ Hz
+ * @param  point_num           æ»¤æ³¢é€šé“æ•°ï¼Œ0 æ—¶è‡ªåŠ¨å– 1
  */
 
-void First_Order_Filter_Init(First_Order_Filter_t *first_order_filter, float dt, float cutoff_freq)
+void First_Order_Filter_Init(First_Order_Filter_t *first_order_filter, float dt, float cutoff_freq, uint8_t point_num)
 {
+    if (point_num == 0)
+    {
+        point_num = 1;
+    }
+
     first_order_filter->dt = dt;
     first_order_filter->RC = 1.0f / (2 * 3.14159f * cutoff_freq);
     first_order_filter->aphha = float_constrain(dt / (dt + first_order_filter->RC), 0.0f, 1.0f);
+    first_order_filter->PointNum = point_num;
     first_order_filter->Input = 0.0f;
     first_order_filter->Output = 0.0f;
+    first_order_filter->InputArray = (float *)user_malloc(sizeof(float) * point_num);
+    first_order_filter->OutputArray = (float *)user_malloc(sizeof(float) * point_num);
+    memset(first_order_filter->InputArray, 0, sizeof(float) * point_num);
+    memset(first_order_filter->OutputArray, 0, sizeof(float) * point_num);
 }
 
 /**
- * @brief
- *
- * @param first_order_filter Ò»½×µÍÍ¨ÂË²¨Æ÷½á¹¹Ìå
- * @param input ÊäÈë
- * @return float Êä³ö
+ * @brief  ä¸€é˜¶ä½é€šæ»¤æ³¢å™¨è®¡ç®—ï¼ˆå•é€šé“ï¼‰
+ * @param  first_order_filter  æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param  input               è¾“å…¥å€¼
+ * @return float               æ»¤æ³¢åçš„è¾“å‡ºå€¼
  */
 float First_Order_Filter_Calculate(First_Order_Filter_t *first_order_filter, float input)
 {
-    first_order_filter->Input = input;
+    First_Order_Filter_Calculate_Array(first_order_filter, &input, &first_order_filter->Output);
+    first_order_filter->Input = first_order_filter->InputArray[0];
+    first_order_filter->Output = first_order_filter->OutputArray[0];
 
-    first_order_filter->Output +=
-        (first_order_filter->Input - first_order_filter->Output) * first_order_filter->aphha;
-
-    return first_order_filter->Output;
+    return float_deadband(first_order_filter->Output, -1e-5,1e-5);
 }
 
 /**
- * @brief          ´°¿ÚÂË²¨³õÊ¼»¯
- * @param[in]      ´°¿ÚÂË²¨½á¹¹Ìå
- * @param[in]      ´°¿Ú´óĞ¡
- * @retval         ·µ»Ø¿Õ
+ * @brief  ä¸€é˜¶ä½é€šæ»¤æ³¢å™¨è®¡ç®—ï¼ˆå¤šé€šé“æ•°ç»„ç‰ˆæœ¬ï¼‰
+ * @param  first_order_filter  æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param  input               å¤šé€šé“è¾“å…¥æ•°ç»„
+ * @param  output              å¤šé€šé“è¾“å‡ºæ•°ç»„
+ */
+void First_Order_Filter_Calculate_Array(First_Order_Filter_t *first_order_filter, const float *input, float *output)
+{
+    for (uint8_t i = 0; i < first_order_filter->PointNum; i++)
+    {
+        float prev_output = first_order_filter->OutputArray[i];
+
+        first_order_filter->InputArray[i] = input[i];
+        first_order_filter->OutputArray[i] +=
+            float_deadband(first_order_filter->InputArray[i] - prev_output, -1e-5, 1e-5) * first_order_filter->aphha;
+
+        if (isnan(first_order_filter->OutputArray[i]))
+        {
+            first_order_filter->OutputArray[i] = prev_output;
+        }
+
+        output[i] = float_deadband(first_order_filter->OutputArray[i], -1e-5, 1e-5);
+    }
+
+    first_order_filter->Input = first_order_filter->InputArray[0];
+    first_order_filter->Output = first_order_filter->OutputArray[0];
+}
+
+/**
+ * @brief         çª—å£æ»¤æ³¢å™¨åˆå§‹åŒ–
+ * @param[in]     window_filter  çª—å£æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param[in]     windowSize     çª—å£å¤§å°
+ * @retval        æ— 
  */
 void Window_Filter_Init(Window_Filter_t *window_filter, uint8_t windowSize)
 {
@@ -63,10 +99,10 @@ void Window_Filter_Init(Window_Filter_t *window_filter, uint8_t windowSize)
 }
 
 /**
- * @brief          ´°¿ÚÂË²¨¼ÆËã
- * @param[in]      ´°¿ÚÂË²¨½á¹¹Ìå
- * @param[in]      ²âÁ¿Öµ
- * @retval         ·µ»ØÂË²¨Êä³ö
+ * @brief         çª—å£æ»¤æ³¢å™¨è®¡ç®—
+ * @param[in]     window_filter  çª—å£æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param[in]     input          è¾“å…¥å€¼
+ * @retval        çª—å£æ»¤æ³¢ç»“æœ
  */
 float Window_Filter_Calculate(Window_Filter_t *window_filter, float input)
 {
@@ -86,11 +122,12 @@ float Window_Filter_Calculate(Window_Filter_t *window_filter, float input)
 }
 
 /**
- * @brief          IIRÂË²¨³õÊ¼»¯
- * @param[in]      IIRÂË²¨½á¹¹Ìå
- * @param[in]      ¼ä¸ôµÄÊ±¼ä£¬µ¥Î» s
- * @param[in]      ÂË²¨ÏµÊı
- * @retval         ·µ»Ø¿Õ
+ * @brief         IIR æ»¤æ³¢å™¨åˆå§‹åŒ–
+ * @param[in]     iir_filter  IIR æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param[in]     num         åˆ†å­ç³»æ•°æ•°ç»„
+ * @param[in]     den         åˆ†æ¯ç³»æ•°æ•°ç»„
+ * @param[in]     order       æ»¤æ³¢å™¨é˜¶æ•°
+ * @retval        æ— 
  */
 void IIR_Filter_Init(IIR_Filter_t *iir_filter, float *num, float *den, uint8_t order)
 {
@@ -104,10 +141,10 @@ void IIR_Filter_Init(IIR_Filter_t *iir_filter, float *num, float *den, uint8_t o
 }
 
 /**
- * @brief          IIRÂË²¨¼ÆËã
- * @param[in]      IIRÂË²¨½á¹¹Ìå
- * @param[in]      ²âÁ¿Öµ
- * @retval         ·µ»ØÂË²¨Êä³ö
+ * @brief         IIR æ»¤æ³¢å™¨è®¡ç®—
+ * @param[in]     iir_filter  IIR æ»¤æ³¢å™¨ç»“æ„ä½“æŒ‡é’ˆ
+ * @param[in]     input       è¾“å…¥å€¼
+ * @retval        IIR æ»¤æ³¢ç»“æœ
  */
 float IIR_Filter_Calculate(IIR_Filter_t *iir_filter, float input)
 {

@@ -1,0 +1,6 @@
+build/
+build_o0/
+.vscode/
+
+*.jdebug
+*.jdebug.user

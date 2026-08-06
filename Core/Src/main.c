@@ -27,8 +27,12 @@
 
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
+#include "bsp_adc.h"
 #include "bsp_dwt.h"
+#include "bsp_uart.h"
 #include "bb_control.h"
+#include "board_id.h"
+#include "detect_task.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -95,12 +99,24 @@ int main(void)
   MX_DMA_Init();
   MX_ADC1_Init();
   MX_HRTIM1_Init();
-  MX_USART1_UART_Init();
   MX_TIM2_Init();
+  MX_ADC2_Init();
+  MX_USART3_UART_Init();
   /* USER CODE BEGIN 2 */
+
+  IDCard = BoardID_Detect();
+  while (!BoardID_IsValid(IDCard)) {}
+
+  HRTIM1->sMasterRegs.MCMP1R = Hrtim_Period;
+  HRTIM1->sMasterRegs.MCMP2R = 0;
   DWT_Init(72);
+  DWT_Delay(1.25);
+
   BB_Control_Init();
+  Detect_Init();
+  Bsp_UART_Init();
   HAL_TIM_Base_Start_IT(&htim2);
+  Bsp_ADC_Init();
   // HAL_TIM_Base_Start_IT(&htim15);
 
   /* USER CODE END 2 */
@@ -109,13 +125,13 @@ int main(void)
   /* USER CODE BEGIN WHILE */
   while (1)
   {
-    switch_on_off = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10);
-    HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,switch_on_off);
+    // switch_on_off = HAL_GPIO_ReadPin(GPIOB,GPIO_PIN_10);
+    // HAL_GPIO_WritePin(GPIOA,GPIO_PIN_7,switch_on_off);
 
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-    HAL_Delay(1);
+    //HAL_Delay(1);
   }
   /* USER CODE END 3 */
 }
@@ -158,10 +174,8 @@ void SystemClock_Config(void)
   {
     Error_Handler();
   }
-  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_HRTIM1|RCC_PERIPHCLK_USART1
-                              |RCC_PERIPHCLK_ADC12;
-  PeriphClkInit.Usart1ClockSelection = RCC_USART1CLKSOURCE_PCLK1;
-  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV12;
+  PeriphClkInit.PeriphClockSelection = RCC_PERIPHCLK_HRTIM1|RCC_PERIPHCLK_ADC12;
+  PeriphClkInit.Adc12ClockSelection = RCC_ADC12PLLCLK_DIV2;
   PeriphClkInit.Hrtim1ClockSelection = RCC_HRTIM1CLK_PLLCLK;
   if (HAL_RCCEx_PeriphCLKConfig(&PeriphClkInit) != HAL_OK)
   {
@@ -170,21 +184,41 @@ void SystemClock_Config(void)
 }
 
 /* USER CODE BEGIN 4 */
+
+/* USER CODE END 4 */
+
+/**
+  * @brief  Period elapsed callback in non blocking mode
+  * @note   This function is called  when TIM17 interrupt took place, inside
+  * HAL_TIM_IRQHandler(). It makes a direct call to HAL_IncTick() to increment
+  * a global variable "uwTick" used as application time base.
+  * @param  htim : TIM handle
+  * @retval None
+  */
 void HAL_TIM_PeriodElapsedCallback(TIM_HandleTypeDef *htim)
 {
-    static uint32_t count = 0;
-    if (htim == &htim2)
-    {
-        count++;
-        Buck_Boost_Task();
-        if (count >= 100)
-        {
-            Detect_Task();
-            count = 0;
-        }
-    }
+  /* USER CODE BEGIN Callback 0 */
+  static uint32_t count = 0;
+  // 10kHz
+  if (htim->Instance == TIM2)
+  {
+      count++;
+      Bsp_ADC_ProcessSample();
+      Buck_Boost_Task();
+      if (count >= 10)
+      {
+          Detect_Task();
+          count = 0;
+      }
+  }
+  /* USER CODE END Callback 0 */
+  if (htim->Instance == TIM17) {
+    HAL_IncTick();
+  }
+  /* USER CODE BEGIN Callback 1 */
+
+  /* USER CODE END Callback 1 */
 }
-/* USER CODE END 4 */
 
 /**
   * @brief  This function is executed in case of error occurrence.
